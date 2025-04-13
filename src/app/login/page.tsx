@@ -1,5 +1,14 @@
+import LoginForm from "./_components/LoginForm";
+
 const Login = () => {
-  return <div>로그인 페이지</div>;
+  return (
+    <div className="w-full h-screen px-4 py-14 max-xs:bg-blue-50">
+      <div className="max-w-[500px] h-full mx-auto flex flex-col items-center gap-10">
+        <h1 className="text-3xl font-black text-orange-400">BLOG</h1>
+        <LoginForm />
+      </div>
+    </div>
+  );
 };
 
 export default Login;
