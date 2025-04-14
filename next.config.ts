@@ -15,6 +15,15 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "d2559sqcuyrr6z.cloudfront.net",
+        pathname: "**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

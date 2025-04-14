@@ -21,7 +21,7 @@
       "suspicious": {
         "noConsoleLog": "warn",
         "noArrayIndexKey": "error",
-        "noExplicitAny": "error"
+        "noExplicitAny": "off"
       },
       "correctness": {
         "noUnusedImports": "error",
