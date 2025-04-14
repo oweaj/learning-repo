@@ -12,11 +12,11 @@ import type { Control, FieldValues, Path } from "react-hook-form";
 interface FormFieldWrapperProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
-  label: string;
-  placeholder: string;
-  labelStyle?: string;
+  label?: string;
+  placeholder?: string;
   inputType?: string;
   inputStyle?: string;
+  customContent?: (field: any) => React.ReactNode;
 }
 
 const FormFieldWrapper = <T extends FieldValues>({
@@ -24,9 +24,9 @@ const FormFieldWrapper = <T extends FieldValues>({
   name,
   label,
   placeholder,
-  labelStyle,
   inputType,
   inputStyle,
+  customContent,
 }: FormFieldWrapperProps<T>) => {
   return (
     <FormField
@@ -35,17 +35,28 @@ const FormFieldWrapper = <T extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           <FormLabel
-            className={cn(labelStyle ?? "text-base font-bold text-gray-400")}
+            className={cn(
+              label
+                ? "flex items-start text-base font-bold text-gray-700 gap-1"
+                : "mt-5",
+            )}
           >
             {label}
+            {label && (
+              <div className="w-1.5 h-1.5 bg-orange-400 rounded-full mt-1" />
+            )}
           </FormLabel>
           <FormControl>
-            <Input
-              type={inputType}
-              placeholder={placeholder}
-              {...field}
-              className={cn(inputStyle ?? "p-2 h-12 bg-gray-50")}
-            />
+            {customContent ? (
+              customContent(field)
+            ) : (
+              <Input
+                type={inputType}
+                placeholder={placeholder}
+                {...field}
+                className={cn(inputStyle ?? "p-2 h-12 bg-gray-50")}
+              />
+            )}
           </FormControl>
           <FormMessage />
         </FormItem>
