@@ -26,22 +26,27 @@ export type PartialBlogDataType = Partial<BlogListType>;
 export interface BlogDetailDataType {
   user: {
     id: number;
-    email: "string";
-    status: "string";
-    name: "string";
-    phone_number: "string";
-    profile_image: "string";
+    email: string;
+    status: string;
+    name: string;
+    phone_number: string;
+    profile_image: string;
   };
-  category: {
-    id: number;
-    name: "string";
-  };
+  category: { id: number; name: string };
+  title: string;
+  main_image: string;
+  sub_image: string;
+  content: string;
   id: number;
-  created_at: "string";
-  updated_at: "string";
-  deleted_at: "string";
-  title: "string";
-  main_image: "string";
-  sub_image: "string";
-  content: "string";
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+}
+
+export interface BlogFormDataType {
+  category: number;
+  title: string;
+  main_image: string;
+  sub_image: string;
+  content: string;
 }
