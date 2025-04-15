@@ -1,5 +1,5 @@
-const Home = () => {
-  return <div>홈페이지 입니다.</div>;
-};
+import { redirect } from "next/navigation";
 
-export default Home;
+export default function Home() {
+  return redirect("/login");
+}

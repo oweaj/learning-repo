@@ -1,5 +1,9 @@
+"use client";
+
+import BlogFormWrapper from "../../_components/FormWrapper";
+
 const BlogEdit = () => {
-  return <div>블로그 수정 페이지</div>;
+  return <BlogFormWrapper title="글 수정" editMode />;
 };
 
 export default BlogEdit;

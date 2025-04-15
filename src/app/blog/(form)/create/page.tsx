@@ -1,5 +1,9 @@
+"use client";
+
+import BlogFormWrapper from "../../_components/FormWrapper";
+
 const BlogCreate = () => {
-  return <div>블로그 등록 페이지</div>;
+  return <BlogFormWrapper title="글 등록" editMode={false} />;
 };
 
 export default BlogCreate;
