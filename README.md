@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+#### 프로젝트 설명
 
-## Getting Started
+- 로그인을 진행하면 블로그 리스트를 볼 수 있습니다.
+- 카테고리별 리스트 필터링이 가능합니다.
+- 블로그 등록과 상세 페이지를 볼 수 있습니다.
+- 요구조건을 달성하지 못했지만 점차 보완해보며 배워가는 프로젝트로 진행합니다.
 
-First, run the development server:
+#### 설치 및 실행 방법
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. 저장소 복제
+$ git clone https://github.com/oweaj/simple-blog.git
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. 종속성 설치
+$ npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. 프로젝트 실행
+$ npm start
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### 구현한 기능 목록
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 블로그 카테고리 필터링
+- 블로그 등록 및 삭제
+- 블로그 리스트 및 상세
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### 사용한 기술 스택 및 라이브러리
 
-## Deploy on Vercel
+- next, tanstack-query, typescript, tailwind, reack hook form, zod, shadcn ui, svgr
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### 개발하면서 고려한 부분이나 어려웠던 점
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- 공통된 axios 인스턴스로 서버, 클라이언트 인터셉트 구성했지만 환경에 따른 구분 고민
+- 로그인 후 쿠키에 토큰 저장이 되었지만 새로고침 시 토큰 없어져 설정 고민
+- 공통된 인터셉트로 요청을 하다보니 서버에서 프리패치로 데이터를 미리 가져오는 부분에서 가져오지 못하여 클라이언트에서 캐싱된 데이터를 가져오지 못하는 이슈
+- 토큰 갱신의 어려움으로 임시 테스트로 로그인 성공시 수동으로 넣고 공통된 인스턴스를 서버, 클라이언트 각각 분리 하여 쿠키에 토큰을 가져와 요청시 헤더에 넣어줌으로 서버에서 프리패치로 캐싱된 데이터를 클라이언트에서 가져옴
