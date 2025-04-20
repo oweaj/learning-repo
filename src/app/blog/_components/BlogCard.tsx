@@ -22,15 +22,12 @@ const BlogCard = (props: PartialBlogDataType) => {
   if (!id) return null;
 
   const handleBlogDelete = (id: number) => {
-    if (ListRef.current && Number(ListRef.current.id) === id) {
-      blogDelete(id);
-      setIsOpen(false);
-    }
+    blogDelete(id);
+    setIsOpen(false);
   };
 
   return (
     <li
-      id={`${id}`}
       ref={ListRef}
       className="relative hover:bg-gray-50 rounded-xl transition-all duration-200"
     >
@@ -61,6 +58,7 @@ const BlogCard = (props: PartialBlogDataType) => {
         <Modal
           isOpen={isOpen}
           setIsOpen={setIsOpen}
+          content={`선택한 블로그 : ${title}`}
           trigger={
             <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
           }
