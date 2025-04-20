@@ -9,11 +9,11 @@ const PageTitle = ({ title }: { title: string }) => {
   return (
     <button
       type="button"
-      className="flex items-center gap-6 text-xl font-semibold cursor-pointer"
+      className="flex items-center gap-6 text-xl font-semibold cursor-pointer w-5/6"
       onClick={() => router.back()}
     >
       <ChevronLeft />
-      {title}
+      <span className="truncate">{title}</span>
     </button>
   );
 };

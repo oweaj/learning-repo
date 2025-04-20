@@ -21,16 +21,17 @@ const BlogDetail = ({ id }: { id: number }) => {
           수정
         </Link>
       </div>
-      <div className="max-w-xl flex flex-col gap-6 text-gray-600 font-medium mx-auto">
-        <Image
-          src={data.main_image}
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="w-full h-auto object-cover rounded-xl"
-          alt="블로그 상세 이미지"
-          priority
-        />
+      <div className="flex flex-col gap-6 text-gray-600 font-medium px-4">
+        <div className="relative w-full max-w-[500px] aspect-video rounded-xl overflow-hidden mx-auto">
+          <Image
+            src={data.main_image}
+            fill
+            sizes="100vw"
+            className="w-full h-full object-cover"
+            alt="블로그 상세 이미지"
+            priority
+          />
+        </div>
         <div>작성일시 : {dateFormat(data.created_at)}</div>
         <div className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden break-words">
           {data.content}

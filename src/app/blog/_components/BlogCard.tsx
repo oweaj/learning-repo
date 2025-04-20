@@ -29,13 +29,12 @@ const BlogCard = (props: PartialBlogDataType) => {
   return (
     <li className="relative" id={`${id}`} ref={ListRef}>
       <Link href={`/blog/${id}`} className="flex gap-10 max-md:gap-4">
-        <div className="relative rounded-xl overflow-hidden w-[300px]">
+        <div className="relative w-[250px] rounded-xl overflow-hidden aspect-square">
           <Image
             src={main_image || ""}
-            width={0}
-            height={0}
+            fill
             sizes="100vw"
-            className="w-full h-auto object-cover rounded-xl"
+            className="w-full h-full object-cover"
             alt="블로그 메인 이미지"
             priority
           />
