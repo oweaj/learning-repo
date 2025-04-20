@@ -1,15 +1,18 @@
 import { blogDeleteApi } from "@/api/blog/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export const useBlogDelete = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: blogDeleteApi,
-    onSuccess: (id: number) => {
+    onSuccess: () => {
+      alert("해당 블로그 글이 삭제되었습니다.");
+      router.push("/0");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
-      queryClient.invalidateQueries({ queryKey: ["blogDetail", id] });
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

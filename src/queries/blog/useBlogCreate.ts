@@ -10,6 +10,7 @@ export const useBlogCreate = () => {
   return useMutation({
     mutationFn: blogCreateApi,
     onSuccess: () => {
+      alert("블로그 글이 등록되었습니다.");
       router.push("/0");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
     },
