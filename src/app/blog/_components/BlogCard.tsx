@@ -9,11 +9,12 @@ import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const BlogCard = (props: PartialBlogDataType) => {
   const { id, title, content, main_image, created_at } = props;
   const formatDate = created_at && dateFormat(created_at);
+  const [isOpen, setIsOpen] = useState(false);
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
   const { mutate: blogDelete } = useBlogDelete();
@@ -23,11 +24,16 @@ const BlogCard = (props: PartialBlogDataType) => {
   const handleBlogDelete = (id: number) => {
     if (ListRef.current && Number(ListRef.current.id) === id) {
       blogDelete(id);
+      setIsOpen(false);
     }
   };
 
   return (
-    <li className="relative" id={`${id}`} ref={ListRef}>
+    <li
+      id={`${id}`}
+      ref={ListRef}
+      className="relative hover:bg-gray-50 rounded-xl transition-all duration-200"
+    >
       <Link href={`/blog/${id}`} className="flex gap-10 max-md:gap-4">
         <div className="relative w-[250px] rounded-xl overflow-hidden aspect-square">
           <Image
@@ -53,22 +59,24 @@ const BlogCard = (props: PartialBlogDataType) => {
       </Link>
       <div className="absolute right-2 top-0">
         <Modal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
           trigger={
-            <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-100 hover:rounded-lg cursor-pointer" />
+            <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
           }
           actionButton={
             <>
               <Button
                 type="button"
                 variant="outline"
-                className="w-1/3"
+                className="w-1/3 h-10"
                 onClick={() => router.push("/blog/edit")}
               >
                 수정
               </Button>
               <Button
                 type="submit"
-                className="w-1/3 bg-red-400 font-semibold"
+                className="w-1/3 h-10 bg-red-500 font-semibold"
                 onClick={() => handleBlogDelete(id)}
               >
                 삭제

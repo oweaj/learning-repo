@@ -8,12 +8,14 @@ import {
 import { cn } from "@/lib/utils";
 
 interface ModalProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
   trigger: React.ReactNode;
   actionButton: React.ReactNode;
 }
-const Modal = ({ trigger, actionButton }: ModalProps) => {
+const Modal = ({ isOpen, setIsOpen, trigger, actionButton }: ModalProps) => {
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className={cn("w-[25rem] h-auto min-h-40 rounded-lg p-4")}>
         <DialogTitle className="sr-only" />
