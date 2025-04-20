@@ -28,11 +28,13 @@ const Modal = ({
         className={cn("w-[25rem] h-auto min-h-40 rounded-lg overflow-hidden")}
       >
         <DialogTitle className="sr-only" />
-        <DialogDescription className="flex items-center justify-center text-base font-semibold text-gray-700">
-          {content}
-        </DialogDescription>
-        <div className="flex flex-row items-center justify-center gap-4">
-          {actionButton}
+        <div className="w-full flex flex-col items-center gap-8">
+          <DialogDescription className="w-5/6 max-w-[25rem] flex items-center justify-center font-semibold text-gray-700">
+            <span className="inline-block truncate">{content}</span>
+          </DialogDescription>
+          <div className="w-full flex flex-row items-center justify-center gap-4">
+            {actionButton}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
