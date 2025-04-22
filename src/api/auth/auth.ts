@@ -9,7 +9,7 @@ export const loginApi = async (formData: LoginDataType) => {
 };
 
 export const logoutApi = async () => {
-  const { data } = await clientAxios.get("/api/v1/auth/logout");
+  const { data } = await axios.get("/api/v1/auth/logout");
 
   return data;
 };

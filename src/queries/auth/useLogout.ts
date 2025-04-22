@@ -1,6 +1,7 @@
 import { logoutApi } from "@/api/auth/auth";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 export const useLogout = () => {
@@ -8,7 +9,11 @@ export const useLogout = () => {
 
   return useMutation({
     mutationFn: logoutApi,
-    onSuccess: () => router.push("/"),
+    onSuccess: () => {
+      Cookies.remove("access");
+      Cookies.remove("refresh");
+      router.push("/login");
+    },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
         const errorMessage =
