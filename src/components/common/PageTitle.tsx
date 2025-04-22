@@ -10,7 +10,7 @@ const PageTitle = ({ title }: { title: string }) => {
     <button
       type="button"
       className="flex items-center gap-6 text-xl font-semibold cursor-pointer w-5/6"
-      onClick={() => router.back()}
+      onClick={() => router.push("/0")}
     >
       <ChevronLeft />
       <span className="truncate">{title}</span>
