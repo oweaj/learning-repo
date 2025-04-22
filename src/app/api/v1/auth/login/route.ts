@@ -14,8 +14,8 @@ export async function POST(req: Request) {
       status: 200,
       headers: {
         "Set-Cookie": [
-          `access=${access}; HttpOnly; Path=/; SameSite=${isLocal ? "Lax" : "None"} ${isLocal ? "" : "Secure;"}`,
-          `refresh=${refresh}; HttpOnly; Path=/; SameSite=${isLocal ? "Lax" : "None"} ${isLocal ? "" : "Secure;"}`,
+          `access=${access}; HttpOnly; Path=/; SameSite=${isLocal ? "Lax" : "None"}; ${isLocal ? "" : "Secure;"}`,
+          `refresh=${refresh}; HttpOnly; Path=/; SameSite=${isLocal ? "Lax" : "None"}; ${isLocal ? "" : "Secure;"}`,
         ].join(", "),
       },
     });
