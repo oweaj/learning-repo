@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import { refreshTokenApi } from "./auth/auth";
 
 const clientAxios = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
   withCredentials: true,
 });
