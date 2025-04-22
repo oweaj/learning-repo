@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --coverage",
-    "prepare": "husky"
+    "prepare": "husky",
+    "dev:https": "next dev --experimental-https"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
