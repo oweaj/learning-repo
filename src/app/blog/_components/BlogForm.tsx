@@ -3,33 +3,44 @@ import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { BLOG_CATEGORY } from "@/constants/blogCategory";
+import { useFormExit } from "@/hooks/useFormExit";
 import { cn } from "@/lib/utils";
 import { useBlogCreate } from "@/queries/blog/useBlogCreate";
+import { useBlogUpdate } from "@/queries/blog/useBlogUpdate";
 import { BlogCreateSchema } from "@/schemas/blog.schema";
-import type { BlogFormDataType } from "@/types/blog.type";
+import type { BlogFormDataType, BlogListType } from "@/types/blog.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import BlogImageUpload from "./ImageUpload";
 
-const BlogForm = ({ editMode }: { editMode: boolean }) => {
-  const { mutate } = useBlogCreate();
+interface BlogFormProps {
+  editMode: boolean;
+  defaultData?: BlogListType;
+  id?: string;
+}
+
+const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
+  const { mutate: queryBlogCreate } = useBlogCreate();
+  const { mutate: queryBlogUpdate } = useBlogUpdate();
   const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== 0);
 
   const form = useForm<BlogFormDataType>({
     defaultValues: {
-      title: "",
-      main_image: "",
-      sub_image: "",
-      category: 0,
-      content: "",
+      title: editMode ? defaultData?.title || "" : "",
+      main_image: editMode ? defaultData?.main_image || "" : "",
+      sub_image: editMode ? defaultData?.sub_image || "" : "",
+      category: editMode ? defaultData?.category.id || 0 : 0,
+      content: editMode ? defaultData?.content || "" : "",
     },
     resolver: zodResolver(BlogCreateSchema),
   });
 
-  console.log(editMode);
+  useFormExit(form.formState.isDirty);
 
   const onSubmit = (data: BlogFormDataType) => {
-    mutate(data);
+    return editMode
+      ? queryBlogUpdate({ id: Number(id), formData: data })
+      : queryBlogCreate(data);
   };
 
   return (

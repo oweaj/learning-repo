@@ -39,10 +39,13 @@ export const blogDetailApi = async (id: number) => {
 };
 
 // 블로그 수정
-export const blogUpdateApi = async (id: number) => {
-  const { data } = await clientAxios.patch(`/api/v1/blog/${id}`);
+export const blogUpdateApi = async ({
+  id,
+  formData,
+}: { id: number; formData: BlogFormDataType }) => {
+  await clientAxios.patch(`/api/v1/blog/${id}`, formData);
 
-  return data;
+  return id;
 };
 
 // 블로그 삭제

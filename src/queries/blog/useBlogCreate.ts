@@ -11,7 +11,7 @@ export const useBlogCreate = () => {
     mutationFn: blogCreateApi,
     onSuccess: () => {
       alert("블로그 글이 등록되었습니다.");
-      router.push("/0");
+      router.replace("/0");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
     },
     onError: (error) => {

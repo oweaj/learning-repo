@@ -15,7 +15,7 @@ const BlogDetail = ({ id }: { id: number }) => {
       <div className="flex items-center justify-between text-xl">
         <PageTitle title={data?.title} />
         <Link
-          href={"/blog/edit"}
+          href={`/blog/edit?id=${id}`}
           className="text-lg font-semibold cursor-pointer p-1"
         >
           수정
