@@ -25,11 +25,13 @@ const Modal = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
-        className={cn("w-[25rem] h-auto min-h-40 rounded-lg overflow-hidden")}
+        className={cn(
+          "w-[25rem] h-auto min-h-40 rounded-lg overflow-hidden flex items-center",
+        )}
       >
         <DialogTitle className="sr-only" />
-        <div className="w-full flex flex-col items-center gap-8">
-          <DialogDescription className="w-5/6 max-w-[25rem] flex items-center justify-center font-semibold text-gray-700">
+        <div className="w-full flex flex-col items-center gap-8 px-2">
+          <DialogDescription className="w-full flex items-center justify-center font-semibold text-gray-700">
             <span className="inline-block truncate">{content}</span>
           </DialogDescription>
           <div className="w-full flex flex-row items-center justify-center gap-4">
