@@ -42,8 +42,15 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
   };
 
   useNavigationGuard({
-    enabled: form.formState.isDirty || !!defaultData,
-    confirm: () => window.confirm("작성중인 내용이 삭제됩니다."),
+    enabled:
+      (!form.formState.isSubmitSuccessful &&
+        !form.formState.isSubmitting &&
+        form.formState.isDirty) ||
+      (!form.formState.isSubmitSuccessful && editMode && !!defaultData),
+    confirm: () =>
+      window.confirm(
+        "작성중인 내용이 삭제됩니다.(※ 수정 폼인 경우 내용만 사라집니다.)",
+      ),
   });
 
   return (
