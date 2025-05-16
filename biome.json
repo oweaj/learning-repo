@@ -28,7 +28,8 @@
         "noUnusedVariables": "error"
       },
       "complexity": {
-        "useArrowFunction": "error"
+        "useArrowFunction": "error",
+        "noForEach": "off"
       },
       "a11y": {
         "useAltText": "error",
