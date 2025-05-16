@@ -3,7 +3,7 @@
 import { useBlogList } from "@/queries/blog/useBlogList";
 import BlogCard from "./BlogCard";
 
-const BlogList = ({ category, page }: { category: number; page: number }) => {
+const BlogList = ({ category, page }: { category: string; page: number }) => {
   const { data } = useBlogList({ category, page });
   if (!data) return null;
 

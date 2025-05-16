@@ -1,9 +1,9 @@
 "use client";
 
+import type { TBlogListType } from "@/app/actions/blog.action";
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
 import { useBlogDelete } from "@/queries/blog/useBlogDelete";
-import type { PartialBlogDataType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-const BlogCard = (props: PartialBlogDataType) => {
+const BlogCard = (props: TBlogListType) => {
   const { id, title, content, main_image, created_at } = props;
   const formatDate = created_at && dateFormat(created_at);
   const [isOpen, setIsOpen] = useState(false);
@@ -58,7 +58,7 @@ const BlogCard = (props: PartialBlogDataType) => {
         <Modal
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          content={`선택한 블로그 : ${title}`}
+          content={`Blog Title : ${title}`}
           trigger={
             <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
           }

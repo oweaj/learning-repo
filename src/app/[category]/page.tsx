@@ -1,43 +1,32 @@
-import { blogListApi } from "@/api/blog/blog";
 import BlogCreate from "@/assets/icons/icon_create.svg";
 import NoticeBanner from "@/components/common/NoticeBanner";
 import BottomNavbar from "@/components/home/BottomNavbar";
 import Header from "@/components/home/Header";
 import RankTopTen from "@/components/home/RankTopTen";
-import type { BlogPageParamsType } from "@/types/blog.type";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import Link from "next/link";
+import { getBlogList } from "../actions/blog.action";
 import BlogList from "../blog/_components/BlogList";
 import BlogCategory from "./_components/BlogCategory";
 
-const Home = async ({
-  params,
-  searchParams,
-}: {
+interface IPropsType {
   params: Promise<{ category: string }>;
-  searchParams: Promise<BlogPageParamsType>;
-}) => {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const Home = async ({ params, searchParams }: IPropsType) => {
   const queryClient = new QueryClient();
   const { category } = await params;
   const { page } = await searchParams;
   const currentPage = page ? Number(page) : 1;
-  const currentCategory = Number(category) || 0;
 
   await queryClient.prefetchQuery({
-    queryKey: [
-      "blogList",
-      { category_id: currentCategory, page: currentPage, page_size: 10 },
-    ],
-    queryFn: () =>
-      blogListApi({
-        category_id: currentCategory,
-        page: currentPage,
-        page_size: 10,
-      }),
+    queryKey: ["blogList", { category, page: currentPage, limit: 10 }],
+    queryFn: () => getBlogList({ category, page: currentPage, limit: 10 }),
   });
 
   return (
@@ -53,7 +42,7 @@ const Home = async ({
             <RankTopTen />
             <section className="space-y-6">
               <BlogCategory />
-              <BlogList category={currentCategory} page={currentPage} />
+              <BlogList category={category} page={currentPage} />
             </section>
           </main>
         </HydrationBoundary>
