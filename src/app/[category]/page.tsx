@@ -4,7 +4,6 @@ import NoticeBanner from "@/components/common/NoticeBanner";
 import BottomNavbar from "@/components/home/BottomNavbar";
 import Header from "@/components/home/Header";
 import RankTopTen from "@/components/home/RankTopTen";
-import type { BlogPageParamsType } from "@/types/blog.type";
 import {
   HydrationBoundary,
   QueryClient,
@@ -14,28 +13,20 @@ import Link from "next/link";
 import BlogList from "../blog/_components/BlogList";
 import BlogCategory from "./_components/BlogCategory";
 
-const Home = async ({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ category: string }>;
-  searchParams: Promise<BlogPageParamsType>;
-}) => {
+const Home = async ({ params }: { params: Promise<{ category: string }> }) => {
   const queryClient = new QueryClient();
   const { category } = await params;
-  const { page } = await searchParams;
-  const currentPage = page ? Number(page) : 1;
   const currentCategory = Number(category) || 0;
 
   await queryClient.prefetchQuery({
     queryKey: [
       "blogList",
-      { category_id: currentCategory, page: currentPage, page_size: 10 },
+      { category_id: currentCategory, page: 1, page_size: 10 },
     ],
     queryFn: () =>
       blogListApi({
         category_id: currentCategory,
-        page: currentPage,
+        page: 1,
         page_size: 10,
       }),
   });
@@ -53,7 +44,7 @@ const Home = async ({
             <RankTopTen />
             <section className="space-y-6">
               <BlogCategory />
-              <BlogList category={currentCategory} page={currentPage} />
+              <BlogList category={currentCategory} />
             </section>
           </main>
         </HydrationBoundary>
