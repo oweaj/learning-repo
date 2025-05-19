@@ -1,4 +1,4 @@
-import { blogCreateApi } from "@/api/blog/blog";
+import { blogCreateApi } from "@/lib/api/blog/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ export const useBlogCreate = () => {
     mutationFn: blogCreateApi,
     onSuccess: () => {
       alert("블로그 글이 등록되었습니다.");
-      router.replace("/0");
+      router.replace("/");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
     },
     onError: (error) => {

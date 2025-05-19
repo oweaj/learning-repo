@@ -1,4 +1,4 @@
-import { blogUpdateApi } from "@/api/blog/blog";
+import { blogUpdateApi } from "@/lib/api/blog/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";

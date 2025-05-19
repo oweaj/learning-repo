@@ -1,4 +1,4 @@
-import { blogDetailApi } from "@/api/blog/blog";
+import { blogDetailApi } from "@/lib/api/blog/blog";
 import type { BlogListType } from "@/types/blog.type";
 import { useQuery } from "@tanstack/react-query";
 

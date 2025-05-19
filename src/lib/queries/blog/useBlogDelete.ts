@@ -1,4 +1,4 @@
-import { blogDeleteApi } from "@/api/blog/blog";
+import { blogDeleteApi } from "@/lib/api/blog/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ export const useBlogDelete = () => {
     mutationFn: blogDeleteApi,
     onSuccess: () => {
       alert("해당 블로그 글이 삭제되었습니다.");
-      router.push("/0");
+      router.push("/");
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
     },
     onError: (error) => {
