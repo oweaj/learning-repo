@@ -1,7 +1,7 @@
 "use client";
 
-import { imageUploadApi } from "@/api/image/imageUpload";
-import type { BlogFormDataType } from "@/types/blog.type";
+import { imageUploadApi } from "@/lib/api/image/upload";
+import type { TBlogFormType } from "@/types/blog.type";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import type { ChangeEvent } from "react";
@@ -12,7 +12,7 @@ const BlogImageUpload = ({
   field,
   tag,
 }: {
-  form: UseFormReturn<BlogFormDataType>;
+  form: UseFormReturn<TBlogFormType>;
   field: {
     value: string;
     onChange: (value: string | null) => void;
@@ -24,10 +24,9 @@ const BlogImageUpload = ({
 
   const handleFile = async (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
-    const selectFile = files ? files[0] : null;
 
-    if (selectFile) {
-      const uploadImage = await imageUploadApi(selectFile);
+    if (files) {
+      const uploadImage = await imageUploadApi(files[0]);
       field.onChange(uploadImage);
     }
   };
