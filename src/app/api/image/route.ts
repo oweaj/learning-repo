@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!file)
     return NextResponse.json({ error: "파일이 없습니다." }, { status: 400 });
 
-  const supabase = await createServerSideClient();
+  const supabase = await createServerSideClient(true);
 
   const { error } = await supabase.storage
     .from("images")
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     return NextResponse.json(
-      { error: "이미지 업로드에 실패했습니다." },
+      { error: `이미지 업로드에 실패했습니다. ${error.message}` },
       { status: 500 },
     );
   }

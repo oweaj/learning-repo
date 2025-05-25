@@ -1,43 +1,25 @@
 "use server";
 
+import type { TBlogFormType, TBlogListType } from "@/types/blog.type";
 import { createServerSideClient } from "@/utils/supabase/server";
-import type { Database } from "../../../database.types";
-
-export type TBlogListType = Database["public"]["Tables"]["blog_list"]["Row"];
-type TBlogFormType = Database["public"]["Tables"]["blog_form_data"]["Row"];
 
 export const getBlogList = async ({
   category,
   page,
-  limit = 10,
 }: {
-  category: string;
+  category: string | null;
   page: number;
-  limit: number;
 }): Promise<TBlogListType[]> => {
   const supabase = await createServerSideClient(true);
-  const currentPage = (page - 1) * limit;
+  const currentPage = (page - 1) * 10;
 
   let result = supabase
     .from("blog_list")
-    .select(
-      `*,
-    category:category_id (
-      id,
-      name
-    ),
-    user_info:user_id (
-      id,
-      email,
-      name,
-      profile_image
-    )
-  `,
-    )
+    .select("*, category_id:category(*), user_id:user_info(*)")
     .is("deleted_at", null)
     .order("id", { ascending: false });
 
-  if (category !== "all") {
+  if (category) {
     const { data: categoryData } = await supabase
       .from("category")
       .select("id")
@@ -49,19 +31,19 @@ export const getBlogList = async ({
     result = result.eq("category_id", categoryData.id);
   }
 
-  result = result.range(currentPage, currentPage + limit - 1);
+  result = result.range(currentPage, currentPage + 9);
   const { data } = await result;
 
   return data || [];
 };
 
 export const getBlogDetail = async (id: number) => {
-  const supabase = await createServerSideClient();
+  const supabase = await createServerSideClient(true);
   const { data } = await supabase
-    .from("blog_detail")
+    .from("blog_list")
     .select("*")
-    .is("deleted_at", null)
-    .eq("id", id);
+    .eq("id", id)
+    .single();
 
   return data;
 };

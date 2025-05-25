@@ -1,12 +1,12 @@
-import { createServerSideClient } from "@/utils/supabase/server";
+import { getBlogDetail, updateBlog } from "@/app/actions/blog.action";
 import { type NextRequest, NextResponse } from "next/server";
 
 // 블로그 상세 조회
 export async function GET(
   _: NextRequest,
-  { params }: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
-  const supabase = await createServerSideClient();
+  const params = await context.params;
   const id = Number(params.id);
 
   if (!id) {
@@ -16,29 +16,18 @@ export async function GET(
     );
   }
 
-  const { data, error } = await supabase
-    .from("blog_list")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const result = await getBlogDetail(id);
 
-  if (error) {
-    return NextResponse.json(
-      { error: "해당 블로그를 찾을 수 없습니다." },
-      { status: 500 },
-    );
-  }
-
-  return NextResponse.json(data, { status: 200 });
+  return NextResponse.json(result, { status: 200 });
 }
 
 // 블로그 업데이트
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
-  const supabase = await createServerSideClient();
   const formData = await req.json();
+  const params = await context.params;
   const id = Number(params.id);
 
   if (!id) {
@@ -48,20 +37,7 @@ export async function PATCH(
     );
   }
 
-  const { data, error } = await supabase
-    .from("blog_list")
-    .update(
-      { ...formData, updated_at: new Date().toISOString() }
-        .eq("id", id)
-        .select(),
-    );
+  const result = await updateBlog(id, formData);
 
-  if (error) {
-    return NextResponse.json(
-      { error: "해당 블로그 삭제 도중 에러가 발생했습니다." },
-      { status: 500 },
-    );
-  }
-
-  return NextResponse.json(data, { status: 200 });
+  return NextResponse.json(result, { status: 200 });
 }

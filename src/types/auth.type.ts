@@ -1,6 +1,20 @@
-export interface LoginDataType {
+export interface ISignInType {
   email: string;
   password: string;
+}
+
+export interface ISignUpType {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+export interface TAuthFormType {
+  email: string;
+  password: string;
+  name?: string;
+  passwordConfirm?: string;
 }
 
 export interface userDataType {
