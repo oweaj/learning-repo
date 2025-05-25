@@ -9,7 +9,7 @@ import {
 import clsx from "clsx";
 
 interface SelectPropsType {
-  data: { value: number; label: string }[];
+  data: { id: number; name: string; value: string }[];
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
@@ -23,9 +23,9 @@ const Select = ({ data, value, placeholder, onChange }: SelectPropsType) => {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {data.map(({ value, label }) => (
-            <SelectItem key={value} value={String(value)}>
-              {label}
+          {data.map(({ id, name, value }) => (
+            <SelectItem key={`${id}-${value}`} value={String(id)}>
+              {name}
             </SelectItem>
           ))}
         </SelectGroup>

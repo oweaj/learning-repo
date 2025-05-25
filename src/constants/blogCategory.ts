@@ -1,7 +1,7 @@
 export const BLOG_CATEGORY = [
-  { value: 0, label: "전체" },
-  { value: 1, label: "일상생활" },
-  { value: 2, label: "맛집소개" },
-  { value: 3, label: "제품후기" },
-  { value: 4, label: "IT정보" },
+  { id: 0, name: "전체", value: "all" },
+  { id: 1, name: "일상생활", value: "daily_life" },
+  { id: 2, name: "맛집소개", value: "food_reviews" },
+  { id: 3, name: "제품후기", value: "product_reviews" },
+  { id: 4, name: "IT정보", value: "it_info" },
 ];

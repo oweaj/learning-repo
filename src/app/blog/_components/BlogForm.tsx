@@ -3,11 +3,11 @@ import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { BLOG_CATEGORY } from "@/constants/blogCategory";
+import { useBlogCreate } from "@/lib/queries/blog/useBlogCreate";
+import { useBlogUpdate } from "@/lib/queries/blog/useBlogUpdate";
 import { cn } from "@/lib/utils";
-import { useBlogCreate } from "@/queries/blog/useBlogCreate";
-import { useBlogUpdate } from "@/queries/blog/useBlogUpdate";
 import { BlogCreateSchema } from "@/schemas/blog.schema";
-import type { BlogFormDataType, BlogListType } from "@/types/blog.type";
+import type { TBlogFormType, TBlogListType } from "@/types/blog.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigationGuard } from "next-navigation-guard";
 import { useForm } from "react-hook-form";
@@ -15,27 +15,27 @@ import BlogImageUpload from "./ImageUpload";
 
 interface BlogFormProps {
   editMode: boolean;
-  defaultData?: BlogListType;
+  defaultData?: TBlogListType;
   id?: string;
 }
 
 const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
   const { mutate: queryBlogCreate } = useBlogCreate();
   const { mutate: queryBlogUpdate } = useBlogUpdate();
-  const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== 0);
+  const filterCategory = BLOG_CATEGORY.filter((item) => item.id !== 0);
 
-  const form = useForm<BlogFormDataType>({
+  const form = useForm<TBlogFormType>({
     defaultValues: {
       title: editMode ? defaultData?.title || "" : "",
       main_image: editMode ? defaultData?.main_image || "" : "",
-      sub_image: editMode ? defaultData?.sub_image || "" : "",
-      category: editMode ? defaultData?.category.id || 0 : 0,
+      sub_image: editMode ? defaultData?.sub_image || "" : null,
+      category_id: editMode ? defaultData?.category_id || 0 : 0,
       content: editMode ? defaultData?.content || "" : "",
     },
     resolver: zodResolver(BlogCreateSchema),
   });
 
-  const onSubmit = (data: BlogFormDataType) => {
+  const onSubmit = (data: TBlogFormType) => {
     return editMode
       ? queryBlogUpdate({ id: Number(id), formData: data })
       : queryBlogCreate(data);
@@ -84,7 +84,7 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
         </div>
         <FormFieldWrapper
           control={form.control}
-          name="category"
+          name="category_id"
           label="카테고리"
           customContent={(field) => (
             <Select

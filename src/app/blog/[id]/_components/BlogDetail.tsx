@@ -1,7 +1,7 @@
 "use client";
 
 import PageTitle from "@/components/common/PageTitle";
-import { useBlogDetail } from "@/queries/blog/useBlogDetail";
+import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 import { dateFormat } from "@/utils/dateFormat";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +13,7 @@ const BlogDetail = ({ id }: { id: number }) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between text-xl">
-        <PageTitle title={data?.title} />
+        <PageTitle title={data.title} />
         <Link
           href={`/blog/edit?id=${id}`}
           className="text-lg font-semibold cursor-pointer p-1"
@@ -26,8 +26,8 @@ const BlogDetail = ({ id }: { id: number }) => {
           <Image
             src={data.main_image}
             fill
-            sizes="100vw"
-            className="w-full h-full object-cover"
+            sizes="(max-width: 768px) 100vw, 500px"
+            className="object-cover"
             alt="블로그 상세 이미지"
             priority
           />

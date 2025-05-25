@@ -1,4 +1,4 @@
-import { blogDetailApi } from "@/api/blog/blog";
+import { getBlogDetail } from "@/app/actions/blog.action";
 import {
   HydrationBoundary,
   QueryClient,
@@ -11,17 +11,16 @@ const BlogDetailPage = async ({
 }: { params: Promise<{ id: string }> }) => {
   const queryClient = new QueryClient();
   const { id } = await params;
-  const idNumber = Number(id);
 
   await queryClient.prefetchQuery({
-    queryKey: ["blogDetail", idNumber],
-    queryFn: () => blogDetailApi(idNumber),
+    queryKey: ["blogDetail", Number(id)],
+    queryFn: () => getBlogDetail(Number(id)),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="max-w-screen-sm h-full py-6 mx-auto px-4">
-        <BlogDetail id={idNumber} />
+        <BlogDetail id={Number(id)} />
       </div>
     </HydrationBoundary>
   );

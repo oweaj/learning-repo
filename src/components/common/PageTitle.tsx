@@ -7,7 +7,7 @@ const PageTitle = ({ title }: { title: string }) => {
   const router = useRouter();
 
   const handleRouter = () => {
-    return title.includes("수정") ? router.back() : router.push("/0");
+    return title.includes("수정") ? router.back() : router.push("/");
   };
 
   return (

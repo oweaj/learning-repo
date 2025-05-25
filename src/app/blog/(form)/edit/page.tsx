@@ -1,6 +1,6 @@
 "use client";
 
-import { useBlogDetail } from "@/queries/blog/useBlogDetail";
+import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 import { useSearchParams } from "next/navigation";
 import BlogFormWrapper from "../../_components/FormWrapper";
 

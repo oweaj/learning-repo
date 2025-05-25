@@ -1,11 +1,5 @@
-import type { TBlogFormType } from "@/app/actions/blog.action";
+import type { TBlogFormType } from "@/types/blog.type";
 import axios from "axios";
-
-interface BlogListPropsType {
-  category: string;
-  page: number;
-  limit: number;
-}
 
 // 블로그 생성
 export const blogCreateApi = async (formData: TBlogFormType) => {
@@ -15,18 +9,16 @@ export const blogCreateApi = async (formData: TBlogFormType) => {
 };
 
 // 블로그 목록
-export const blogListApi = async ({ category, page }: BlogListPropsType) => {
-  let query = "";
-
-  if (category !== "all") {
-    query = `category=${category}&page=${page}&limit=10`;
-  } else if (category === "all" && page > 1) {
-    query = `page=${page}&limit=10`;
-  }
-
+export const blogListApi = async ({
+  category,
+  page,
+}: { category: string | null; page: number }) => {
+  const query = category
+    ? `category=${category}&page=${page}&limit=10`
+    : `page=${page}&limit=10`;
   const { data } = await axios.get(`/api/blog/list?${query}`);
 
-  return data.data;
+  return data;
 };
 
 // 블로그 상세

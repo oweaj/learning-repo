@@ -1,9 +1,9 @@
 "use client";
 
-import type { TBlogListType } from "@/app/actions/blog.action";
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
-import { useBlogDelete } from "@/queries/blog/useBlogDelete";
+import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
+import type { TBlogListType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
@@ -35,8 +35,8 @@ const BlogCard = (props: TBlogListType) => {
         <div className="relative w-[250px] rounded-xl overflow-hidden aspect-square">
           <Image
             src={main_image || ""}
-            fill
-            sizes="100vw"
+            width={300}
+            height={300}
             className="w-full h-full object-cover"
             alt="블로그 메인 이미지"
             priority

@@ -1,19 +1,57 @@
 "use client";
 
-import { useBlogList } from "@/queries/blog/useBlogList";
+import { useBlogList } from "@/lib/queries/blog/useBlogList";
+import { usePageStore } from "@/store/usePageStore";
+import { useRouter } from "next/navigation";
 import BlogCard from "./BlogCard";
 
-const BlogList = ({ category, page }: { category: string; page: number }) => {
-  const { data } = useBlogList({ category, page });
+const BlogList = ({
+  category,
+  page,
+}: { category: string | null; page: number }) => {
+  const { currentPage, setPage } = usePageStore();
+  const router = useRouter();
+  const data = useBlogList({ category, page });
   if (!data) return null;
+
+  const totalPage = Math.ceil(data.length / 10);
+  const pageNumber = Array.from({ length: totalPage }, (_, i) => i + 1);
+
+  const handlePageChange = (pageNumber: number) => {
+    setPage(pageNumber);
+    const query = category
+      ? `/?category=${category}&page=${pageNumber}&limit=10`
+      : `/?page=${pageNumber}&limit=10`;
+    router.push(query);
+  };
 
   return (
     <div>
-      <ul className="space-y-6">
+      {!data.length && (
+        <div className="text-center text-gray-600 py-8">
+          해당 카테고리의 데이터가 없습니다.
+        </div>
+      )}
+      <ul className="space-y-8">
         {data.map((item) => (
           <BlogCard key={item.id} {...item} />
         ))}
       </ul>
+      <div className="text-center mt-16">
+        <ul>
+          {pageNumber.map((num) => (
+            <li key={num}>
+              <button
+                type="button"
+                onClick={() => handlePageChange(num)}
+                className={`px-4 py-2 rounded ${num === currentPage ? "bg-orange-500 text-white" : "bg-gray-200"}`}
+              >
+                {num}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
