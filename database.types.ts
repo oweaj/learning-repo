@@ -13,12 +13,12 @@ export type Database = {
         Row: {
           category_id: number | null;
           content: string | null;
-          created_at: string | null;
+          created_at: string;
           deleted_at: string | null;
           id: number;
-          main_image: string | null;
+          main_image: string;
           sub_image: string | null;
-          title: string | null;
+          title: string;
           updated_at: string | null;
           user_id: string;
         };
@@ -66,10 +66,10 @@ export type Database = {
       blog_form_data: {
         Row: {
           category_id: number;
-          content: string | null;
-          main_image: string | null;
+          content: string;
+          main_image: string;
           sub_image: string | null;
-          title: string | null;
+          title: string;
         };
         Insert: {
           category_id?: number;

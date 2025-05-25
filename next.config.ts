@@ -19,18 +19,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "d2559sqcuyrr6z.cloudfront.net",
-        pathname: "**",
+        hostname: "jpmigyslpcvuhzpmumyc.supabase.co",
+        pathname: "/storage/v1/object/public/images/**",
       },
     ],
-  },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://api.interview.l-league.co.kr/api/:path*",
-      },
-    ];
   },
 };
 
