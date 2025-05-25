@@ -1,17 +1,31 @@
-import type { ISignInType, ISignUpType } from "@/types/auth.type";
-import axios from "axios";
+import type { TAuthFormType } from "@/types/auth.type";
+import { createSupabaseClient } from "@/utils/supabase/client";
 
-export const signinApi = async (formData: ISignInType) => {
-  const { data } = await axios.post("/api/auth/signin", formData);
+const supabase = createSupabaseClient();
+
+export const signinApi = async (formData: TAuthFormType) => {
+  const { data } = await supabase.auth.signInWithPassword({
+    email: formData.email,
+    password: formData.password,
+  });
+
   return data;
 };
 
-export const signupApi = async (formData: ISignUpType) => {
-  const { data } = await axios.post("/api/auth/signup", formData);
+export const signupApi = async (formData: TAuthFormType) => {
+  const { data } = await supabase.auth.signUp({
+    email: formData.email,
+    password: formData.password,
+    options: {
+      data: {
+        name: formData.name,
+      },
+    },
+  });
+
   return data;
 };
 
 export const logoutApi = async () => {
-  const { data } = await axios.get("/api/auth/logout");
-  return data;
+  await supabase.auth.signOut();
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import { BOTTOM_NAV_LIST } from "@/constants/bottomNavbar";
-import { useLogout } from "@/queries/auth/useLogout";
+import { useLogout } from "@/lib/queries/auth/useLogout";
 import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 
