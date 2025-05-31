@@ -1,12 +1,14 @@
 "use client";
 
 import PageTitle from "@/components/common/PageTitle";
+import { useUser } from "@/hooks/useUser";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 import { dateFormat } from "@/utils/dateFormat";
 import Image from "next/image";
 import Link from "next/link";
 
 const BlogDetail = ({ id }: { id: number }) => {
+  const session = useUser();
   const data = useBlogDetail({ id });
   if (!data) return null;
 
@@ -14,12 +16,14 @@ const BlogDetail = ({ id }: { id: number }) => {
     <div className="space-y-6">
       <div className="flex items-center justify-between text-xl">
         <PageTitle title={data.title} />
-        <Link
-          href={`/blog/edit?id=${id}`}
-          className="text-lg font-semibold cursor-pointer p-1"
-        >
-          수정
-        </Link>
+        {data.user_id.id === session && (
+          <Link
+            href={`/blog/edit?id=${id}`}
+            className="text-lg font-semibold cursor-pointer p-1"
+          >
+            수정
+          </Link>
+        )}
       </div>
       <div className="flex flex-col gap-6 text-gray-600 font-medium px-4">
         <div className="relative w-full max-w-[500px] aspect-video rounded-xl overflow-hidden mx-auto">

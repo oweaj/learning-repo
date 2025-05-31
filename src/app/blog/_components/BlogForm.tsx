@@ -29,7 +29,7 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
       title: editMode ? defaultData?.title || "" : "",
       main_image: editMode ? defaultData?.main_image || "" : "",
       sub_image: editMode ? defaultData?.sub_image || "" : null,
-      category_id: editMode ? defaultData?.category_id || 0 : 0,
+      category_id: editMode ? defaultData?.category_id.id || 0 : 0,
       content: editMode ? defaultData?.content || "" : "",
     },
     resolver: zodResolver(BlogCreateSchema),
