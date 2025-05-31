@@ -9,13 +9,15 @@ export const getBlogList = async ({
 }: {
   category: string | null;
   page: number;
-}): Promise<TBlogListType[]> => {
+}): Promise<{ data: TBlogListType[]; count: number }> => {
   const supabase = await createServerSideClient(true);
   const currentPage = (page - 1) * 10;
 
   let result = supabase
     .from("blog_list")
-    .select("*, category_id:category(*), user_id:user_info(*)")
+    .select("*, category_id:category(*), user_id:user_info(*)", {
+      count: "exact",
+    })
     .is("deleted_at", null)
     .order("id", { ascending: false });
 
@@ -26,22 +28,25 @@ export const getBlogList = async ({
       .eq("name", category)
       .single();
 
-    if (!categoryData) return [];
+    if (!categoryData) return { data: [], count: 0 };
 
     result = result.eq("category_id", categoryData.id);
   }
 
   result = result.range(currentPage, currentPage + 9);
-  const { data } = await result;
+  const { data, count } = await result;
 
-  return data || [];
+  return {
+    data: data as TBlogListType[],
+    count: count ?? 0,
+  };
 };
 
 export const getBlogDetail = async (id: number) => {
   const supabase = await createServerSideClient(true);
   const { data } = await supabase
     .from("blog_list")
-    .select("*")
+    .select("*, category_id:category(*), user_id:user_info(*)")
     .eq("id", id)
     .single();
 

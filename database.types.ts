@@ -91,14 +91,14 @@ export type Database = {
         Row: {
           category_id: number | null;
           content: string | null;
-          created_at: string | null;
+          created_at: string;
           deleted_at: string | null;
           id: number;
-          main_image: string | null;
+          main_image: string;
           sub_image: string | null;
-          title: string | null;
+          title: string;
           updated_at: string | null;
-          user_id: string | null;
+          user_id: string;
         };
         Insert: {
           category_id?: number | null;
@@ -144,7 +144,7 @@ export type Database = {
       category: {
         Row: {
           id: number;
-          name: string | null;
+          name: string;
         };
         Insert: {
           id?: number;
@@ -158,9 +158,9 @@ export type Database = {
       };
       user_info: {
         Row: {
-          email: string | null;
+          email: string;
           id: string;
-          name: string | null;
+          name: string;
           profile_image: string | null;
           status: string | null;
         };

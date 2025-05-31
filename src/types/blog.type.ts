@@ -1,11 +1,12 @@
 import type { Database } from "../../database.types";
 import type { userDataType } from "./auth.type";
 
-export type TBlogListType = Database["public"]["Tables"]["blog_list"]["Row"];
+export type TBlogListType = Database["public"]["Tables"]["blog_list"]["Row"] & {
+  user_id: Database["public"]["Tables"]["user_info"]["Row"];
+  category_id: Database["public"]["Tables"]["category"]["Row"];
+};
 export type TBlogFormType =
   Database["public"]["Tables"]["blog_form_data"]["Row"];
-export type TBlogDetailType =
-  Database["public"]["Tables"]["blog_detail"]["Row"];
 
 export interface BlogPageParamsType {
   page?: string;
