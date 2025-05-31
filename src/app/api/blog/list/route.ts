@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const category = searchParams.get("category");
   const page = Number(searchParams.get("page") || "1");
 
-  const data = await getBlogList({ category, page });
+  const { data, count } = await getBlogList({ category, page });
 
-  return NextResponse.json(data, { status: 200 });
+  return NextResponse.json({ data, count }, { status: 200 });
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useBlogList } from "@/lib/queries/blog/useBlogList";
-import { usePageStore } from "@/store/usePageStore";
 import { useRouter } from "next/navigation";
 import BlogCard from "./BlogCard";
 
@@ -9,16 +8,14 @@ const BlogList = ({
   category,
   page,
 }: { category: string | null; page: number }) => {
-  const { currentPage, setPage } = usePageStore();
   const router = useRouter();
-  const data = useBlogList({ category, page });
-  if (!data) return null;
+  const { data, count } = useBlogList({ category, page });
+  if (!data || !count) return null;
 
-  const totalPage = Math.ceil(data.length / 10);
+  const totalPage = Math.ceil(count / 10);
   const pageNumber = Array.from({ length: totalPage }, (_, i) => i + 1);
 
   const handlePageChange = (pageNumber: number) => {
-    setPage(pageNumber);
     const query = category
       ? `/?category=${category}&page=${pageNumber}&limit=10`
       : `/?page=${pageNumber}&limit=10`;
@@ -37,21 +34,19 @@ const BlogList = ({
           <BlogCard key={item.id} {...item} />
         ))}
       </ul>
-      <div className="text-center mt-16">
-        <ul>
-          {pageNumber.map((num) => (
-            <li key={num}>
-              <button
-                type="button"
-                onClick={() => handlePageChange(num)}
-                className={`px-4 py-2 rounded ${num === currentPage ? "bg-orange-500 text-white" : "bg-gray-200"}`}
-              >
-                {num}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul className="flex items-center justify-center gap-4 mt-16">
+        {pageNumber.map((num) => (
+          <li key={num}>
+            <button
+              type="button"
+              onClick={() => handlePageChange(num)}
+              className={`px-4 py-2 rounded ${num === page ? "bg-orange-500 text-white" : "bg-gray-200"}`}
+            >
+              {num}
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

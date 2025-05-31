@@ -5,7 +5,7 @@ import { type NextRequest, NextResponse } from "next/server";
 // 블로그 생성
 export async function POST(req: NextRequest) {
   try {
-    const supabase = await createServerSideClient(true);
+    const supabase = await createServerSideClient();
     const formData = await req.json();
     const {
       data: { user },

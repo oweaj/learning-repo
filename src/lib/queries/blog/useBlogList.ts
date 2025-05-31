@@ -6,10 +6,10 @@ export const useBlogList = ({
   category,
   page,
 }: { category: string | null; page: number }) => {
-  const { data } = useQuery<TBlogListType[]>({
+  const data = useQuery<{ data: TBlogListType[]; count: number }>({
     queryKey: ["blog_list", category ?? null, page],
     queryFn: () => blogListApi({ category: category ?? null, page }),
   });
 
-  return data;
+  return { data: data.data?.data, count: data?.data?.count };
 };
