@@ -1,22 +1,21 @@
 import type { TAuthFormType } from "@/types/auth.type";
 import { createSupabaseClient } from "@/utils/supabase/client";
-
-const supabase = createSupabaseClient();
+import axios from "axios";
 
 export const signinApi = async (formData: TAuthFormType) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: formData.email,
-    password: formData.password,
-  });
-
-  if (error) {
-    throw new Error("이메일 또는 비밀번호를 다시 한번 확인해주세요.");
+  try {
+    const { data } = await axios.post("/api/auth/signin", formData);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      alert(error.message);
+    }
   }
-
-  return data;
 };
 
 export const signupApi = async (formData: TAuthFormType) => {
+  const supabase = createSupabaseClient();
+
   const { data, error } = await supabase.auth.signUp({
     email: formData.email,
     password: formData.password,
@@ -35,5 +34,12 @@ export const signupApi = async (formData: TAuthFormType) => {
 };
 
 export const logoutApi = async () => {
-  await supabase.auth.signOut();
+  try {
+    const { data } = await axios.post("/api/auth/logout");
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      alert(error.message);
+    }
+  }
 };

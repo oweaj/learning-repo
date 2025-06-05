@@ -11,6 +11,7 @@ const BlogList = ({
 }: { category: string | null; page: number }) => {
   const router = useRouter();
   const { data, count } = useBlogList({ category, page });
+
   if (!data || !count) return null;
 
   const totalPage = Math.ceil(count / 10);
