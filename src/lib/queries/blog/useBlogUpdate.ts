@@ -1,6 +1,6 @@
 import { blogUpdateApi } from "@/lib/api/blog/blog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+
 import { useRouter } from "next/navigation";
 
 export const useBlogUpdate = () => {
@@ -15,13 +15,6 @@ export const useBlogUpdate = () => {
       queryClient.invalidateQueries({ queryKey: ["blogList"] });
       queryClient.invalidateQueries({ queryKey: ["blogDetail", id] });
     },
-    onError: (error) => {
-      if (axios.isAxiosError(error)) {
-        const errorMessage =
-          error.response?.data?.message || "블로그 등록중 오류가 발생했습니다.";
-        throw new Error(errorMessage);
-      }
-      throw new Error("네트워크 오류로 인해 다시 시도해주세요.");
-    },
+    onError: (error: Error) => alert(error.message),
   });
 };
