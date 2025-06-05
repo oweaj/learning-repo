@@ -27,7 +27,9 @@ const Tab = ({ category }: TabProps) => {
     <div className="flex flex-col items-center">
       <button
         type="button"
-        className={`whitespace-nowrap p-2 font-semibold ${isSelected ? "text-gray-900" : "text-gray-500"}`}
+        className={`whitespace-nowrap p-2 font-semibold cursor-pointer hover:text-gray-900 ${
+          isSelected ? "text-gray-900" : "text-gray-500"
+        }`}
         onClick={() => handleCategoryClick()}
       >
         {category.name}
