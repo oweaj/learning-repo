@@ -14,8 +14,8 @@ import { useForm } from "react-hook-form";
 
 const AuthForm = ({ submit }: { submit: string }) => {
   const router = useRouter();
-  const { mutate: signin } = useSignin();
-  const { mutate: signup } = useSignup();
+  const { mutate: signin, isPending: signinPending } = useSignin();
+  const { mutate: signup, isPending: signupPending } = useSignup();
   const form = useForm<TAuthFormType>({
     defaultValues: { email: "", password: "", name: "", passwordConfirm: "" },
     resolver: zodResolver(submit === "signin" ? signinSchema : signupSchema),
@@ -69,6 +69,7 @@ const AuthForm = ({ submit }: { submit: string }) => {
           <Button
             type="submit"
             className={cn("w-full h-full text-base font-bold bg-gray-400")}
+            disabled={signinPending}
           >
             {submit === "signin" ? "로그인" : "회원가입"}
           </Button>
@@ -77,6 +78,7 @@ const AuthForm = ({ submit }: { submit: string }) => {
               type="button"
               className={cn("w-full h-full text-base font-bold bg-gray-400")}
               onClick={() => router.push("/auth/signup")}
+              disabled={signupPending}
             >
               회원가입
             </Button>
