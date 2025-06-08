@@ -4,25 +4,22 @@ import AuthForm from "./AuthForm";
 
 const mockSignin = jest.fn();
 const mockSignup = jest.fn();
-const mockRouterPush = jest.fn();
 
 jest.mock("next/navigation", () => ({
   useRouter: () => ({
-    push: mockRouterPush,
+    push: jest.fn(),
   }),
 }));
 
 jest.mock("@/lib/queries/auth/useSignin", () => ({
   useSignin: () => ({
     mutate: mockSignin,
-    isPending: false,
   }),
 }));
 
 jest.mock("@/lib/queries/auth/useSignup", () => ({
   useSignup: () => ({
     mutate: mockSignup,
-    isPending: false,
   }),
 }));
 
