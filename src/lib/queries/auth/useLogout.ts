@@ -8,5 +8,6 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: logoutApi,
     onSuccess: () => router.replace("/auth/signin"),
+    onError: (error) => alert(error.message),
   });
 };
