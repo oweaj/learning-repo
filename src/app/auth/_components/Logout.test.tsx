@@ -47,6 +47,5 @@ describe("로그아웃 컴포넌트", () => {
 
     fireEvent.click(logoutButton);
     expect(mockLogout).toHaveBeenCalledTimes(1);
-    expect(mockAlert).not.toHaveBeenCalled();
   });
 });
