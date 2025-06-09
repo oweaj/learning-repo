@@ -1,7 +1,9 @@
 import type { Database } from "../../database.types";
 import type { userDataType } from "./auth.type";
 
-export type TBlogListType = Database["public"]["Tables"]["blog_list"]["Row"] & {
+type TBlogListRow = Database["public"]["Tables"]["blog_list"]["Row"];
+
+export type TBlogListType = Omit<TBlogListRow, "user_id" | "category_id"> & {
   user_id: Database["public"]["Tables"]["user_info"]["Row"];
   category_id: Database["public"]["Tables"]["category"]["Row"];
 };
