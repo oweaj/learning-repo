@@ -31,6 +31,7 @@ const Tab = ({ category }: TabProps) => {
           isSelected ? "text-gray-900" : "text-gray-500"
         }`}
         onClick={() => handleCategoryClick()}
+        data-testid={`${category.value}-${isSelected ? "selected" : "not-selected"}`}
       >
         {category.name}
       </button>
