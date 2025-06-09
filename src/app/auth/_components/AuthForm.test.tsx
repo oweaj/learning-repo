@@ -27,8 +27,9 @@ describe("로그인 및 회원가입 공통 인증 form 컴포넌트", () => {
   it("회원가입 폼 제출 시 회원가입 실패", async () => {
     render(<AuthForm submit="signup" />);
 
-    const loginButton = screen.getByRole("button", { name: "회원가입" });
-    expect(loginButton).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "회원가입" }),
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "회원가입" }));
 
@@ -46,8 +47,7 @@ describe("로그인 및 회원가입 공통 인증 form 컴포넌트", () => {
   it("로그인 폼 제출 시 로그인 실패", async () => {
     render(<AuthForm submit="signin" />);
 
-    const signupButton = screen.getByRole("button", { name: "로그인" });
-    expect(signupButton).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "로그인" })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "로그인" }));
 
@@ -59,15 +59,18 @@ describe("로그인 및 회원가입 공통 인증 form 컴포넌트", () => {
   it("회원가입 폼 제출 시 회원가입 성공", async () => {
     render(<AuthForm submit="signup" />);
 
-    const nameInput = screen.getByLabelText("닉네임");
-    const emailInput = screen.getByLabelText("이메일");
-    const passwordInput = screen.getByLabelText("비밀번호");
-    const passwordConfirmInput = screen.getByLabelText("비밀번호 확인");
-
-    fireEvent.change(nameInput, { target: { value: "테스트" } });
-    fireEvent.change(emailInput, { target: { value: "test@test.com" } });
-    fireEvent.change(passwordInput, { target: { value: "test1234" } });
-    fireEvent.change(passwordConfirmInput, { target: { value: "test1234" } });
+    fireEvent.change(screen.getByLabelText("닉네임"), {
+      target: { value: "테스트" },
+    });
+    fireEvent.change(screen.getByLabelText("이메일"), {
+      target: { value: "test@test.com" },
+    });
+    fireEvent.change(screen.getByLabelText("비밀번호"), {
+      target: { value: "test1234" },
+    });
+    fireEvent.change(screen.getByLabelText("비밀번호 확인"), {
+      target: { value: "test1234" },
+    });
 
     fireEvent.click(screen.getByRole("button", { name: "회원가입" }));
 
@@ -84,11 +87,12 @@ describe("로그인 및 회원가입 공통 인증 form 컴포넌트", () => {
   it("로그인 폼 제출 시 로그인 성공", async () => {
     render(<AuthForm submit="signin" />);
 
-    const emailInput = screen.getByLabelText("이메일");
-    const passwordInput = screen.getByLabelText("비밀번호");
-
-    fireEvent.change(emailInput, { target: { value: "test@test.com" } });
-    fireEvent.change(passwordInput, { target: { value: "test1234" } });
+    fireEvent.change(screen.getByLabelText("이메일"), {
+      target: { value: "test@test.com" },
+    });
+    fireEvent.change(screen.getByLabelText("비밀번호"), {
+      target: { value: "test1234" },
+    });
 
     fireEvent.click(screen.getByRole("button", { name: "로그인" }));
 

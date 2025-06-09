@@ -20,8 +20,7 @@ describe("로그아웃 컴포넌트", () => {
   it("로그아웃 버튼이 렌더링된다.", () => {
     render(<Logout />);
 
-    const logoutButton = screen.getByRole("button");
-    expect(logoutButton).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
   });
 
   it("로그아웃 실패시 에러 메시지가 표시된다.", () => {
@@ -31,9 +30,8 @@ describe("로그아웃 컴포넌트", () => {
     });
 
     render(<Logout />);
-    const logoutButton = screen.getByRole("button");
 
-    fireEvent.click(logoutButton);
+    fireEvent.click(screen.getByRole("button"));
 
     expect(mockLogout).toHaveBeenCalledTimes(1);
     expect(mockAlert).toHaveBeenCalledWith("로그아웃 실패 메세지");
@@ -42,10 +40,9 @@ describe("로그아웃 컴포넌트", () => {
   it("로그아웃 버튼 클릭시 로그아웃 쿼리 실행이된다.", () => {
     render(<Logout />);
 
-    const logoutButton = screen.getByRole("button");
-    expect(logoutButton).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
 
-    fireEvent.click(logoutButton);
+    fireEvent.click(screen.getByRole("button"));
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
 });
