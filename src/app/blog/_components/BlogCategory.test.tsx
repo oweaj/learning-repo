@@ -8,7 +8,7 @@ jest.mock("@/components/tab/Tab", () => (props: any) => {
 });
 
 describe("블로그 카테고리 컴포넌트", () => {
-  it("카테고리 정보와 수 대로 tab이 랜더링된다.", () => {
+  it("카테고리 정보와 수 대로 tab이 렌더링된다.", () => {
     render(<BlogCategory />);
     const tabs = screen.getAllByTestId("mock-tab");
 
