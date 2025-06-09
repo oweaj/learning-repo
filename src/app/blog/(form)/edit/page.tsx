@@ -1,18 +1,24 @@
-"use client";
+import { getBlogDetail } from "@/app/actions/blog.action";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
+import BlogEdit from "./_components/BlogEdit";
 
-import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
-import { useSearchParams } from "next/navigation";
-import BlogFormWrapper from "../../_components/FormWrapper";
+const EditPage = async ({
+  searchParams,
+}: { searchParams: Promise<{ id: string }> }) => {
+  const { id } = await searchParams;
+  const queryClient = new QueryClient();
 
-const BlogEdit = () => {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  if (!id) return null;
-  const blogData = useBlogDetail({ id: Number(id) });
+  await queryClient.prefetchQuery({
+    queryKey: ["blogDetail", Number(id)],
+    queryFn: () => getBlogDetail(Number(id)),
+  });
 
   return (
-    <BlogFormWrapper title="글 수정" editMode defaultData={blogData} id={id} />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <BlogEdit id={id} />
+    </HydrationBoundary>
   );
 };
 
-export default BlogEdit;
+export default EditPage;
