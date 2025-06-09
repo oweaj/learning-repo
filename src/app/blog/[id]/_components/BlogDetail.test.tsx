@@ -30,18 +30,20 @@ jest.mock("next/image", () => {
 describe("상세페이지 컴포넌트", () => {
   it("상세 데이터가 없을경우 null을 반환한다.", () => {
     mockBlogDetail.mockReturnValue(null);
-    mockUser.mockReturnValue("userId");
+    mockUser.mockReturnValue(mockBlogData.user_id.id);
 
-    const { container } = render(<BlogDetail id={1} />);
+    const { container } = render(<BlogDetail id={mockBlogData.id} />);
     expect(container.firstChild).toBeNull();
   });
 
   it("상세 데이터가 있을경우 해당 데이터를 렌더링한다.", () => {
     mockBlogDetail.mockReturnValue(mockBlogData);
-    render(<BlogDetail id={1} />);
+    render(<BlogDetail id={mockBlogData.id} />);
 
-    expect(screen.getByText("테스트 제목")).toBeInTheDocument();
-    expect(screen.getByText("테스트 내용")).toBeInTheDocument();
+    expect(screen.getByText(mockBlogData.title)).toBeInTheDocument();
+    expect(
+      screen.getByText(mockBlogData.content as string),
+    ).toBeInTheDocument();
     expect(screen.getByAltText("블로그 상세 이미지")).toBeInTheDocument();
     expect(screen.getByAltText("블로그 상세 이미지")).toHaveAttribute(
       "src",
@@ -58,7 +60,7 @@ describe("상세페이지 컴포넌트", () => {
 
     it("로그인 상태가 아니면 상세페이지에 수정 링크가 표시되지 않는다", () => {
       mockUser.mockReturnValue(null);
-      render(<BlogDetail id={1} />);
+      render(<BlogDetail id={mockBlogData.id} />);
 
       expect(screen.queryByText("수정")).not.toBeInTheDocument();
       expect(mockUser).toHaveBeenCalled();
@@ -66,20 +68,20 @@ describe("상세페이지 컴포넌트", () => {
 
     it("작성자가 본인이 아니면 상세페이지에 수정 링크가 표시되지 않는다", () => {
       mockUser.mockReturnValue("no-userId");
-      render(<BlogDetail id={1} />);
+      render(<BlogDetail id={mockBlogData.id} />);
 
       expect(screen.queryByText("수정")).not.toBeInTheDocument();
       expect(mockUser).toHaveBeenCalled();
     });
 
     it("작성자가 본인이면 상세페이지에 수정 링크가 표시된다.", () => {
-      mockUser.mockReturnValue("userId");
-      render(<BlogDetail id={1} />);
+      mockUser.mockReturnValue(mockBlogData.user_id.id);
+      render(<BlogDetail id={mockBlogData.id} />);
 
       expect(screen.getByText("수정")).toBeInTheDocument();
       expect(screen.getByText("수정").closest("a")).toHaveAttribute(
         "href",
-        "/blog/edit?id=1",
+        `/blog/edit?id=${mockBlogData.id}`,
       );
       expect(mockUser).toHaveBeenCalled();
     });
