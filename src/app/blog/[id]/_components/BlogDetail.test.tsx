@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { mockBlogData } from "@/tests/mock/mockBlogData";
 import BlogDetail from "./BlogDetail";
 
 const mockBlogDetail = jest.fn();
@@ -26,15 +27,6 @@ jest.mock("next/image", () => {
   );
 });
 
-const mockBlogData = {
-  id: 1,
-  title: "테스트 블로그 제목",
-  content: "테스트 블로그 내용",
-  main_image: "/test-image.jpg",
-  created_at: "2025-01-01T00:00:00.000Z",
-  user_id: { id: "userId" },
-};
-
 describe("상세페이지 컴포넌트", () => {
   it("상세 데이터가 없을경우 null을 반환한다.", () => {
     mockBlogDetail.mockReturnValue(null);
@@ -44,20 +36,18 @@ describe("상세페이지 컴포넌트", () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it("상세 데이터가 있을경우 해당 데이터를 랜더링한다.", () => {
+  it("상세 데이터가 있을경우 해당 데이터를 렌더링한다.", () => {
     mockBlogDetail.mockReturnValue(mockBlogData);
     render(<BlogDetail id={1} />);
 
-    const title = screen.getByText("테스트 블로그 제목");
-    const content = screen.getByText("테스트 블로그 내용");
-    const image = screen.getByAltText("블로그 상세 이미지");
-    const createAt = screen.getByText("작성일시 : 2025.01.01 09:00");
-
-    expect(title).toBeInTheDocument();
-    expect(content).toBeInTheDocument();
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute("src", "/test-image.jpg");
-    expect(createAt).toBeInTheDocument();
+    expect(screen.getByText("테스트 제목")).toBeInTheDocument();
+    expect(screen.getByText("테스트 내용")).toBeInTheDocument();
+    expect(screen.getByAltText("블로그 상세 이미지")).toBeInTheDocument();
+    expect(screen.getByAltText("블로그 상세 이미지")).toHaveAttribute(
+      "src",
+      "/test-image.jpg",
+    );
+    expect(screen.getByText("작성일시 : 2025.01.01 09:00")).toBeInTheDocument();
     expect(mockBlogDetail).toHaveBeenCalled();
   });
 
@@ -70,8 +60,7 @@ describe("상세페이지 컴포넌트", () => {
       mockUser.mockReturnValue(null);
       render(<BlogDetail id={1} />);
 
-      const editLink = screen.queryByText("수정");
-      expect(editLink).not.toBeInTheDocument();
+      expect(screen.queryByText("수정")).not.toBeInTheDocument();
       expect(mockUser).toHaveBeenCalled();
     });
 
@@ -79,8 +68,7 @@ describe("상세페이지 컴포넌트", () => {
       mockUser.mockReturnValue("no-userId");
       render(<BlogDetail id={1} />);
 
-      const editLink = screen.queryByText("수정");
-      expect(editLink).not.toBeInTheDocument();
+      expect(screen.queryByText("수정")).not.toBeInTheDocument();
       expect(mockUser).toHaveBeenCalled();
     });
 
@@ -88,9 +76,11 @@ describe("상세페이지 컴포넌트", () => {
       mockUser.mockReturnValue("userId");
       render(<BlogDetail id={1} />);
 
-      const editLink = screen.getByText("수정");
-      expect(editLink).toBeInTheDocument();
-      expect(editLink.closest("a")).toHaveAttribute("href", "/blog/edit?id=1");
+      expect(screen.getByText("수정")).toBeInTheDocument();
+      expect(screen.getByText("수정").closest("a")).toHaveAttribute(
+        "href",
+        "/blog/edit?id=1",
+      );
       expect(mockUser).toHaveBeenCalled();
     });
   });
