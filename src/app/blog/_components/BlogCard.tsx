@@ -71,7 +71,7 @@ const BlogCard = (props: TBlogListType) => {
                   type="button"
                   variant="outline"
                   className="w-1/3 h-10"
-                  onClick={() => router.push("/blog/edit")}
+                  onClick={() => router.push(`/blog/edit?id=${id}`)}
                 >
                   수정
                 </Button>
