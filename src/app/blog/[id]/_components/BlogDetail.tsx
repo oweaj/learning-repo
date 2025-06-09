@@ -10,6 +10,7 @@ import Link from "next/link";
 const BlogDetail = ({ id }: { id: number }) => {
   const session = useUser();
   const data = useBlogDetail({ id });
+
   if (!data) return null;
 
   return (
