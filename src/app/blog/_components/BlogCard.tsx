@@ -2,6 +2,7 @@
 
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/hooks/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import type { TBlogListType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
@@ -12,12 +13,13 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const BlogCard = (props: TBlogListType) => {
-  const { id, title, content, main_image, created_at } = props;
+  const { id, title, content, main_image, created_at, user_id } = props;
   const formatDate = created_at && dateFormat(created_at);
   const [isOpen, setIsOpen] = useState(false);
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
   const { mutate: blogDelete } = useBlogDelete();
+  const session = useUser();
 
   if (!id) return null;
 
@@ -54,35 +56,37 @@ const BlogCard = (props: TBlogListType) => {
           </div>
         </div>
       </Link>
-      <div className="absolute right-2 top-0">
-        <Modal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          content={`Blog Title : ${title}`}
-          trigger={
-            <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
-          }
-          actionButton={
-            <>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-1/3 h-10"
-                onClick={() => router.push("/blog/edit")}
-              >
-                수정
-              </Button>
-              <Button
-                type="submit"
-                className="w-1/3 h-10 bg-red-500 font-semibold"
-                onClick={() => handleBlogDelete(id)}
-              >
-                삭제
-              </Button>
-            </>
-          }
-        />
-      </div>
+      {user_id.id === session && (
+        <div className="absolute right-2 top-0">
+          <Modal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            content={`Blog Title : ${title}`}
+            trigger={
+              <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
+            }
+            actionButton={
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-1/3 h-10"
+                  onClick={() => router.push("/blog/edit")}
+                >
+                  수정
+                </Button>
+                <Button
+                  type="submit"
+                  className="w-1/3 h-10 bg-red-500 font-semibold"
+                  onClick={() => handleBlogDelete(id)}
+                >
+                  삭제
+                </Button>
+              </>
+            }
+          />
+        </div>
+      )}
     </li>
   );
 };
