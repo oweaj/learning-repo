@@ -8,7 +8,8 @@ export const signinApi = async (formData: TAuthFormType) => {
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      alert(error.message);
+      const message = error.response?.data?.error || error.message;
+      throw new Error(message);
     }
   }
 };
@@ -39,7 +40,8 @@ export const logoutApi = async () => {
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      alert(error.message);
+      const message = error.response?.data?.error || error.message;
+      throw new Error(message);
     }
   }
 };
