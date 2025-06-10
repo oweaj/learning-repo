@@ -1,0 +1,86 @@
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { Form } from "@/components/ui/form";
+import { BlogCreateSchema } from "@/schemas/blog.schema";
+import type { TBlogFormType } from "@/types/blog.type";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import BlogImageUpload from "./ImageUpload";
+
+const mockOnChange = jest.fn();
+const mockImageUpload = jest.fn();
+
+jest.mock("@/lib/api/image/upload", () => ({
+  imageUploadApi: () => mockImageUpload(),
+}));
+
+const MockImageUploadComponent = ({ tag }: { tag: "main" | "sub" }) => {
+  const mockForm = useForm<TBlogFormType>({
+    defaultValues: {
+      category_id: 1,
+      title: "테스트 제목",
+      content: "테스트 내용",
+      main_image: "",
+      sub_image: null,
+    },
+    resolver: zodResolver(BlogCreateSchema),
+  });
+
+  return (
+    <Form {...mockForm}>
+      <form onSubmit={mockForm.handleSubmit(() => {})}>
+        <BlogImageUpload
+          form={mockForm}
+          field={{ value: "", onChange: mockOnChange }}
+          tag={tag}
+        />
+      </form>
+    </Form>
+  );
+};
+
+describe("이미지 업로드 컴포넌트", () => {
+  it("이미지 영역의 input file 영역이 렌더링 되어야한다.", () => {
+    render(<MockImageUploadComponent tag="main" />);
+
+    const input = screen.getByTestId("image-upload-input") as HTMLInputElement;
+
+    expect(input).toBeInTheDocument();
+    expect(input.files?.length).toBe(0);
+  });
+
+  it("tag가 main이라면 이미지 이름은 대표사진이여야 한다.", () => {
+    render(<MockImageUploadComponent tag="main" />);
+
+    expect(screen.getByText("대표사진")).toBeInTheDocument();
+  });
+
+  it("tag가 sub라면 이미지 이름은 서브여야 한다.", () => {
+    render(<MockImageUploadComponent tag="sub" />);
+
+    expect(screen.getByText("서브")).toBeInTheDocument();
+    expect(screen.queryByText("대표사진")).not.toBeInTheDocument();
+  });
+
+  it("이미지 업로드 input file을 클릭하면 이미지 업로드가 호출되어야한다.", async () => {
+    render(<MockImageUploadComponent tag="main" />);
+
+    expect(screen.getByText("대표사진")).toBeInTheDocument();
+    const file = new File(["test-image"], "test-image.jpg", {
+      type: "image/jpeg",
+    });
+
+    const mockImageUrl = "/test-image.jpg";
+    mockImageUpload.mockResolvedValue(mockImageUrl);
+
+    fireEvent.click(screen.getByTestId("image-upload-input"));
+    fireEvent.change(screen.getByTestId("image-upload-input"), {
+      target: { files: [file] },
+    });
+
+    await waitFor(() => {
+      expect(mockImageUpload).toHaveBeenCalledTimes(1);
+      expect(mockOnChange).toHaveBeenCalledWith(mockImageUrl);
+    });
+  });
+});
