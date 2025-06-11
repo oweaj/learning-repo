@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { mockBlogData } from "@/tests/mock/mockBlogData";
+import { mockBlogData } from "@/tests/mockData/mockBlogData";
 import BlogDetail from "./BlogDetail";
 
 const mockBlogDetail = jest.fn();
