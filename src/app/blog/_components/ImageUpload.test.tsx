@@ -26,14 +26,20 @@ const MockImageUploadComponent = ({ tag }: { tag: "main" | "sub" }) => {
     resolver: zodResolver(BlogCreateSchema),
   });
 
+  const currentTag = tag === "main" ? "main_image" : "sub_image";
+
+  const field = {
+    value: "",
+    onChange: (value: string | null) => {
+      mockOnChange(value);
+      mockForm.setValue(currentTag, value || "");
+    },
+  };
+
   return (
     <Form {...mockForm}>
       <form onSubmit={mockForm.handleSubmit(() => {})}>
-        <BlogImageUpload
-          form={mockForm}
-          field={{ value: "", onChange: mockOnChange }}
-          tag={tag}
-        />
+        <BlogImageUpload form={mockForm} field={field} tag={tag} />
       </form>
     </Form>
   );
@@ -43,7 +49,7 @@ describe("이미지 업로드 컴포넌트", () => {
   it("이미지 영역의 input file 영역이 렌더링 되어야한다.", () => {
     render(<MockImageUploadComponent tag="main" />);
 
-    const input = screen.getByTestId("image-upload-input") as HTMLInputElement;
+    const input = screen.getByTestId("main-image-upload") as HTMLInputElement;
 
     expect(input).toBeInTheDocument();
     expect(input.files?.length).toBe(0);
@@ -73,8 +79,8 @@ describe("이미지 업로드 컴포넌트", () => {
     const mockImageUrl = "/test-image.jpg";
     mockImageUpload.mockResolvedValue(mockImageUrl);
 
-    fireEvent.click(screen.getByTestId("image-upload-input"));
-    fireEvent.change(screen.getByTestId("image-upload-input"), {
+    fireEvent.click(screen.getByTestId("main-image-upload"));
+    fireEvent.change(screen.getByTestId("main-image-upload"), {
       target: { files: [file] },
     });
 
@@ -82,5 +88,11 @@ describe("이미지 업로드 컴포넌트", () => {
       expect(mockImageUpload).toHaveBeenCalledTimes(1);
       expect(mockOnChange).toHaveBeenCalledWith(mockImageUrl);
     });
+
+    expect(
+      screen.getByRole("img", { name: "main 이미지" }),
+    ).toBeInTheDocument();
+
+    screen.debug();
   });
 });
