@@ -141,8 +141,6 @@ describe("blogform 컴포넌트", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "제출" }));
 
-    screen.debug(undefined, Number.POSITIVE_INFINITY);
-
     await waitFor(() => {
       expect(mockBlogCreate).toHaveBeenCalledTimes(1);
       expect(mockBlogCreate).toHaveBeenCalledWith({
