@@ -38,7 +38,7 @@ const BlogImageUpload = ({
         accept="image/*"
         onChange={handleFile}
         className="absolute inset-0 opacity-0 cursor-pointer z-10"
-        data-testid="image-upload-input"
+        data-testid={`${tag}-image-upload`}
       />
       <div className="relative w-[270px] h-[200px] border rounded-xl bg-gray-50 overflow-hidden max-[580px]:w-[300px]">
         {imageUrl ? (
