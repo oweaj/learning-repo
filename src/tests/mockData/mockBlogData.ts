@@ -13,7 +13,7 @@ export const mockBlogData: TBlogListType = {
   main_image: "/test-image.jpg",
   sub_image: null,
   category_id: { id: 1, name: "daily_life" },
-  content: "테스트 내용",
+  content: "테스트 내용 입력 영역입니다.",
   created_at: "2025-01-01T00:00:00.000Z",
   deleted_at: null,
   updated_at: null,
