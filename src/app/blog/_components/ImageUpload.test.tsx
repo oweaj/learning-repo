@@ -92,7 +92,5 @@ describe("이미지 업로드 컴포넌트", () => {
     expect(
       screen.getByRole("img", { name: "main 이미지" }),
     ).toBeInTheDocument();
-
-    screen.debug();
   });
 });
