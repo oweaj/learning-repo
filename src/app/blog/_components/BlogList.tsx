@@ -59,6 +59,7 @@ const BlogList = ({
             className={`flex items-center ${page !== 1 && "cursor-pointer"}`}
             onClick={() => handleMovePage("prev")}
             disabled={page === 1}
+            aria-label="이전 페이지"
           >
             <ChevronLeft className="w-7 h-7" />
           </button>
@@ -82,6 +83,7 @@ const BlogList = ({
             className={`flex items-center ${page !== totalPage && "cursor-pointer"}`}
             onClick={() => handleMovePage("next")}
             disabled={page === totalPage}
+            aria-label="다음 페이지"
           >
             <ChevronRight className="w-7 h-7" />
           </button>
