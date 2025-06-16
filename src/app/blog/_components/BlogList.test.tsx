@@ -80,6 +80,21 @@ describe("bloglist 컴포넌트", () => {
       title: `mock title ${i}`,
     }));
 
+    it("기본 페이지 번호는 1번 페이지이고 다른 페이지 번호를 클릭하면 해당 페이지 번호로 이동된다.", () => {
+      mockBlogList.mockReturnValue({ data: mockData, count: 20 });
+      render(<BlogList category={mockBlogData.category_id.name} page={1} />);
+
+      expect(screen.getByRole("button", { name: "1" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "2" })).toBeInTheDocument();
+
+      fireEvent.click(screen.getByRole("button", { name: "2" }));
+
+      expect(mockRouterPush).toHaveBeenCalled();
+      expect(mockRouterPush).toHaveBeenCalledWith(
+        `/?category=${mockBlogData.category_id.name}&page=2&limit=10`,
+      );
+    });
+
     it("다음 페이지 버튼을 클릭하면 다음 페이지의 데이터가 렌더링된다.", () => {
       mockBlogList.mockReturnValue({ data: mockData, count: 20 });
       render(<BlogList category={mockBlogData.category_id.name} page={1} />);
