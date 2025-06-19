@@ -7,3 +7,7 @@
 - api route 및 서버 액션 함수 구성
 - 미들웨어에서 supabase 인증 세션 만료 처리
 - jest를 활용하여 컴포넌트 단위 테스트 코드 작성
+
+#### 사용한 기술 스택 및 라이브러리
+
+next.js, tanstack-query, typescript, tailwindcss, shadcn ui, react-hook-form, zod, jest, react testing library, supabase,
