@@ -8,12 +8,12 @@ export interface IUserRequest {
 
 // 토큰 생성
 const createToken = (user: IUserRequest, expiresIn: string): string | null => {
-  const secret_key = process.env.JWT_SECRET as string;
-
   if (!user) {
     console.error("user 정보가 없습니다.");
     return null;
   }
+
+  const secret_key = process.env.JWT_SECRET as string;
 
   try {
     return jwt.sign(
@@ -24,7 +24,17 @@ const createToken = (user: IUserRequest, expiresIn: string): string | null => {
       } as SignOptions,
     );
   } catch (error) {
-    console.error("token 생성 실패", error);
+    console.error("token 생성 실패했습니다.", error);
+    return null;
+  }
+};
+
+// 토큰 검증
+export const verifyToken = (token: string): IUserRequest | null => {
+  const secret_key = process.env.JWT_SECRET as string;
+  try {
+    return jwt.verify(token, secret_key) as IUserRequest;
+  } catch {
     return null;
   }
 };
