@@ -1,17 +1,14 @@
+import { clientAxios } from "@/lib/axios";
 import type { TAuthFormType } from "@/types/auth.type";
 import axios from "axios";
 
 export const signinApi = async (formData: TAuthFormType) => {
   try {
-    const { data } = await axios.post(
-      "http://localhost:3001/api/auth/signin",
-      formData,
-      { withCredentials: true },
-    );
+    const { data } = await clientAxios.post("/api/auth/signin", formData);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.error || error.message;
+      const message = error.response?.data?.message || error.message;
       throw new Error(message);
     }
   }
@@ -19,14 +16,11 @@ export const signinApi = async (formData: TAuthFormType) => {
 
 export const signupApi = async (formData: TAuthFormType) => {
   try {
-    const { data } = await axios.post(
-      "http://localhost:3001/api/auth/signup",
-      formData,
-    );
+    const { data } = await clientAxios.post("/api/auth/signup", formData);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.error || error.message;
+      const message = error.response?.data?.message || error.message;
       throw new Error(message);
     }
   }
@@ -34,11 +28,23 @@ export const signupApi = async (formData: TAuthFormType) => {
 
 export const logoutApi = async () => {
   try {
-    const { data } = await axios.post("/api/auth/logout");
+    const { data } = await clientAxios.post("/api/auth/logout");
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.error || error.message;
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
+    }
+  }
+};
+
+export const refreshTokenApi = async () => {
+  try {
+    const { data } = await clientAxios.post("/api/auth/refresh");
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
       throw new Error(message);
     }
   }

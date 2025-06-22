@@ -1,33 +1,17 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const getToken = request.cookies
-    .getAll()
-    .some((cookie) => cookie.name.startsWith("sb"));
-  const loginTime = request.cookies.get("sb-login-time")?.value;
+  const token = request.cookies.get("accessToken")?.value;
 
-  if (!getToken) {
+  if (!token) {
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
-  if (loginTime) {
-    const now = Date.now();
-    const isLoginTime = Number(loginTime);
-    const LOGIN_LIMIT_TIME = 2 * 60 * 60 * 1000;
-
-    if (now - isLoginTime >= LOGIN_LIMIT_TIME) {
-      const response = NextResponse.redirect(
-        new URL("/auth/signin", request.url),
-      );
-
-      request.cookies.getAll().forEach((cookie) => {
-        if (cookie.name.startsWith("sb")) {
-          response.cookies.delete(cookie.name);
-        }
-      });
-
-      return response;
-    }
+  if (
+    (token && request.nextUrl.pathname === "/auth/signin") ||
+    request.nextUrl.pathname === "/auth/signup"
+  ) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 }
 
