@@ -1,7 +1,7 @@
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
 import { Auth } from "../schemas/auth-schema.js";
-import { accessToken, refreshToken } from "../utils/jwt.js";
+import { accessToken, refreshToken, verifyToken } from "../utils/jwt.js";
 
 // 회원가입
 export const signup = async (req: Request, res: Response) => {
@@ -72,7 +72,7 @@ export const signin = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
-      maxAge: 10 * 60 * 1000,
+      maxAge: 2 * 60 * 1000,
     });
 
     res.cookie("refreshToken", refresh, {
@@ -100,4 +100,32 @@ export const logout = async (_req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
+};
+
+// 리프레시 토큰 갱신
+export const activeRefreshToken = (req: Request, res: Response) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    res.status(400).json({ message: "refresh token이 없습니다." });
+    return;
+  }
+
+  const user = verifyToken(refreshToken);
+
+  if (!user) {
+    res.status(400).json({ message: "refresh token이 유효하지 않습니다." });
+    return;
+  }
+
+  const newAccessToken = accessToken(user);
+
+  res.cookie("accessToken", newAccessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    maxAge: 10 * 60 * 1000,
+  });
+
+  res.status(200).json({ message: "access token 재발급 완료했습니다." });
 };
