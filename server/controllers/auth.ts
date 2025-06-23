@@ -62,17 +62,14 @@ export const signin = async (req: Request, res: Response) => {
       email: user.email,
       name: user.name,
     });
-    const refresh = refreshToken({
-      _id: user._id,
-      email: user.email,
-      name: user.name,
-    });
+
+    const refresh = refreshToken({ _id: user._id });
 
     res.cookie("accessToken", access, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
-      maxAge: 2 * 60 * 1000,
+      maxAge: 10 * 60 * 1000,
     });
 
     res.cookie("refreshToken", refresh, {
