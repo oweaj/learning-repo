@@ -1,4 +1,4 @@
-import { clientAxios } from "@/lib/axios";
+import { clientAxios } from "@/lib/axios/clientAxios";
 import type { TAuthFormType } from "@/types/auth.type";
 import axios from "axios";
 
