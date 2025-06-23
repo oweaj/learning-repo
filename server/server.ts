@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./database/db.js";
 import authRouter from "./routes/auth-routes.js";
+import blogRouter from "./routes/blog-routes.js";
+import uploadRouter from "./routes/image-routes.js";
 
 dotenv.config();
 
@@ -20,9 +22,11 @@ app.use(express.json());
 app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 
-connectDB();
-
 app.use("/api/auth", authRouter);
+app.use("/api/blog", blogRouter);
+app.use("/api/image", uploadRouter);
+
+connectDB();
 
 app.get("/", (_req, res) => {
   res.send("https 서버 페이지");
