@@ -2,13 +2,12 @@ import mongoose from "mongoose";
 
 const BlogSchema = new mongoose.Schema(
   {
-    id: { type: Number, required: true },
     title: { type: String, required: true },
     main_image: { type: String, required: true },
     sub_image: { type: String, default: null },
     category_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
+      type: String,
+      enum: ["daily_life", "food_reviews", "product_reviews", "it_info"],
       required: true,
     },
     content: { type: String, required: true },
