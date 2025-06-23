@@ -1,16 +1,16 @@
-import type { TBlogFormType } from "@/types/blog.type";
+import { clientAxios } from "@/lib/axios/clientAxios";
+import { serverAxios } from "@/lib/axios/serverAxios";
 import axios from "axios";
 
 // 블로그 생성
-export const blogCreateApi = async (formData: TBlogFormType) => {
+export const blogCreateApi = async (formData: any) => {
   try {
-    const { data } = await axios.post("/api/blog/create", formData);
+    const { data } = await clientAxios.post("/api/blog/create", formData);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error(
-        "블로그 글 등록에 실패했습니다. 내용을 다시 확인해주세요.",
-      );
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
     }
   }
 };
@@ -24,11 +24,12 @@ export const blogListApi = async ({
     const query = category
       ? `category=${category}&page=${page}&limit=10`
       : `page=${page}&limit=10`;
-    const { data } = await axios.get(`/api/blog/list?${query}`);
+    const { data } = await serverAxios.get(`/api/blog/list?${query}`);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error("블로그 목록을 불러오는데 실패했습니다.");
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
     }
   }
 };
@@ -36,11 +37,12 @@ export const blogListApi = async ({
 // 블로그 상세
 export const blogDetailApi = async (id: number) => {
   try {
-    const { data } = await axios.get(`/api/blog/${id}`);
+    const { data } = await serverAxios.get(`/api/blog/${id}`);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error("블로그 상세 정보를 불러오는데 실패했습니다.");
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
     }
   }
 };
@@ -49,26 +51,28 @@ export const blogDetailApi = async (id: number) => {
 export const blogUpdateApi = async ({
   id,
   formData,
-}: { id: number; formData: TBlogFormType }) => {
+}: { id: number; formData: any }): Promise<number> => {
   try {
-    await axios.patch(`/api/blog/${id}`, formData);
+    await clientAxios.patch(`/api/blog/${id}`, formData);
     return id;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error("해당 블로그를 수정하는데 실패했습니다.");
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
     }
-    throw new Error("알 수 없는 오류가 발생했습니다.");
+    throw new Error("서버 에러가 발생했습니다.");
   }
 };
 
 // 블로그 삭제
 export const blogDeleteApi = async (id: number) => {
   try {
-    const { data } = await axios.patch("/api/blog/delete", { id });
+    const { data } = await clientAxios.patch("/api/blog/delete", { id });
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error("해당 블로그를 삭제하는데 실패했습니다.");
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
     }
   }
 };
