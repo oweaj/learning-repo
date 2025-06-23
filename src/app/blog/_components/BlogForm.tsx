@@ -7,7 +7,7 @@ import { useBlogCreate } from "@/lib/queries/blog/useBlogCreate";
 import { useBlogUpdate } from "@/lib/queries/blog/useBlogUpdate";
 import { cn } from "@/lib/utils";
 import { BlogCreateSchema } from "@/schemas/blog.schema";
-import type { TBlogFormType, TBlogListType } from "@/types/blog.type";
+import type { BlogFormDataType } from "@/types/blog.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigationGuard } from "next-navigation-guard";
 import { useForm } from "react-hook-form";
@@ -15,27 +15,27 @@ import BlogImageUpload from "./ImageUpload";
 
 interface BlogFormProps {
   editMode: boolean;
-  defaultData?: TBlogListType;
+  defaultData?: BlogFormDataType;
   id?: string;
 }
 
 const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
   const { mutate: queryBlogCreate } = useBlogCreate();
   const { mutate: queryBlogUpdate } = useBlogUpdate();
-  const filterCategory = BLOG_CATEGORY.filter((item) => item.id !== 0);
+  const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== "all");
 
-  const form = useForm<TBlogFormType>({
+  const form = useForm<any>({
     defaultValues: {
       title: editMode ? defaultData?.title || "" : "",
       main_image: editMode ? defaultData?.main_image || "" : "",
       sub_image: editMode ? defaultData?.sub_image || "" : null,
-      category_id: editMode ? defaultData?.category_id.id || 0 : 0,
+      category_id: editMode ? defaultData?.category_id || "" : "",
       content: editMode ? defaultData?.content || "" : "",
     },
     resolver: zodResolver(BlogCreateSchema),
   });
 
-  const onSubmit = (data: TBlogFormType) => {
+  const onSubmit = (data: any) => {
     return editMode
       ? queryBlogUpdate({ id: Number(id), formData: data })
       : queryBlogCreate(data);
@@ -91,7 +91,7 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
               data={filterCategory}
               value={field.value}
               placeholder="카테고리 선택"
-              onChange={(value) => field.onChange(Number(value))}
+              onChange={(value) => field.onChange(value)}
             />
           )}
         />
