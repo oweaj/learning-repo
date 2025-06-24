@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import type { IUserRequest } from "../utils/jwt.js";
+import { type IUserRequest, verifyToken } from "../utils/jwt.js";
 
 export interface IAuthRequest extends Request {
   user: IUserRequest;
@@ -19,11 +18,13 @@ export const isLoginUser = async (
     return;
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-    (req as IAuthRequest).user = decoded as IUserRequest;
-    next();
-  } catch (error) {
-    res.status(401).json({ message: `유효하지 않은 토큰입니다. : ${error}` });
+  const decoded = verifyToken(token);
+
+  if (!decoded) {
+    res.status(400).json({ message: "유효하지 않은 토큰입니다." });
+    return;
   }
+
+  (req as IAuthRequest).user = decoded;
+  next();
 };
