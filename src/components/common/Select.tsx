@@ -9,22 +9,22 @@ import {
 import clsx from "clsx";
 
 interface SelectPropsType {
-  data: { id: number; name: string; value: string }[];
+  data: { name: string; value: string }[];
   value: string;
   placeholder: string;
   onChange: (value: string) => void;
 }
 
-const Select = ({ data, value, placeholder, onChange }: SelectPropsType) => {
+const Select = ({ data, placeholder, onChange }: SelectPropsType) => {
   return (
-    <SelectWrapper value={value ? String(value) : ""} onValueChange={onChange}>
+    <SelectWrapper onValueChange={onChange}>
       <SelectTrigger className={clsx("w-full")}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {data.map(({ id, name, value }) => (
-            <SelectItem key={`${id}-${value}`} value={String(id)}>
+          {data.map(({ name, value }) => (
+            <SelectItem key={value} value={value}>
               {name}
             </SelectItem>
           ))}

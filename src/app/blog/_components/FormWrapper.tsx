@@ -1,6 +1,6 @@
 import NoticeBanner from "@/components/common/NoticeBanner";
 import PageTitle from "@/components/common/PageTitle";
-import type { TBlogListType } from "@/types/blog.type";
+import type { IBlogListType } from "@/types/blog.type";
 import BlogForm from "./BlogForm";
 
 const BlogFormWrapper = ({
@@ -11,7 +11,7 @@ const BlogFormWrapper = ({
 }: {
   title: string;
   editMode: boolean;
-  defaultData?: TBlogListType;
+  defaultData?: IBlogListType;
   id?: string;
 }) => {
   return (

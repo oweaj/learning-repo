@@ -9,6 +9,11 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { Control, FieldValues, Path } from "react-hook-form";
 
+interface FormFieldType {
+  value: string;
+  onChange: (value: string | null) => void;
+}
+
 interface FormFieldWrapperProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
@@ -16,7 +21,7 @@ interface FormFieldWrapperProps<T extends FieldValues> {
   placeholder?: string;
   inputType?: string;
   inputStyle?: string;
-  customContent?: (field: any) => React.ReactNode;
+  customContent?: (field: FormFieldType) => React.ReactNode;
 }
 
 const FormFieldWrapper = <T extends FieldValues>({

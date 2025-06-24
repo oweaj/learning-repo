@@ -2,13 +2,13 @@ import BlogCreate from "@/assets/icons/icon_create.svg";
 import NoticeBanner from "@/components/common/NoticeBanner";
 import BottomNavbar from "@/components/home/BottomNavbar";
 import Header from "@/components/home/Header";
+import { blogListApi } from "@/lib/api/blog/blog";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import Link from "next/link";
-import { getBlogList } from "./actions/blog.action";
 import BlogCategory from "./blog/_components/BlogCategory";
 import BlogList from "./blog/_components/BlogList";
 
@@ -24,7 +24,7 @@ const Home = async ({ searchParams }: IPropsType) => {
 
   await queryClient.prefetchQuery({
     queryKey: ["blog_list", category ?? null, page],
-    queryFn: () => getBlogList({ category: category ?? null, page }),
+    queryFn: () => blogListApi({ category: category ?? null, page }),
   });
 
   return (

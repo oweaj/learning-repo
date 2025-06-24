@@ -7,7 +7,7 @@ import { useBlogCreate } from "@/lib/queries/blog/useBlogCreate";
 import { useBlogUpdate } from "@/lib/queries/blog/useBlogUpdate";
 import { cn } from "@/lib/utils";
 import { BlogCreateSchema } from "@/schemas/blog.schema";
-import type { BlogFormDataType } from "@/types/blog.type";
+import type { IBlogFormDataType } from "@/types/blog.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigationGuard } from "next-navigation-guard";
 import { useForm } from "react-hook-form";
@@ -15,7 +15,7 @@ import BlogImageUpload from "./ImageUpload";
 
 interface BlogFormProps {
   editMode: boolean;
-  defaultData?: BlogFormDataType;
+  defaultData?: IBlogFormDataType;
   id?: string;
 }
 
@@ -24,7 +24,7 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
   const { mutate: queryBlogUpdate } = useBlogUpdate();
   const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== "all");
 
-  const form = useForm<any>({
+  const form = useForm<IBlogFormDataType>({
     defaultValues: {
       title: editMode ? defaultData?.title || "" : "",
       main_image: editMode ? defaultData?.main_image || "" : "",
@@ -35,9 +35,9 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
     resolver: zodResolver(BlogCreateSchema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: IBlogFormDataType) => {
     return editMode
-      ? queryBlogUpdate({ id: Number(id), formData: data })
+      ? queryBlogUpdate({ id: id || "", formData: data })
       : queryBlogCreate(data);
   };
 
@@ -101,7 +101,8 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
           label="내용(10자 이상)"
           customContent={(field) => (
             <textarea
-              {...field}
+              value={field.value}
+              onChange={(e) => field.onChange(e.target.value)}
               style={{ resize: "none" }}
               className="h-80 border rounded-lg bg-gray-50 p-3"
               placeholder="블로그 글을 작성해주세요."

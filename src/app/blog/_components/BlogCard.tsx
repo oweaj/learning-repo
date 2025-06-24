@@ -2,9 +2,8 @@
 
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/hooks/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
-import type { TBlogListType } from "@/types/blog.type";
+import type { IBlogListType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
@@ -12,18 +11,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-const BlogCard = (props: TBlogListType) => {
-  const { id, title, content, main_image, created_at, user_id } = props;
-  const formatDate = created_at && dateFormat(created_at);
+const BlogCard = (props: IBlogListType) => {
+  const { _id, title, content, main_image, createdAt } = props;
+  const formatDate = createdAt && dateFormat(createdAt);
   const [isOpen, setIsOpen] = useState(false);
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
   const { mutate: blogDelete } = useBlogDelete();
-  const session = useUser();
 
-  if (!id) return null;
+  if (!_id) return null;
 
-  const handleBlogDelete = (id: number) => {
+  const handleBlogDelete = (id: string) => {
     blogDelete(id);
     setIsOpen(false);
   };
@@ -33,7 +31,7 @@ const BlogCard = (props: TBlogListType) => {
       ref={ListRef}
       className="relative hover:bg-gray-50 rounded-xl transition-all duration-200"
     >
-      <Link href={`/blog/${id}`} className="flex gap-10 max-md:gap-4">
+      <Link href={`/blog/${_id}`} className="flex gap-10 max-md:gap-4">
         <div className="relative w-[250px] rounded-xl overflow-hidden aspect-square">
           <Image
             src={main_image || ""}
@@ -56,37 +54,35 @@ const BlogCard = (props: TBlogListType) => {
           </div>
         </div>
       </Link>
-      {user_id.id === session && (
-        <div className="absolute right-2 top-0">
-          <Modal
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            content={`Blog Title : ${title}`}
-            trigger={
-              <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
-            }
-            actionButton={
-              <>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-1/3 h-10"
-                  onClick={() => router.push(`/blog/edit?id=${id}`)}
-                >
-                  수정
-                </Button>
-                <Button
-                  type="submit"
-                  className="w-1/3 h-10 bg-red-500 font-semibold"
-                  onClick={() => handleBlogDelete(id)}
-                >
-                  삭제
-                </Button>
-              </>
-            }
-          />
-        </div>
-      )}
+      <div className="absolute right-2 top-0">
+        <Modal
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          content={`Blog Title : ${title}`}
+          trigger={
+            <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
+          }
+          actionButton={
+            <>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-1/3 h-10"
+                onClick={() => router.push(`/blog/edit?id=${_id}`)}
+              >
+                수정
+              </Button>
+              <Button
+                type="submit"
+                className="w-1/3 h-10 bg-red-500 font-semibold"
+                onClick={() => handleBlogDelete(_id)}
+              >
+                삭제
+              </Button>
+            </>
+          }
+        />
+      </div>
     </li>
   );
 };

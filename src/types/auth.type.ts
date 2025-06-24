@@ -1,27 +1,13 @@
-export interface ISignInType {
-  email: string;
-  password: string;
-}
-
-export interface ISignUpType {
-  name: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-}
-
-export interface TAuthFormType {
+export interface IAuthFormType {
   email: string;
   password: string;
   name?: string;
   passwordConfirm?: string;
 }
 
-export interface userDataType {
+export interface IUserDataType {
+  _id: string;
   email: string;
-  id: string | null;
+  password?: string | null;
   name: string | null;
-  phone_number: string | null;
-  profile_image: string | null;
-  status: string;
 }

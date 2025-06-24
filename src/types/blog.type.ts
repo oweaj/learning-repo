@@ -1,62 +1,22 @@
-import type { Database } from "../../database.types";
-import type { userDataType } from "./auth.type";
+import type { IUserDataType } from "./auth.type";
 
-type TBlogListRow = Database["public"]["Tables"]["blog_list"]["Row"];
-
-export type TBlogListType = Omit<TBlogListRow, "user_id" | "category_id"> & {
-  user_id: Database["public"]["Tables"]["user_info"]["Row"];
-  category_id: Database["public"]["Tables"]["category"]["Row"];
-};
-export type TBlogFormType =
-  Database["public"]["Tables"]["blog_form_data"]["Row"];
-
-export interface BlogPageParamsType {
-  page?: string;
-  [key: string]: string | string[] | undefined;
-}
-
-export interface BlogListType {
-  id: number | null;
+export interface IBlogListType {
+  _id: string;
   title: string;
-  content: string | null;
-  main_image: string;
-  sub_image: string;
-  created_at: string;
-  deleted_at: string | null;
-  updated_at: string;
-  category: {
-    id: number | null;
-    name: string;
-  };
-  user: userDataType;
-}
-
-export type PartialBlogDataType = Partial<BlogListType>;
-
-export interface BlogDetailDataType {
-  user: {
-    id: number;
-    email: string;
-    status: string;
-    name: string;
-    phone_number: string;
-    profile_image: string;
-  };
-  category: { id: number; name: string };
-  title: string;
-  main_image: string;
-  sub_image: string;
   content: string;
-  id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string;
+  main_image: string;
+  sub_image: string | null;
+  deleted_at: string | null;
+  category_id: string;
+  user_id: IUserDataType;
+  createdAt: string;
+  updateAt: string;
 }
 
-export interface BlogFormDataType {
-  category: number;
+export interface IBlogFormDataType {
+  category_id: string;
   title: string;
   main_image: string;
-  sub_image: string;
+  sub_image: string | null;
   content: string;
 }

@@ -48,7 +48,7 @@ const BlogList = ({
       )}
       <ul className="space-y-8">
         {data.map((item) => (
-          <BlogCard key={item.id} {...item} />
+          <BlogCard key={item._id} {...item} />
         ))}
       </ul>
 

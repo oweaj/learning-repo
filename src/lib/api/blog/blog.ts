@@ -1,9 +1,10 @@
 import { clientAxios } from "@/lib/axios/clientAxios";
 import { serverAxios } from "@/lib/axios/serverAxios";
+import type { IBlogFormDataType } from "@/types/blog.type";
 import axios from "axios";
 
 // 블로그 생성
-export const blogCreateApi = async (formData: any) => {
+export const blogCreateApi = async (formData: IBlogFormDataType) => {
   try {
     const { data } = await clientAxios.post("/api/blog/create", formData);
     return data;
@@ -35,7 +36,7 @@ export const blogListApi = async ({
 };
 
 // 블로그 상세
-export const blogDetailApi = async (id: number) => {
+export const blogDetailApi = async (id: string) => {
   try {
     const { data } = await serverAxios.get(`/api/blog/${id}`);
     return data;
@@ -51,7 +52,7 @@ export const blogDetailApi = async (id: number) => {
 export const blogUpdateApi = async ({
   id,
   formData,
-}: { id: number; formData: any }): Promise<number> => {
+}: { id: string; formData: IBlogFormDataType }): Promise<string> => {
   try {
     await clientAxios.patch(`/api/blog/${id}`, formData);
     return id;
@@ -65,7 +66,7 @@ export const blogUpdateApi = async ({
 };
 
 // 블로그 삭제
-export const blogDeleteApi = async (id: number) => {
+export const blogDeleteApi = async (id: string) => {
   try {
     const { data } = await clientAxios.patch("/api/blog/delete", { id });
     return data;
