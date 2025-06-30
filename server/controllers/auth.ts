@@ -116,7 +116,8 @@ export const activeRefreshToken = (req: Request, res: Response) => {
     return;
   }
 
-  const newAccessToken = accessToken(user);
+  const { _id, email, name } = user;
+  const newAccessToken = accessToken({ _id, email, name });
 
   res.cookie("accessToken", newAccessToken, {
     httpOnly: true,
