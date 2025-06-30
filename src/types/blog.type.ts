@@ -20,3 +20,11 @@ export interface IBlogFormDataType {
   sub_image: string | null;
   content: string;
 }
+
+export interface IBlogDetailDataType {
+  bloglist: IBlogListType[];
+  limit: number;
+  page: number;
+  totalCount: number;
+  totalPages: number;
+}
