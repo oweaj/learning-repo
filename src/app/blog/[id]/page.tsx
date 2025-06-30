@@ -20,7 +20,7 @@ const BlogDetailPage = async ({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="max-w-screen-sm h-full py-6 mx-auto px-4">
-        <BlogDetail id={Number(id)} />
+        <BlogDetail id={id} />
       </div>
     </HydrationBoundary>
   );
