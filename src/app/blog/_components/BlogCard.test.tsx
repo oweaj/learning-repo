@@ -19,7 +19,7 @@ jest.mock("@/lib/queries/blog/useBlogDelete", () => ({
   }),
 }));
 
-jest.mock("@/hooks/useUser", () => ({
+jest.mock("@/lib/queries/blog/useUser", () => ({
   useUser: () => mockUser(),
 }));
 
@@ -62,21 +62,29 @@ describe("blog card 컴포넌트", () => {
   });
 
   it("블로그 id가 없을경우 null을 반환한다.", () => {
-    const noBlogId = { ...mockBlogData, id: undefined as unknown as number };
+    const noBlogId = { ...mockBlogData, _id: null as any };
     const { container } = render(<BlogCard {...noBlogId} />);
 
     expect(container.firstChild).toBeNull();
   });
 
   it("해당 블로그 게시글이 작성자 본인이 아니면 모달 영역이 렌더링 되지않는다", () => {
-    mockUser.mockReturnValue("no-userId");
+    mockUser.mockReturnValue({
+      _id: "another-id",
+      email: "another-email",
+      name: "another-name",
+    });
     render(<BlogCard {...mockBlogData} />);
 
     expect(screen.queryByTestId("mock-modal")).not.toBeInTheDocument();
   });
 
   it("해당 블로그 게시글이 작성자 본인이면 모달 영역이 렌더링된다.", () => {
-    mockUser.mockReturnValue(mockBlogData.user_id.id);
+    mockUser.mockReturnValue({
+      _id: mockBlogData.user_id._id,
+      email: mockBlogData.user_id.email,
+      name: mockBlogData.user_id.name,
+    });
     render(<BlogCard {...mockBlogData} />);
 
     expect(screen.getByTestId("mock-modal")).toBeInTheDocument();
@@ -98,7 +106,11 @@ describe("blog card 컴포넌트", () => {
 
   describe("모달 open 상태의 버튼 동작", () => {
     beforeEach(() => {
-      mockUser.mockReturnValue(mockBlogData.user_id.id);
+      mockUser.mockReturnValue({
+        _id: mockBlogData.user_id._id,
+        email: mockBlogData.user_id.email,
+        name: mockBlogData.user_id.name,
+      });
       render(<BlogCard {...mockBlogData} />);
 
       expect(screen.getByTestId("modal-trigger")).toBeInTheDocument();
@@ -116,7 +128,7 @@ describe("blog card 컴포넌트", () => {
       expect(screen.getByRole("button", { name: "삭제" })).toBeInTheDocument();
       fireEvent.click(screen.getByRole("button", { name: "삭제" }));
 
-      expect(mockBlogDelete).toHaveBeenCalledWith(mockBlogData.id);
+      expect(mockBlogDelete).toHaveBeenCalledWith(mockBlogData._id);
     });
 
     it("모달 수정 버튼 클릭 시 해당 블로그 수정 폼으로 이동되어야 한다.", () => {
@@ -124,7 +136,7 @@ describe("blog card 컴포넌트", () => {
       fireEvent.click(screen.getByRole("button", { name: "수정" }));
 
       expect(mockRouterPush).toHaveBeenCalledWith(
-        `/blog/edit?id=${mockBlogData.id}`,
+        `/blog/edit?id=${mockBlogData._id}`,
       );
     });
   });
