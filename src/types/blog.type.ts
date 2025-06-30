@@ -1,6 +1,6 @@
 import type { IUserDataType } from "./auth.type";
 
-export interface IBlogListType {
+export interface IBlogDataType {
   _id: string;
   title: string;
   content: string;
@@ -10,7 +10,7 @@ export interface IBlogListType {
   category_id: string;
   user_id: IUserDataType;
   createdAt: string;
-  updateAt: string;
+  updateAt: string | null;
 }
 
 export interface IBlogFormDataType {
@@ -21,8 +21,8 @@ export interface IBlogFormDataType {
   content: string;
 }
 
-export interface IBlogDetailDataType {
-  bloglist: IBlogListType[];
+export interface IBlogListType {
+  bloglist: IBlogDataType[];
   limit: number;
   page: number;
   totalCount: number;
