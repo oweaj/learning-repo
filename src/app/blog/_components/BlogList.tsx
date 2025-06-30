@@ -46,7 +46,7 @@ const BlogList = ({
           <BlogCard key={item._id} {...item} />
         ))}
       </ul>
-      {data.totalCount >= 5 && (
+      {data.totalCount > 10 && (
         <ul className="flex items-center justify-center gap-4 mt-16">
           <li>
             <button
