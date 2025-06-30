@@ -2,7 +2,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { Form } from "@/components/ui/form";
 import { BlogCreateSchema } from "@/schemas/blog.schema";
-import type { TBlogFormType } from "@/types/blog.type";
+import { mockBlogData } from "@/tests/mockData/mockBlogData";
+import type { IBlogFormDataType } from "@/types/blog.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import BlogImageUpload from "./ImageUpload";
@@ -15,13 +16,13 @@ jest.mock("@/lib/api/image/upload", () => ({
 }));
 
 const MockImageUploadComponent = ({ tag }: { tag: "main" | "sub" }) => {
-  const mockForm = useForm<TBlogFormType>({
+  const mockForm = useForm<IBlogFormDataType>({
     defaultValues: {
-      category_id: 1,
-      title: "테스트 제목",
-      content: "테스트 내용",
-      main_image: "",
-      sub_image: null,
+      category_id: mockBlogData.category_id,
+      title: mockBlogData.title,
+      content: mockBlogData.content,
+      main_image: mockBlogData.main_image,
+      sub_image: mockBlogData.sub_image,
     },
     resolver: zodResolver(BlogCreateSchema),
   });
@@ -72,12 +73,13 @@ describe("이미지 업로드 컴포넌트", () => {
     render(<MockImageUploadComponent tag="main" />);
 
     expect(screen.getByText("대표사진")).toBeInTheDocument();
-    const file = new File(["test-image"], "test-image.jpg", {
+
+    const file = new File(["test-image"], mockBlogData.main_image, {
       type: "image/jpeg",
     });
 
-    const mockImageUrl = "/test-image.jpg";
-    mockImageUpload.mockResolvedValue(mockImageUrl);
+    const mockImageUrl = mockBlogData.main_image;
+    mockImageUpload.mockResolvedValue({ url: mockImageUrl });
 
     fireEvent.click(screen.getByTestId("main-image-upload"));
     fireEvent.change(screen.getByTestId("main-image-upload"), {
