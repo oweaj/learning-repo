@@ -17,16 +17,16 @@ export const blogCreateApi = async (formData: IBlogFormDataType) => {
 };
 
 // 블로그 목록
-export const blogListApi = async ({
-  category,
-  page,
-}: { category: string | null; page: number }) => {
+export const blogListApi = async (category: string | null, page: number) => {
   try {
+    const isServer = typeof window === "undefined";
+    const axiosInstance = isServer ? await serverAxios() : clientAxios;
     const query = category
       ? `category=${category}&page=${page}&limit=10`
       : `page=${page}&limit=10`;
-    const { data } = await serverAxios.get(`/api/blog/list?${query}`);
-    return data;
+    const { data } = await axiosInstance.get(`/api/blog/list?${query}`);
+
+    return data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.message || error.message;
@@ -38,8 +38,10 @@ export const blogListApi = async ({
 // 블로그 상세
 export const blogDetailApi = async (id: string) => {
   try {
-    const { data } = await serverAxios.get(`/api/blog/${id}`);
-    return data;
+    const isServer = typeof window === "undefined";
+    const axiosInstance = isServer ? await serverAxios() : clientAxios;
+    const { data } = await axiosInstance.get(`/api/blog/${id}`);
+    return data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.message || error.message;
@@ -68,7 +70,7 @@ export const blogUpdateApi = async ({
 // 블로그 삭제
 export const blogDeleteApi = async (id: string) => {
   try {
-    const { data } = await clientAxios.patch("/api/blog/delete", { id });
+    const { data } = await clientAxios.delete(`/api/blog/${id}`);
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
