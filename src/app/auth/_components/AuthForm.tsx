@@ -7,7 +7,7 @@ import { useSignin } from "@/lib/queries/auth/useSignin";
 import { useSignup } from "@/lib/queries/auth/useSignup";
 import { cn } from "@/lib/utils";
 import { signinSchema, signupSchema } from "@/schemas/auth.schema";
-import type { TAuthFormType } from "@/types/auth.type";
+import type { IAuthFormType } from "@/types/auth.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -16,12 +16,12 @@ const AuthForm = ({ submit }: { submit: string }) => {
   const router = useRouter();
   const { mutate: signin, isPending: signinPending } = useSignin();
   const { mutate: signup, isPending: signupPending } = useSignup();
-  const form = useForm<TAuthFormType>({
+  const form = useForm<IAuthFormType>({
     defaultValues: { email: "", password: "", name: "", passwordConfirm: "" },
     resolver: zodResolver(submit === "signin" ? signinSchema : signupSchema),
   });
 
-  const onSubmit = (data: TAuthFormType) => {
+  const onSubmit = (data: IAuthFormType) => {
     if (submit === "signin") {
       signin(data);
     } else {
