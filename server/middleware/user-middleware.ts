@@ -14,14 +14,14 @@ export const isLoginUser = async (
   const token = req.cookies.accessToken;
 
   if (!token) {
-    res.status(400).json({ message: "토큰이 존재하지 않습니다." });
+    res.status(401).json({ message: "토큰이 존재하지 않습니다." });
     return;
   }
 
   const decoded = verifyToken(token);
 
   if (!decoded) {
-    res.status(400).json({ message: "유효하지 않은 토큰입니다." });
+    res.status(401).json({ message: "유효하지 않은 토큰입니다." });
     return;
   }
 

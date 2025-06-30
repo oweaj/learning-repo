@@ -9,11 +9,16 @@ export const clientAxios = axios.create({
 clientAxios.interceptors.response.use(
   (res) => res,
   async (error) => {
-    if (error.response?.status === 401) {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
       try {
         await refreshTokenApi();
-        return clientAxios(error.config);
+        return clientAxios(originalRequest);
       } catch (refreshError) {
+        window.location.href = "/auth/signin";
         return Promise.reject(refreshError);
       }
     }
