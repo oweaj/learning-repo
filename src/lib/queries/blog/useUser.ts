@@ -6,9 +6,6 @@ export const useUser = () => {
   const data = useQuery({
     queryKey: ["user"],
     queryFn: getUserApi,
-    staleTime: 24 * 60 * 60 * 1000,
-    retry: 0,
-    enabled: true,
   });
 
   return data.data?.user as IUserRequest;
