@@ -4,7 +4,7 @@ import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import { useUser } from "@/lib/queries/blog/useUser";
-import type { IBlogListType } from "@/types/blog.type";
+import type { IBlogDataType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-const BlogCard = (props: IBlogListType) => {
+const BlogCard = (props: IBlogDataType) => {
   const { _id, title, content, main_image, createdAt, user_id } = props;
   const formatDate = createdAt && dateFormat(createdAt);
   const [isOpen, setIsOpen] = useState(false);
