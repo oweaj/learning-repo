@@ -19,12 +19,12 @@ interface IPropsType {
 const Home = async ({ searchParams }: IPropsType) => {
   const queryClient = new QueryClient();
   const params = await searchParams;
-  const category = params.category;
+  const category = params.category || null;
   const page = Number(params.page) || 1;
 
   await queryClient.prefetchQuery({
-    queryKey: ["blog_list", category ?? null, page],
-    queryFn: () => blogListApi({ category: category ?? null, page }),
+    queryKey: ["blog_list", category, page],
+    queryFn: () => blogListApi(category, page),
   });
 
   return (
@@ -39,13 +39,13 @@ const Home = async ({ searchParams }: IPropsType) => {
             />
             <section className="space-y-6">
               <BlogCategory />
-              <BlogList category={category ?? null} page={page} />
+              <BlogList category={category} page={page} />
             </section>
           </main>
         </HydrationBoundary>
         <Link
           href={"/blog/create"}
-          className="fixed bottom-20 right-4 flex items-center justify-center w-16 h-16 rounded-full bg-orange-400"
+          className="fixed bottom-20 right-4 flex items-center justify-center w-16 h-16 rounded-full bg-orange-400 hover:scale-105 hover:bg-black transition-all duration-300"
         >
           <BlogCreate className="w-8 h-8" />
         </Link>

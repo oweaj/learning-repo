@@ -5,7 +5,7 @@ import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 
 const BlogEdit = ({ id }: { id: string }) => {
   if (!id) return null;
-  const blogData = useBlogDetail({ id: Number(id) });
+  const blogData = useBlogDetail({ id });
 
   return (
     <BlogFormWrapper title="글 수정" editMode defaultData={blogData} id={id} />

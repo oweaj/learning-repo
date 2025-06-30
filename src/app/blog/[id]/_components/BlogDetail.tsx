@@ -1,26 +1,26 @@
 "use client";
 
 import PageTitle from "@/components/common/PageTitle";
-import { useUser } from "@/hooks/useUser";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
+import { useUser } from "@/lib/queries/blog/useUser";
 import { dateFormat } from "@/utils/dateFormat";
 import Image from "next/image";
 import Link from "next/link";
 
-const BlogDetail = ({ id }: { id: number }) => {
-  const session = useUser();
+const BlogDetail = ({ id }: { id: string }) => {
+  const user = useUser();
   const data = useBlogDetail({ id });
 
-  if (!data) return null;
+  if (!data || !user) return null;
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between text-xl">
         <PageTitle title={data.title} />
-        {data.user_id.id === session && (
+        {data.user_id._id === user._id && (
           <Link
             href={`/blog/edit?id=${id}`}
-            className="text-lg font-semibold cursor-pointer p-1"
+            className="text-lg font-semibold cursor-pointer p-1 border border-gray-600 rounded-xl px-3 hover:bg-gray-800 hover:text-white transition-all"
           >
             수정
           </Link>
@@ -37,7 +37,7 @@ const BlogDetail = ({ id }: { id: number }) => {
             priority
           />
         </div>
-        <div>작성일시 : {dateFormat(data.created_at)}</div>
+        <div>작성일시 : {dateFormat(data.createdAt)}</div>
         <div className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden break-words">
           {data.content}
         </div>
