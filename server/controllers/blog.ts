@@ -3,7 +3,7 @@ import type { IAuthRequest } from "../middleware/user-middleware.js";
 import { Blog } from "../schemas/blog-schema.js";
 
 interface IBlogListFilter {
-  deletedAt?: Date | null;
+  deleted_at?: Date | null;
   category_id?: string;
 }
 
@@ -47,7 +47,7 @@ export const blogList = async (req: Request, res: Response) => {
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const filterData: IBlogListFilter = { deletedAt: null };
+    const filterData: IBlogListFilter = { deleted_at: null };
 
     if (category) {
       filterData.category_id = category;
@@ -58,9 +58,10 @@ export const blogList = async (req: Request, res: Response) => {
       .skip(skip)
       .limit(limit)
       .populate("user_id", "email name")
-      .populate("category_id");
+      .populate("category_id")
+      .lean();
 
-    const totalCount = await Blog.countDocuments({ deletedAt: null });
+    const totalCount = await Blog.countDocuments({ deleted_at: null });
 
     res.status(200).json({
       message: "블로그 목록 조회 완료",
@@ -68,7 +69,7 @@ export const blogList = async (req: Request, res: Response) => {
         bloglist,
         page,
         limit,
-        totalPages: Math.ceil(totalCount / limit),
+        totalPages: Math.max(1, Math.ceil(totalCount / limit)),
         totalCount,
       },
     });
@@ -82,7 +83,7 @@ export const blogDetail = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const blogDetail = await Blog.findOne({ _id: id, deletedAt: null })
+    const blogDetail = await Blog.findOne({ _id: id })
       .populate("user_id", "email name")
       .populate("category_id");
 
@@ -150,12 +151,12 @@ export const blogUpdate = async (req: Request, res: Response) => {
 // 블로그 삭제
 export const blogDelete = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const user = (req as IAuthRequest).user;
 
     const result = await Blog.findOneAndUpdate(
       { _id: id, user_id: user._id },
-      { deletedAt: new Date() },
+      { deleted_at: new Date() },
     );
 
     if (!result) {

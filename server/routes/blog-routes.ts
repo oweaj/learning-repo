@@ -12,8 +12,8 @@ const router = express.Router();
 
 router.get("/list", blogList);
 router.post("/create", isLoginUser, blogCreate);
-router.get("/detail", blogDetail);
-router.patch("/update", isLoginUser, blogUpdate);
-router.patch("/delete", isLoginUser, blogDelete);
+router.get("/:id", blogDetail);
+router.patch("/:id", isLoginUser, blogUpdate);
+router.delete("/:id", isLoginUser, blogDelete);
 
 export default router;
