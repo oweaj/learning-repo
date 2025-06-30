@@ -1,5 +1,6 @@
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
+import type { IAuthRequest } from "../middleware/user-middleware.js";
 import { Auth } from "../schemas/auth-schema.js";
 import { accessToken, refreshToken, verifyToken } from "../utils/jwt.js";
 
@@ -125,4 +126,16 @@ export const activeRefreshToken = (req: Request, res: Response) => {
   });
 
   res.status(200).json({ message: "access token 재발급 완료했습니다." });
+};
+
+// 유저 정보 조회
+export const getUser = (req: Request, res: Response) => {
+  const user = (req as unknown as IAuthRequest).user;
+
+  if (!user) {
+    res.status(400).json({ massage: "로그인이 필요합니다." });
+    return;
+  }
+
+  res.status(200).json({ user, message: "유저 정보 조회 완료" });
 };
