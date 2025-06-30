@@ -11,7 +11,7 @@ export const useBlogDelete = () => {
     onSuccess: () => {
       alert("해당 블로그 글이 삭제되었습니다.");
       router.push("/");
-      queryClient.invalidateQueries({ queryKey: ["blogList"] });
+      queryClient.invalidateQueries({ queryKey: ["blog_list"] });
     },
     onError: (error) => alert(error.message),
   });

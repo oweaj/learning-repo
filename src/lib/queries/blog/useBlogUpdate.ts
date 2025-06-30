@@ -12,7 +12,7 @@ export const useBlogUpdate = () => {
     onSuccess: (id: string) => {
       alert("해당 블로그가 수정되었습니다.");
       router.replace(`/blog/${id}`);
-      queryClient.invalidateQueries({ queryKey: ["blogList"] });
+      queryClient.invalidateQueries({ queryKey: ["blog_list"] });
       queryClient.invalidateQueries({ queryKey: ["blogDetail", id] });
     },
     onError: (error: Error) => alert(error.message),

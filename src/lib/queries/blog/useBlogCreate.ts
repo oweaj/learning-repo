@@ -11,7 +11,7 @@ export const useBlogCreate = () => {
     onSuccess: () => {
       alert("블로그 글이 등록되었습니다.");
       router.replace("/");
-      queryClient.invalidateQueries({ queryKey: ["blogList"] });
+      queryClient.invalidateQueries({ queryKey: ["blog_list"] });
     },
     onError: (error) => alert(error.message),
   });
