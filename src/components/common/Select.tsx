@@ -15,9 +15,9 @@ interface SelectPropsType {
   onChange: (value: string) => void;
 }
 
-const Select = ({ data, placeholder, onChange }: SelectPropsType) => {
+const Select = ({ data, value, placeholder, onChange }: SelectPropsType) => {
   return (
-    <SelectWrapper onValueChange={onChange}>
+    <SelectWrapper value={value} onValueChange={onChange}>
       <SelectTrigger className={clsx("w-full")}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
