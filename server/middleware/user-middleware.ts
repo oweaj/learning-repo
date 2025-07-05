@@ -1,8 +1,13 @@
 import type { NextFunction, Request, Response } from "express";
-import { type IUserRequest, verifyToken } from "../utils/jwt.js";
+import { Auth } from "../schemas/auth-schema.js";
+import { verifyToken } from "../utils/jwt.js";
 
-export interface IAuthRequest extends Request {
-  user: IUserRequest;
+export interface IUserRequest extends Request {
+  user: {
+    _id: string;
+    email: string;
+    name: string;
+  };
 }
 
 // 현재 로그인한 유저 정보
@@ -25,6 +30,13 @@ export const isLoginUser = async (
     return;
   }
 
-  (req as IAuthRequest).user = decoded;
+  const user = await Auth.findById(decoded._id).select("-password");
+
+  if (!user) {
+    res.status(401).json({ message: "해당 유저가 존재하지 않습니다." });
+    return;
+  }
+
+  (req as IUserRequest).user = user;
   next();
 };

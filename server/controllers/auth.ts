@@ -1,6 +1,6 @@
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
-import type { IAuthRequest } from "../middleware/user-middleware.js";
+import type { IUserRequest } from "../middleware/user-middleware.js";
 import { Auth } from "../schemas/auth-schema.js";
 import { accessToken, refreshToken, verifyToken } from "../utils/jwt.js";
 
@@ -47,6 +47,7 @@ export const signin = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await Auth.findOne({ email });
+
     if (!user) {
       res.status(400).json({ message: "해당 이메일은 가입되어있지 않습니다." });
       return;
@@ -58,13 +59,8 @@ export const signin = async (req: Request, res: Response) => {
       return;
     }
 
-    const access = accessToken({
-      _id: user._id,
-      email: user.email,
-      name: user.name,
-    });
-
-    const refresh = refreshToken({ _id: user._id });
+    const access = accessToken(user._id.toString());
+    const refresh = refreshToken(user._id.toString());
 
     res.cookie("accessToken", access, {
       httpOnly: true,
@@ -116,8 +112,7 @@ export const activeRefreshToken = (req: Request, res: Response) => {
     return;
   }
 
-  const { _id, email, name } = user;
-  const newAccessToken = accessToken({ _id, email, name });
+  const newAccessToken = accessToken(user._id);
 
   res.cookie("accessToken", newAccessToken, {
     httpOnly: true,
@@ -131,7 +126,7 @@ export const activeRefreshToken = (req: Request, res: Response) => {
 
 // 유저 정보 조회
 export const getUser = (req: Request, res: Response) => {
-  const user = (req as unknown as IAuthRequest).user;
+  const user = (req as IUserRequest).user;
 
   if (!user) {
     res.status(400).json({ massage: "로그인이 필요합니다." });
