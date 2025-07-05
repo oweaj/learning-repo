@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { IAuthRequest } from "../middleware/user-middleware.js";
+import type { IUserRequest } from "../middleware/user-middleware.js";
 import { Blog } from "../schemas/blog-schema.js";
 
 interface IBlogListFilter {
@@ -11,7 +11,7 @@ interface IBlogListFilter {
 export const blogCreate = async (req: Request, res: Response) => {
   try {
     const { title, main_image, sub_image, category_id, content } = req.body;
-    const user_id = (req as IAuthRequest).user._id;
+    const user_id = (req as IUserRequest).user._id;
 
     if (!title || !main_image || !category_id || !content) {
       res.status(400).json({ message: "필수 항목을 모두 입력해주세요." });
@@ -43,7 +43,7 @@ export const blogCreate = async (req: Request, res: Response) => {
 export const blogList = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
-    const category = req.query.category as string;
+    const category = (req.query.category as string) || null;
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
@@ -105,7 +105,7 @@ export const blogUpdate = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, main_image, sub_image, category_id, content } = req.body;
-    const user_id = (req as IAuthRequest).user._id;
+    const user_id = (req as IUserRequest).user._id;
 
     if (!user_id) {
       res.status(400).json({ message: "로그인이 필요합니다." });
@@ -152,7 +152,7 @@ export const blogUpdate = async (req: Request, res: Response) => {
 export const blogDelete = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const user = (req as IAuthRequest).user;
+    const user = (req as IUserRequest).user;
 
     const result = await Blog.findOneAndUpdate(
       { _id: id, user_id: user._id },
