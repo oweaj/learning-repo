@@ -20,10 +20,11 @@ export const blogCreateApi = async (formData: IBlogFormDataType) => {
 export const blogListApi = async (category: string | null, page: number) => {
   try {
     const isServer = typeof window === "undefined";
-    const axiosInstance = isServer ? await serverAxios() : clientAxios;
+    const axiosInstance = isServer ? serverAxios : clientAxios;
     const query = category
       ? `category=${category}&page=${page}&limit=10`
       : `page=${page}&limit=10`;
+
     const { data } = await axiosInstance.get(`/api/blog/list?${query}`);
 
     return data.data;
@@ -39,7 +40,7 @@ export const blogListApi = async (category: string | null, page: number) => {
 export const blogDetailApi = async (id: string) => {
   try {
     const isServer = typeof window === "undefined";
-    const axiosInstance = isServer ? await serverAxios() : clientAxios;
+    const axiosInstance = isServer ? serverAxios : clientAxios;
     const { data } = await axiosInstance.get(`/api/blog/${id}`);
     return data.data;
   } catch (error) {
