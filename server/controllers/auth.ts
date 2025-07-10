@@ -73,7 +73,7 @@ export const signin = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 1 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
