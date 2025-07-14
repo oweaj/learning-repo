@@ -61,7 +61,7 @@ export const blogList = async (req: Request, res: Response) => {
       .populate("category_id")
       .lean();
 
-    const totalCount = await Blog.countDocuments({ deleted_at: null });
+    const totalCount = await Blog.countDocuments(filterData);
 
     res.status(200).json({
       message: "블로그 목록 조회 완료",
