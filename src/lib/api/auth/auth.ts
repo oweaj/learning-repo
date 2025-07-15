@@ -53,11 +53,12 @@ export const refreshTokenApi = async () => {
 export const getUserApi = async () => {
   try {
     const { data } = await clientAxios.get("/api/auth/user");
-    return data;
+    return data.user;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.message || error.message;
       throw new Error(message);
     }
+    return { user: null };
   }
 };
