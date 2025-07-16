@@ -76,6 +76,6 @@ describe("헤더 컴포넌트", () => {
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "마이페이지" }));
-    expect(mockRouterPush).toHaveBeenCalledWith("/mypage");
+    expect(mockRouterPush).toHaveBeenCalledWith("/my");
   });
 });
