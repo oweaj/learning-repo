@@ -17,7 +17,7 @@ const Header = () => {
         <button
           type="button"
           className="cursor-pointer hover:font-semibold"
-          onClick={() => router.push("/mypage")}
+          onClick={() => router.push("/my")}
         >
           마이페이지
         </button>
