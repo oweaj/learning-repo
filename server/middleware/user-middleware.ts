@@ -7,6 +7,8 @@ export interface IUserRequest extends Request {
     _id: string;
     email: string;
     name: string;
+    profile_image: string | null;
+    deleted: boolean;
   };
 }
 

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   activeRefreshToken,
+  deleteUser,
   getUser,
   logout,
   signin,
@@ -15,5 +16,6 @@ router.post("/signin", signin);
 router.post("/logout", logout);
 router.post("/refresh", activeRefreshToken);
 router.get("/user", isLoginUser, getUser);
+router.delete("/delete", isLoginUser, deleteUser);
 
 export default router;
