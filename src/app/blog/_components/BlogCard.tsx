@@ -61,7 +61,9 @@ const BlogCard = (props: IBlogDataType) => {
           <Modal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            content={`Blog Title : ${title}`}
+            content={
+              <span className="inline-block truncate">{`블로그 이름 : ${title}`}</span>
+            }
             trigger={
               <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
             }
