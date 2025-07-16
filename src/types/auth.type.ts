@@ -10,4 +10,5 @@ export interface IUserDataType {
   email: string;
   password?: string | null;
   name: string | null;
+  profile_image: string | null;
 }
