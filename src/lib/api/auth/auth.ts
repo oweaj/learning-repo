@@ -62,3 +62,15 @@ export const getUserApi = async () => {
     return { user: null };
   }
 };
+
+export const deleteUserApi = async () => {
+  try {
+    const result = await clientAxios.delete("/api/auth/delete");
+    return result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
+    }
+  }
+};
