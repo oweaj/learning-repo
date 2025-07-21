@@ -15,15 +15,21 @@ const Sidebar = () => {
   const user = useUser();
 
   return (
-    <div className="min-w-[250px]">
-      <Link href={"/my"}>
-        <h2 className="inline-block text-[22px] font-semibold mb-6">
-          마이페이지
+    <div className="flex flex-col gap-8 max-md:hidden min-w-[250px]">
+      <div>
+        <h2 className="text-[22px] font-semibold mb-2">
+          <Link href={"/my"}>마이페이지</Link>
         </h2>
-      </Link>
+        <Link
+          href={"/my/notice"}
+          className="text-[15px] text-gray-500 hover:text-gray-700"
+        >
+          <span>공지사항</span>
+        </Link>
+      </div>
       <nav className="space-y-8">
         {MYPAGE_SIDE_BAR.map(({ groupName, items }) => (
-          <div key={groupName} className="">
+          <div key={groupName}>
             <h3 className="text-lg font-semibold mb-2">{groupName}</h3>
             <ul className="text-[15px] text-gray-500 space-y-2">
               {items.map(({ name, path }) =>
@@ -73,7 +79,7 @@ const Sidebar = () => {
                         <Button
                           type="submit"
                           className="w-1/3 h-10 border bg-red-500 font-semibold"
-                          onClick={() => userDelete(user?._id || "")}
+                          onClick={() => userDelete()}
                           disabled={!checked}
                         >
                           확인
