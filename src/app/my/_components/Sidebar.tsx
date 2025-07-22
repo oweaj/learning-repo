@@ -3,8 +3,8 @@
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
 import { MYPAGE_SIDE_BAR } from "@/constants/mypageSidebar";
+import { useUser } from "@/lib/queries/auth/useUser";
 import { useUserDelete } from "@/lib/queries/auth/useUserDelete";
-import { useUser } from "@/lib/queries/blog/useUser";
 import Link from "next/link";
 import { useState } from "react";
 

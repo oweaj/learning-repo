@@ -2,12 +2,11 @@
 
 import DefaultProfile from "@/assets/images/default-profile.svg";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/lib/queries/blog/useUser";
+import type { IUserDataType } from "@/types/auth.type";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const UserProfile = () => {
-  const user = useUser();
+const UserProfile = ({ user }: { user: IUserDataType }) => {
   const router = useRouter();
 
   if (!user) return null;
