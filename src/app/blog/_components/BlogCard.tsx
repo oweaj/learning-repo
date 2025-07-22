@@ -2,8 +2,8 @@
 
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/lib/queries/auth/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
-import { useUser } from "@/lib/queries/blog/useUser";
 import type { IBlogDataType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
@@ -51,7 +51,7 @@ const BlogCard = (props: IBlogDataType) => {
           <div className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden w-11/12">
             {content}
           </div>
-          <div className="text-sm text-gray-600 font-medium">
+          <div className="text-sm text-gray-600 font-medium max-sm:text-[12px]">
             작성일시 : {formatDate}
           </div>
         </div>

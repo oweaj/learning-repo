@@ -1,6 +1,7 @@
 "use client";
 
 import { useBlogList } from "@/lib/queries/blog/useBlogList";
+import type { IBlogDataType } from "@/types/blog.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogCard from "./BlogCard";
@@ -42,7 +43,7 @@ const BlogList = ({
         </div>
       )}
       <ul className="space-y-8">
-        {data.bloglist.map((item: any) => (
+        {data.bloglist.map((item: IBlogDataType) => (
           <BlogCard key={item._id} {...item} />
         ))}
       </ul>

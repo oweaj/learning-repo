@@ -1,8 +1,8 @@
 "use client";
 
 import PageTitle from "@/components/common/PageTitle";
+import { useUser } from "@/lib/queries/auth/useUser";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
-import { useUser } from "@/lib/queries/blog/useUser";
 import { dateFormat } from "@/utils/dateFormat";
 import Image from "next/image";
 import Link from "next/link";
