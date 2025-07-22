@@ -17,6 +17,8 @@ const BlogSchema = new mongoose.Schema(
       ref: "Auth",
       required: true,
     },
+    like_user: [{ type: mongoose.Schema.Types.ObjectId, ref: "Auth" }],
+    like_count: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
