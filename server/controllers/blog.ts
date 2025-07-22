@@ -57,7 +57,7 @@ export const blogList = async (req: Request, res: Response) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
-      .populate("user_id", "email name")
+      .populate("user_id", "email name profile_image")
       .populate("category_id")
       .lean();
 
@@ -165,6 +165,81 @@ export const blogDelete = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({ message: "블로그가 삭제되었습니다." });
+  } catch (error) {
+    res.status(500).json({ message: `서버 에러: ${error}` });
+  }
+};
+
+// 등록한 블로그
+export const myBlogs = async (req: Request, res: Response) => {
+  try {
+    const user_id = (req as IUserRequest).user._id;
+
+    if (!user_id) {
+      res.status(400).json({ message: "해당 계정 id가 유효하지 않습니다." });
+      return;
+    }
+
+    const result = await Blog.find({ user_id })
+      .sort({ createdAt: -1 })
+      .populate("user_id", "email name profile_image")
+      .populate("category_id")
+      .limit(3)
+      .lean();
+
+    if (!result || result.length === 0) {
+      res.status(404).json({ message: "등록한 블로그가 없습니다." });
+      return;
+    }
+
+    res.status(200).json({
+      message: "등록한 블로그 조회 완료되었습니다.",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({ message: `서버 에러: ${error}` });
+  }
+};
+
+// 블로그 공감
+export const blogLike = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user_id = (req as IUserRequest).user._id;
+
+    if (!user_id) {
+      res.status(400).json({ message: "로그인이 필요합니다." });
+      return;
+    }
+
+    const checkBlog = await Blog.findById(id);
+    if (!checkBlog) {
+      res.status(400).json({ message: "존재하지 않는 블로그입니다." });
+      return;
+    }
+
+    const checkUserLike = checkBlog.like_user.includes(user_id);
+
+    const updateBlogData = checkUserLike
+      ? { $pull: { like_user: user_id }, $inc: { like_count: -1 } }
+      : { $addToSet: { like_user: user_id }, $inc: { like_count: 1 } };
+
+    const result = await Blog.findOneAndUpdate(
+      { id: id, user_id: user_id },
+      updateBlogData,
+      { new: true },
+    );
+
+    if (!result) {
+      res
+        .status(400)
+        .json({ message: "해당 블로그를 찾을 수 없거나 권한이 없습니다." });
+      return;
+    }
+
+    res
+      .status(200)
+      .json({ message: "등록한 블로그 조회 완료되었습니다.", data: result });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
