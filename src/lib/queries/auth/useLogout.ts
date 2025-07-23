@@ -11,6 +11,7 @@ export const useLogout = () => {
     onSuccess: () => {
       router.replace("/auth/signin");
       queryClient.removeQueries({ queryKey: ["user"] });
+      queryClient.removeQueries({ queryKey: ["myBlogs"] });
     },
     onError: (error) => alert(error.message),
   });
