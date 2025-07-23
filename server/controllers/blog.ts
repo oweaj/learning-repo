@@ -180,7 +180,7 @@ export const myBlogs = async (req: Request, res: Response) => {
       return;
     }
 
-    const result = await Blog.find({ user_id })
+    const result = await Blog.find({ user_id, deleted_at: null })
       .sort({ createdAt: -1 })
       .populate("user_id", "email name profile_image")
       .populate("category_id")
