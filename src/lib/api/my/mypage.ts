@@ -2,9 +2,9 @@ import { clientAxios } from "@/lib/axios/clientAxios";
 import axios from "axios";
 
 // 등록한 블로그
-export const myblogListApi = async () => {
+export const myblogListApi = async (limit?: string) => {
   try {
-    const { data } = await clientAxios.get("/api/my/blog");
+    const { data } = await clientAxios.get(`/api/my/blog?limit=${limit}`);
     return data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

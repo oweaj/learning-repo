@@ -174,18 +174,24 @@ export const blogDelete = async (req: Request, res: Response) => {
 export const myBlogs = async (req: Request, res: Response) => {
   try {
     const user_id = (req as IUserRequest).user._id;
+    const { limit } = req.query;
 
     if (!user_id) {
       res.status(400).json({ message: "해당 계정 id가 유효하지 않습니다." });
       return;
     }
 
-    const result = await Blog.find({ user_id, deleted_at: null })
+    let query = Blog.find({ user_id, deleted_at: null })
       .sort({ createdAt: -1 })
       .populate("user_id", "email name profile_image")
       .populate("category_id")
-      .limit(3)
       .lean();
+
+    if (limit !== "all") {
+      query = query.limit(3);
+    }
+
+    const result = await query;
 
     if (!result || result.length === 0) {
       res.status(404).json({ message: "등록한 블로그가 없습니다." });
