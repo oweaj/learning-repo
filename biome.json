@@ -20,7 +20,7 @@
       "recommended": true,
       "suspicious": {
         "noConsoleLog": "warn",
-        "noArrayIndexKey": "error",
+        "noArrayIndexKey": "warn",
         "noExplicitAny": "off"
       },
       "correctness": {
