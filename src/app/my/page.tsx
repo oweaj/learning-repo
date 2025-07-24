@@ -11,7 +11,7 @@ const MyPage = () => {
   if (!user) return null;
 
   return (
-    <div className="w-full space-y-8 mb-24">
+    <div className="w-full space-y-8">
       <UserProfile user={user} />
       <UserInfo />
       <MyBlogs />

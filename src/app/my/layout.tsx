@@ -4,14 +4,14 @@ import Sidebar from "./_components/Sidebar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
+    <div className="pb-24">
       <Header />
       <div className="flex max-w-screen-xl p-4 mx-auto">
         <Sidebar />
         {children}
       </div>
       <BottomNavbar />
-    </>
+    </div>
   );
 };
 

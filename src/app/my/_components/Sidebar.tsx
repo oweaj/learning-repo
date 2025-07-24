@@ -30,7 +30,9 @@ const Sidebar = () => {
       <nav className="space-y-8">
         {MYPAGE_SIDE_BAR.map(({ groupName, items }) => (
           <div key={groupName}>
-            <h3 className="text-lg font-semibold mb-2">{groupName}</h3>
+            <strong className="inline-block text-lg font-semibold mb-2">
+              {groupName}
+            </strong>
             <ul className="text-[15px] text-gray-500 space-y-2">
               {items.map(({ name, path }) =>
                 path ? (
