@@ -18,7 +18,12 @@ export const isLoginUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const token = req.cookies.accessToken;
+  const cookieToken = req.cookies.accessToken;
+  const authHeader = req.headers.authorization;
+
+  const token =
+    cookieToken ||
+    (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null);
 
   if (!token) {
     res.status(401).json({ message: "토큰이 존재하지 않습니다." });
