@@ -46,14 +46,14 @@ const BlogCard = (props: IBlogDataType) => {
         </div>
         <div className="w-3/4 flex flex-col justify-between overflow-hidden">
           <div className="flex items-center justify-between">
-            <div className="text-lg font-semibold">{title}</div>
+            <p className="text-lg font-semibold">{title}</p>
           </div>
-          <div className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden w-11/12">
+          <p className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden w-11/12">
             {content}
-          </div>
-          <div className="text-sm text-gray-600 font-medium max-sm:text-[12px]">
+          </p>
+          <p className="text-sm text-gray-600 font-medium max-sm:text-[12px]">
             작성일시 : {formatDate}
-          </div>
+          </p>
         </div>
       </Link>
       {user_id._id === user._id && (
