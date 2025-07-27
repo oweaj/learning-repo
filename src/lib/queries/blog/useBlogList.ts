@@ -6,10 +6,8 @@ export const useBlogList = ({
   category,
   page,
 }: { category: string | null; page: number }) => {
-  const data = useQuery<IBlogListType>({
+  return useQuery<IBlogListType>({
     queryKey: ["blog_list", category, page],
     queryFn: () => blogListApi(category, page),
   });
-
-  return data.data;
 };
