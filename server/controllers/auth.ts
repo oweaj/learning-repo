@@ -142,7 +142,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     const user_id = (req as IUserRequest).user._id;
 
     if (!user_id) {
-      res.status(400).json({ message: "해당 계정 id가 유효하지 않습니다." });
+      res.status(401).json({ message: "해당 계정 id가 유효하지 않습니다." });
       return;
     }
 

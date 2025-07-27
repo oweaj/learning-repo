@@ -19,7 +19,7 @@ export const blogCreate = async (req: Request, res: Response) => {
     }
 
     if (!user_id) {
-      res.status(400).json({ message: "로그인이 필요합니다." });
+      res.status(401).json({ message: "로그인이 필요합니다." });
       return;
     }
 
@@ -88,7 +88,7 @@ export const blogDetail = async (req: Request, res: Response) => {
       .populate("category_id");
 
     if (!blogDetail) {
-      res.status(400).json({ message: "존재하지 않는 블로그입니다." });
+      res.status(404).json({ message: "존재하지 않는 블로그입니다." });
       return;
     }
 
@@ -108,18 +108,18 @@ export const blogUpdate = async (req: Request, res: Response) => {
     const user_id = (req as IUserRequest).user._id;
 
     if (!user_id) {
-      res.status(400).json({ message: "로그인이 필요합니다." });
+      res.status(401).json({ message: "로그인이 필요합니다." });
       return;
     }
 
     const checkBlog = await Blog.findById(id);
     if (!checkBlog) {
-      res.status(400).json({ message: "존재하지 않는 블로그입니다." });
+      res.status(404).json({ message: "존재하지 않는 블로그입니다." });
       return;
     }
 
     if (checkBlog.user_id.toString() !== user_id.toString()) {
-      res.status(400).json({ message: "해당 블로그 수정 권한이 없습니다." });
+      res.status(403).json({ message: "해당 블로그 수정 권한이 없습니다." });
       return;
     }
 
@@ -131,16 +131,11 @@ export const blogUpdate = async (req: Request, res: Response) => {
       content: content ?? checkBlog.content,
     };
 
-    const update = await Blog.findOneAndUpdate(
+    await Blog.findOneAndUpdate(
       { _id: id, user_id: user_id },
       { $set: updateBlogData },
       { new: true },
     );
-
-    if (!update) {
-      res.status(400).json({ message: "수정 권한이 없습니다." });
-      return;
-    }
 
     res.status(200).json({ message: "블로그가 수정되었습니다." });
   } catch (error) {
@@ -154,47 +149,26 @@ export const blogDelete = async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = (req as IUserRequest).user;
 
-    const result = await Blog.findOneAndUpdate(
-      { _id: id, user_id: user._id },
-      { deleted_at: new Date() },
-    );
-
-    if (!result) {
-      res.status(400).json({ message: "블로그 삭제 권한이 없습니다." });
+    if (!user) {
+      res.status(401).json({ message: "로그인이 필요합니다." });
       return;
     }
+
+    const blog = await Blog.findById(id);
+    if (!blog) {
+      res.status(404).json({ message: "존재하지 않는 블로그입니다." });
+      return;
+    }
+
+    if (blog.user_id.toString() !== user._id.toString()) {
+      res.status(403).json({ message: "블로그 삭제 권한이 없습니다." });
+      return;
+    }
+
+    blog.deleted_at = new Date();
+    await blog.save();
 
     res.status(200).json({ message: "블로그가 삭제되었습니다." });
-  } catch (error) {
-    res.status(500).json({ message: `서버 에러: ${error}` });
-  }
-};
-
-// 등록한 블로그
-export const myBlogs = async (req: Request, res: Response) => {
-  try {
-    const user_id = (req as IUserRequest).user._id;
-
-    if (!user_id) {
-      res.status(400).json({ message: "해당 계정 id가 유효하지 않습니다." });
-      return;
-    }
-
-    const result = await Blog.find({ user_id, deleted_at: null })
-      .sort({ createdAt: -1 })
-      .populate("user_id", "email name profile_image")
-      .populate("category_id")
-      .lean();
-
-    if (!result || result.length === 0) {
-      res.status(404).json({ message: "등록한 블로그가 없습니다." });
-      return;
-    }
-
-    res.status(200).json({
-      message: "등록한 블로그 조회 완료되었습니다.",
-      data: result,
-    });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
@@ -207,38 +181,38 @@ export const blogLike = async (req: Request, res: Response) => {
     const user_id = (req as IUserRequest).user._id;
 
     if (!user_id) {
-      res.status(400).json({ message: "로그인이 필요합니다." });
+      res.status(401).json({ message: "로그인이 필요합니다." });
       return;
     }
 
     const checkBlog = await Blog.findById(id);
     if (!checkBlog) {
-      res.status(400).json({ message: "존재하지 않는 블로그입니다." });
+      res.status(404).json({ message: "존재하지 않는 블로그입니다." });
       return;
     }
 
-    const checkUserLike = checkBlog.like_user.includes(user_id);
+    const checkUserLike = checkBlog.like_user.some(
+      (user: string) => user === user_id.toString(),
+    );
 
     const updateBlogData = checkUserLike
       ? { $pull: { like_user: user_id }, $inc: { like_count: -1 } }
       : { $addToSet: { like_user: user_id }, $inc: { like_count: 1 } };
 
     const result = await Blog.findOneAndUpdate(
-      { id: id, user_id: user_id },
+      { _id: id, user_id: user_id },
       updateBlogData,
       { new: true },
     );
 
-    if (!result) {
-      res
-        .status(400)
-        .json({ message: "해당 블로그를 찾을 수 없거나 권한이 없습니다." });
-      return;
-    }
-
     res
       .status(200)
-      .json({ message: "등록한 블로그 조회 완료되었습니다.", data: result });
+      .json({
+        message: checkUserLike
+          ? "좋아요가 취소되었습니다."
+          : "좋아요가 등록되었습니다.",
+        data: result,
+      });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
