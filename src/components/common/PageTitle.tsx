@@ -7,14 +7,16 @@ const PageTitle = ({ title }: { title: string }) => {
   const router = useRouter();
 
   return (
-    <button
-      type="button"
-      className="flex items-center gap-6 text-xl font-semibold cursor-pointer w-5/6"
-      onClick={() => router.back()}
-    >
-      <ChevronLeft />
-      <span className="truncate">{title}</span>
-    </button>
+    <div className="inline-block w-full pb-6 border-b-1">
+      <button
+        type="button"
+        className="flex items-center gap-2 text-xl font-semibold cursor-pointer"
+        onClick={() => router.back()}
+      >
+        <ChevronLeft />
+        <span className="truncate">{title}</span>
+      </button>
+    </div>
   );
 };
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ComponentType, SVGProps } from "react";
 
 export interface INavItemType {
+  id?: string;
   name: string;
   path: string | null;
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
