@@ -1,6 +1,6 @@
 "use client";
 
-import BlogFormWrapper from "@/app/blog/_components/FormWrapper";
+import FormWrapper from "@/app/blog/_components/FormWrapper";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 
 const BlogEdit = ({ id }: { id: string }) => {
@@ -8,7 +8,13 @@ const BlogEdit = ({ id }: { id: string }) => {
   const blogData = useBlogDetail({ id });
 
   return (
-    <BlogFormWrapper title="글 수정" editMode defaultData={blogData} id={id} />
+    <FormWrapper
+      title="글 수정"
+      editMode
+      name="blog"
+      defaultData={blogData}
+      id={id}
+    />
   );
 };
 
