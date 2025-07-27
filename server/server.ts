@@ -8,7 +8,7 @@ import connectDB from "./database/db.js";
 import authRouter from "./routes/auth-routes.js";
 import blogRouter from "./routes/blog-routes.js";
 import uploadRouter from "./routes/image-routes.js";
-import mypageRouter from "./routes/my-routes.js";
+import mypageRouter from "./routes/mypage-routes.js";
 
 dotenv.config();
 
