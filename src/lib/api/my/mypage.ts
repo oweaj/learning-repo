@@ -16,11 +16,9 @@ export const noticeCreateApi = async (formData: INoticeFormDataType) => {
 };
 
 // 공지사항 목록
-export const noticeListApi = async (page: number) => {
+export const noticeListApi = async () => {
   try {
-    const { data } = await clientAxios.get(
-      `/api/my/notice/list?page=${page}&limit=10`,
-    );
+    const { data } = await clientAxios.get("/api/my/notice/list");
     return data.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

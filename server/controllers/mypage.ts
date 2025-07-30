@@ -32,30 +32,15 @@ export const noticeCreate = async (req: Request, res: Response) => {
 };
 
 // 공지사항 목록
-export const noticeList = async (req: Request, res: Response) => {
+export const noticeList = async (_req: Request, res: Response) => {
   try {
-    const page = Number(req.query.page) || 1;
-    const skip = (page - 1) * 10;
-    const limit = Number(req.query.limit) || 10;
-    const filterData = { deleted_at: null };
-
-    const noticelist = await Notice.find(filterData)
+    const noticelist = await Notice.find({ deleted_at: null })
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
       .lean();
-    const totalCount = await Notice.countDocuments(filterData);
 
-    res.status(200).json({
-      message: "공지사항 목록 조회 완료",
-      data: {
-        noticelist,
-        page,
-        limit,
-        totalPages: Math.max(1, Math.ceil(totalCount / limit)),
-        totalCount,
-      },
-    });
+    res
+      .status(200)
+      .json({ message: "공지사항 목록 조회 완료", data: noticelist });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
