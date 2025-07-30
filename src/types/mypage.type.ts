@@ -11,11 +11,3 @@ export interface INoticeDataType {
   createdAt: string;
   updateAt: string | null;
 }
-
-export interface INoticeListType {
-  noticelist: INoticeDataType[];
-  limit: number;
-  page: number;
-  totalCount: number;
-  totalPages: number;
-}
