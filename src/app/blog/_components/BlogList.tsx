@@ -1,5 +1,6 @@
 "use client";
 
+import { BlogSkeleton } from "@/app/my/_components/BlogSkeleton";
 import { useBlogList } from "@/lib/queries/blog/useBlogList";
 import type { IBlogDataType } from "@/types/blog.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -11,9 +12,11 @@ const BlogList = ({
   page,
 }: { category: string | null; page: number }) => {
   const router = useRouter();
-  const data = useBlogList({ category, page });
+  const { data } = useBlogList({ category, page });
 
-  if (!data) return null;
+  if (!data) {
+    return <BlogSkeleton limit={10} />;
+  }
 
   const pageNumberList = Array.from(
     { length: data.totalPages },
