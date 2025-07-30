@@ -13,23 +13,20 @@ const NoticeList = () => {
   const [openItem, setOpenItem] = useState<string>("");
 
   return (
-    <div className="flex flex-col">
-      <Accordion
-        type="single"
-        collapsible
-        className="w-full transition-all"
-        value={openItem}
-        onValueChange={(value) => setOpenItem(value)}
-      >
-        {data?.map((notice: INoticeDataType) => (
-          <AccordionItems
-            key={notice._id}
-            notice={notice}
-            userName={user ? user.name : null}
-          />
-        ))}
-      </Accordion>
-    </div>
+    <Accordion
+      type="single"
+      collapsible
+      value={openItem}
+      onValueChange={(value) => setOpenItem(value)}
+    >
+      {data?.map((notice: INoticeDataType) => (
+        <AccordionItems
+          key={notice._id}
+          notice={notice}
+          userName={user ? user.name : null}
+        />
+      ))}
+    </Accordion>
   );
 };
 

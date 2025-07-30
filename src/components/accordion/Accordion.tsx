@@ -15,7 +15,7 @@ const AccordionItems = ({ notice, userName }: IAccordionProps) => {
   return (
     <AccordionItem value={notice._id}>
       <AccordionTrigger className="text-base">{notice.title}</AccordionTrigger>
-      <AccordionContent className="flex flex-col gap-4 text-balance whitespace-pre-line border-t-1">
+      <AccordionContent className="flex flex-col gap-4 text-balance whitespace-pre-line">
         <p>{notice.content}</p>
         {userName === "관리자" && (
           <div className="flex gap-4">
