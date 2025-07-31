@@ -55,10 +55,10 @@ export const blogDetailApi = async (id: string) => {
 export const blogUpdateApi = async ({
   id,
   formData,
-}: { id: string; formData: IBlogFormDataType }): Promise<string> => {
+}: { id: string; formData: IBlogFormDataType }) => {
   try {
-    await clientAxios.patch(`/api/blog/${id}`, formData);
-    return id;
+    const { data } = await clientAxios.patch(`/api/blog/${id}`, formData);
+    return { data, id };
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.message || error.message;
