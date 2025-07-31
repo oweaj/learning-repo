@@ -1,6 +1,7 @@
 import NoticeForm from "@/app/my/notice/_components/NoticeForm";
 import PageTitle from "@/components/common/PageTitle";
 import type { IBlogFormDataType } from "@/types/blog.type";
+import type { INoticeFormDataType } from "@/types/mypage.type";
 import BlogForm from "./BlogForm";
 
 const FormWrapper = ({
@@ -13,7 +14,7 @@ const FormWrapper = ({
   title: string;
   editMode: boolean;
   name: "blog" | "notice";
-  defaultData?: IBlogFormDataType;
+  defaultData?: IBlogFormDataType | INoticeFormDataType;
   id?: string;
 }) => {
   return (
@@ -21,12 +22,22 @@ const FormWrapper = ({
       {name === "blog" ? (
         <>
           <PageTitle title={title} />
-          <BlogForm editMode={editMode} defaultData={defaultData} id={id} />
+          <BlogForm
+            editMode={editMode}
+            defaultData={defaultData as IBlogFormDataType}
+            id={id}
+          />
         </>
       ) : (
         <>
-          <h3 className="text-xl font-semibold">공지사항 등록</h3>
-          <NoticeForm editMode={editMode} defaultData={defaultData} id={id} />
+          <h3 className="text-xl font-semibold">
+            공지사항 {editMode ? "수정" : "등록"}
+          </h3>
+          <NoticeForm
+            editMode={editMode}
+            defaultData={defaultData as INoticeFormDataType}
+            id={id}
+          />
         </>
       )}
     </div>
