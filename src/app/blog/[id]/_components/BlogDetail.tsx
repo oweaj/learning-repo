@@ -15,7 +15,7 @@ const BlogDetail = ({ id }: { id: string }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between text-xl">
+      <div className="flex items-center justify-between text-xl border-b-1 pb-4">
         <PageTitle title={data.title} />
         {data.user_id._id === user._id && (
           <Link
