@@ -8,8 +8,8 @@ export const useNoticeCreate = () => {
 
   return useMutation({
     mutationFn: noticeCreateApi,
-    onSuccess: () => {
-      alert("공지사항이 등록되었습니다.");
+    onSuccess: (data) => {
+      alert(data.message);
       router.replace("/my/notice");
       queryClient.invalidateQueries({ queryKey: ["notice_list"] });
     },

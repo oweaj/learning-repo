@@ -8,8 +8,8 @@ export const useBlogDelete = () => {
 
   return useMutation({
     mutationFn: blogDeleteApi,
-    onSuccess: () => {
-      alert("해당 블로그 글이 삭제되었습니다.");
+    onSuccess: (data) => {
+      alert(data.message);
       router.push("/");
       queryClient.invalidateQueries({ queryKey: ["blog_list"] });
     },

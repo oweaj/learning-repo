@@ -9,8 +9,8 @@ export const useBlogUpdate = () => {
 
   return useMutation({
     mutationFn: blogUpdateApi,
-    onSuccess: (id: string) => {
-      alert("해당 블로그가 수정되었습니다.");
+    onSuccess: ({ data, id }) => {
+      alert(data.message);
       router.replace(`/blog/${id}`);
       queryClient.invalidateQueries({ queryKey: ["blog_list"] });
       queryClient.invalidateQueries({ queryKey: ["blogDetail", id] });
