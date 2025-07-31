@@ -4,6 +4,7 @@ import {
   myBlogs,
   noticeCreate,
   noticeDelete,
+  noticeDetail,
   noticeList,
   noticeUpdate,
 } from "../controllers/mypage.js";
@@ -14,6 +15,7 @@ const router = express.Router();
 router.post("/notice/create", isLoginUser, noticeCreate);
 router.get("/notice/list", isLoginUser, noticeList);
 router.patch("/notice/:id", isLoginUser, noticeUpdate);
+router.get("/notice/:id", isLoginUser, noticeDetail);
 router.delete("/notice/:id", isLoginUser, noticeDelete);
 router.get("/blog", isLoginUser, myBlogs);
 router.patch("/blog-like", isLoginUser, blogLike);

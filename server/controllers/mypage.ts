@@ -81,6 +81,26 @@ export const noticeUpdate = async (req: Request, res: Response) => {
   }
 };
 
+// 공지사항 상세
+export const noticeDetail = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const noticeDetail = await Notice.findById(id).select("title content");
+
+    if (!noticeDetail) {
+      res.status(404).json({ message: "존재하지 않는 블로그입니다." });
+      return;
+    }
+
+    res
+      .status(200)
+      .json({ message: "블로그 상세 조회 완료", data: noticeDetail });
+  } catch (error) {
+    res.status(500).json({ message: `서버 에러: ${error}` });
+  }
+};
+
 // 공지사항 삭제
 export const noticeDelete = async (req: Request, res: Response) => {
   try {
