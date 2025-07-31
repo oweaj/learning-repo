@@ -83,7 +83,7 @@ export const blogDetail = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const blogDetail = await Blog.findOne({ _id: id })
+    const blogDetail = await Blog.findById(id)
       .populate("user_id", "email name")
       .populate("category_id");
 
@@ -205,14 +205,12 @@ export const blogLike = async (req: Request, res: Response) => {
       { new: true },
     );
 
-    res
-      .status(200)
-      .json({
-        message: checkUserLike
-          ? "좋아요가 취소되었습니다."
-          : "좋아요가 등록되었습니다.",
-        data: result,
-      });
+    res.status(200).json({
+      message: checkUserLike
+        ? "좋아요가 취소되었습니다."
+        : "좋아요가 등록되었습니다.",
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
