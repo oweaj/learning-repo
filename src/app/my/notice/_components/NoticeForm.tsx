@@ -3,6 +3,7 @@
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { useNoticeUpdate } from "@/lib/queries/my/useMyNoticeUpdate";
 import { useNoticeCreate } from "@/lib/queries/my/useNoticeCreate";
 import { cn } from "@/lib/utils";
 import { NoticeCreateSchema } from "@/schemas/notice.schema";
@@ -17,11 +18,12 @@ interface NoticeFormProps {
   id?: string;
 }
 
-const NoticeForm = ({ editMode, defaultData }: NoticeFormProps) => {
+const NoticeForm = ({ editMode, defaultData, id }: NoticeFormProps) => {
   const router = useRouter();
   const { mutate: queryNoticeCreate } = useNoticeCreate();
+  const { mutate: queryNoticeUpdate } = useNoticeUpdate();
 
-  const form = useForm({
+  const form = useForm<INoticeFormDataType>({
     defaultValues: {
       title: editMode ? defaultData?.title || "" : "",
       content: editMode ? defaultData?.content || "" : "",
@@ -30,7 +32,9 @@ const NoticeForm = ({ editMode, defaultData }: NoticeFormProps) => {
   });
 
   const onSubmit = (data: INoticeFormDataType) => {
-    return queryNoticeCreate(data);
+    return editMode
+      ? queryNoticeUpdate({ id: id || "", formData: data })
+      : queryNoticeCreate(data);
   };
 
   return (
@@ -72,7 +76,7 @@ const NoticeForm = ({ editMode, defaultData }: NoticeFormProps) => {
             type="submit"
             className={cn("w-1/2 h-12 text-base font-bold bg-orange-400")}
           >
-            제출
+            {editMode ? "수정" : "등록"}
           </Button>
         </div>
       </form>
