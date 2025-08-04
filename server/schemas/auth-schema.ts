@@ -6,6 +6,8 @@ const AuthSchema = new mongoose.Schema(
     password: { type: String, require: true },
     name: { type: String, required: true, unique: true },
     profile_image: { type: String, default: null },
+    introduce: { type: String, default: null },
+    like_category: { type: [String], default: [] },
     deleted: { type: Boolean, default: false },
     deleted_at: { type: Date, default: null },
   },
