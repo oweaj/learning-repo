@@ -11,3 +11,9 @@ export interface INoticeDataType {
   createdAt: string;
   updateAt: string | null;
 }
+
+export interface IMyLikeCategoryDataType {
+  name: string;
+  introduce: string;
+  like_category: string[];
+}
