@@ -25,7 +25,7 @@ const BlogImageUpload = ({
     const { files } = e.target;
 
     if (files) {
-      const uploadImage = await imageUploadApi(files[0]);
+      const uploadImage = await imageUploadApi("blog", files[0], imageUrl);
       field.onChange(uploadImage.url);
     }
   };
