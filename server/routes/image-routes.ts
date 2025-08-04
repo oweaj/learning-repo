@@ -4,6 +4,6 @@ import { s3ImageUpload } from "../middleware/image-middleware";
 
 const router = express.Router();
 
-router.post("/upload", s3ImageUpload.single("file"), imageUpload);
+router.post("/upload/:prefix", s3ImageUpload.single("file"), imageUpload);
 
 export default router;
