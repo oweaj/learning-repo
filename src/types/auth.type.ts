@@ -11,4 +11,6 @@ export interface IUserDataType {
   password?: string | null;
   name: string | null;
   profile_image: string | null;
+  introduce: string | null;
+  like_category: string[];
 }

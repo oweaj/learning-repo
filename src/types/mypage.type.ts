@@ -12,7 +12,7 @@ export interface INoticeDataType {
   updateAt: string | null;
 }
 
-export interface IMyLikeCategoryDataType {
+export interface IMyProfileDataType {
   name: string;
   introduce: string;
   like_category: string[];
