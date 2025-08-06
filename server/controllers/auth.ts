@@ -136,6 +136,41 @@ export const getUser = (req: Request, res: Response) => {
   res.status(200).json({ user, message: "유저 정보 조회 완료" });
 };
 
+// 유저 프로필 수정
+export const profileUpdate = async (req: Request, res: Response) => {
+  try {
+    const user_id = (req as IUserRequest).user._id;
+    const { name, introduce, like_category } = req.body;
+
+    if (!user_id) {
+      res.status(400).json({ message: "해당 계정 id가 유효하지 않습니다." });
+      return;
+    }
+
+    const checkUser = await Auth.findById(user_id);
+    if (!checkUser) {
+      res.status(404).json({ message: "존재하지 않는 사용자 입니다." });
+      return;
+    }
+
+    const updateUserData = {
+      name: name ?? checkUser.name,
+      introduce: introduce ?? checkUser.introduce,
+      like_category: like_category ?? checkUser.like_category,
+    };
+
+    await Auth.findByIdAndUpdate(
+      user_id,
+      { $set: updateUserData },
+      { new: true },
+    );
+
+    res.status(200).json({ message: "프로필이 수정되었습니다." });
+  } catch (error) {
+    res.status(500).json({ message: `서버 에러: ${error}` });
+  }
+};
+
 // 계정 탈퇴
 export const deleteUser = async (req: Request, res: Response) => {
   try {

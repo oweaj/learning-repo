@@ -4,6 +4,7 @@ import {
   deleteUser,
   getUser,
   logout,
+  profileUpdate,
   signin,
   signup,
 } from "../controllers/auth.js";
@@ -16,6 +17,7 @@ router.post("/signin", signin);
 router.post("/logout", logout);
 router.post("/refresh", activeRefreshToken);
 router.get("/user", isLoginUser, getUser);
+router.patch("/update", isLoginUser, profileUpdate);
 router.delete("/delete", isLoginUser, deleteUser);
 
 export default router;
