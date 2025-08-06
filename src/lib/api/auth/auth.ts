@@ -1,5 +1,7 @@
 import { clientAxios } from "@/lib/axios/clientAxios";
 import type { IAuthFormType } from "@/types/auth.type";
+import type { IMyProfileDataType } from "@/types/mypage.type";
+
 import axios from "axios";
 
 export const signinApi = async (formData: IAuthFormType) => {
@@ -60,6 +62,18 @@ export const getUserApi = async () => {
       throw new Error(message);
     }
     return { user: null };
+  }
+};
+
+export const userUpdateApi = async (formData: IMyProfileDataType) => {
+  try {
+    const { data } = await clientAxios.patch("/api/auth/update", formData);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
+    }
   }
 };
 
