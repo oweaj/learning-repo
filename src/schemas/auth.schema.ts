@@ -1,4 +1,9 @@
+import { BLOG_CATEGORY } from "@/constants/blogCategory";
 import * as z from "zod";
+
+const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== "all").map(
+  (item) => item.value,
+);
 
 export const signinSchema = z.object({
   email: z.string().email("이메일 형식으로 입력해주세요."),
@@ -22,5 +27,21 @@ export const signupSchema = z
     message: "비밀번호가 일치하지 않습니다.",
     path: ["passwordConfirm"],
   });
+
+export const userSchema = z.object({
+  name: z.string().min(2, "아이디는 최소 2자 이상입니다."),
+  introduce: z.string().min(1, "자기소개는 최소 1자 이상입니다."),
+  like_category: z
+    .array(
+      z.string().refine((val) => filterCategory.includes(val), {
+        message: "카테고리를 선택하주세요.",
+      }),
+    )
+    .refine((arr) => arr.length > 0, {
+      message: "카테고리를 선택해주세요.",
+    }),
+});
+
 export type signinFormValues = z.infer<typeof signinSchema>;
 export type signupFormValues = z.infer<typeof signupSchema>;
+export type userFormValues = z.infer<typeof userSchema>;
