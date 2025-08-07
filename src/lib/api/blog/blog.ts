@@ -68,6 +68,31 @@ export const blogUpdateApi = async ({
   }
 };
 
+// 블로그 이미지 업로드
+export const blogImageUploadApi = async ({
+  prefix,
+  file,
+}: { prefix: string; file: File }) => {
+  try {
+    if (!file) throw new Error("업로드할 이미지 파일이 없습니다.");
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const { data } = await clientAxios.post(
+      `/api/blog/image/${prefix}`,
+      formData,
+    );
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
+    }
+  }
+};
+
 // 블로그 삭제
 export const blogDeleteApi = async (id: string) => {
   try {
