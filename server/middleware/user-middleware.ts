@@ -8,6 +8,8 @@ export interface IUserRequest extends Request {
     email: string;
     name: string;
     profile_image: string | null;
+    introduce: string | null;
+    like_category: string[];
     deleted: boolean;
   };
 }
