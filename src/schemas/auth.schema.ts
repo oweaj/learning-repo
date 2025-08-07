@@ -12,7 +12,10 @@ export const signinSchema = z.object({
 
 export const signupSchema = z
   .object({
-    name: z.string().min(2, "아이디는 최소 2자 이상입니다."),
+    name: z
+      .string()
+      .min(2, "닉네임은 최소 2자 이상입니다.")
+      .max(8, "닉네임은 최대 8자 이하입니다."),
     email: z.string().email("이메일 형식으로 입력해주세요."),
     password: z
       .string()
@@ -29,7 +32,10 @@ export const signupSchema = z
   });
 
 export const userSchema = z.object({
-  name: z.string().min(2, "아이디는 최소 2자 이상입니다."),
+  name: z
+    .string()
+    .min(2, "닉네임은 최소 2자 이상입니다.")
+    .max(8, "닉네임은 최대 8자 이하입니다."),
   introduce: z.string().min(1, "자기소개는 최소 1자 이상입니다."),
   like_category: z
     .array(
