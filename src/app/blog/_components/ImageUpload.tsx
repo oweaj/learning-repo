@@ -1,6 +1,6 @@
 "use client";
 
-import { imageUploadApi } from "@/lib/api/image/upload";
+import { blogImageUploadApi } from "@/lib/api/blog/blog";
 import { Plus } from "lucide-react";
 import Image from "next/image";
 import type { ChangeEvent } from "react";
@@ -25,7 +25,10 @@ const BlogImageUpload = ({
     const { files } = e.target;
 
     if (files) {
-      const uploadImage = await imageUploadApi("blog", files[0], imageUrl);
+      const uploadImage = await blogImageUploadApi({
+        prefix: "blog",
+        file: files[0],
+      });
       field.onChange(uploadImage.url);
     }
   };
