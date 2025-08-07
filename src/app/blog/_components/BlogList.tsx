@@ -1,6 +1,5 @@
 "use client";
 
-import { BlogSkeleton } from "@/app/my/_components/BlogSkeleton";
 import { useBlogList } from "@/lib/queries/blog/useBlogList";
 import type { IBlogDataType } from "@/types/blog.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -14,9 +13,7 @@ const BlogList = ({
   const router = useRouter();
   const { data } = useBlogList({ category, page });
 
-  if (!data) {
-    return <BlogSkeleton limit={10} />;
-  }
+  if (!data) return null;
 
   const pageNumberList = Array.from(
     { length: data.totalPages },
@@ -33,7 +30,7 @@ const BlogList = ({
   const handleMovePage = (move: "prev" | "next") => {
     if (move === "prev" && page > 1) {
       handlePageChange(page - 1);
-    } else if (move === "next" && page < data.totalCount) {
+    } else if (move === "next" && page < data.totalPages) {
       handlePageChange(page + 1);
     }
   };
