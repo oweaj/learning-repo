@@ -18,11 +18,12 @@ const LikeCategoryButton = ({ form }: ILikeCategoryProps) => {
       form.setValue(
         "like_category",
         selectCategory.filter((category) => category !== value),
-        { shouldValidate: true },
+        { shouldValidate: true, shouldDirty: true },
       );
     } else {
       form.setValue("like_category", [...selectCategory, value], {
         shouldValidate: true,
+        shouldDirty: true,
       });
     }
   };

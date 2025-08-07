@@ -32,8 +32,11 @@ const ProfileEditForm = ({ user }: { user: IUserDataType }) => {
 
   return (
     <div>
-      <div className="flex items-baseline justify-between gap-3 py-5">
+      <div className="flex items-baseline gap-3 py-5 max-[400px]:flex-col max-[400px]:gap-1">
         <h4 className="text-lg font-semibold">프로필 정보</h4>
+        <span className="text-xs text-red-500">
+          ※ 기존 정보를 변경하면 수정 버튼이 활성화됩니다.
+        </span>
       </div>
       <Form {...form}>
         <form
@@ -75,6 +78,7 @@ const ProfileEditForm = ({ user }: { user: IUserDataType }) => {
             className={cn(
               "w-full max-w-[500px] h-12 text-base font-bold bg-orange-400",
             )}
+            disabled={!form.formState.isDirty}
           >
             프로필 수정
           </Button>
