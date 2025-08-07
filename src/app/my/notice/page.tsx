@@ -15,7 +15,7 @@ const Notice = () => {
   return (
     <div className="w-full">
       <div className="flex items-baseline justify-between gap-3 pb-5 border-b-2 border-gray-700">
-        <h3 className="text-xl font-semibold">공지사항</h3>
+        <h3 className="text-[22px] font-semibold">공지사항</h3>
         {user.name === "관리자" && (
           <Button
             type="button"
