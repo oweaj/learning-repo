@@ -1,5 +1,7 @@
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
+import { s3 } from "../middleware/image-middleware.js";
 import type { IUserRequest } from "../middleware/user-middleware.js";
 import { Auth } from "../schemas/auth-schema.js";
 import { accessToken, refreshToken, verifyToken } from "../utils/jwt.js";
@@ -147,16 +149,16 @@ export const profileUpdate = async (req: Request, res: Response) => {
       return;
     }
 
-    const checkUser = await Auth.findById(user_id);
-    if (!checkUser) {
+    const userData = await Auth.findById(user_id);
+    if (!userData) {
       res.status(404).json({ message: "존재하지 않는 사용자 입니다." });
       return;
     }
 
     const updateUserData = {
-      name: name ?? checkUser.name,
-      introduce: introduce ?? checkUser.introduce,
-      like_category: like_category ?? checkUser.like_category,
+      name: name ?? userData.name,
+      introduce: introduce ?? userData.introduce,
+      like_category: like_category ?? userData.like_category,
     };
 
     await Auth.findByIdAndUpdate(
@@ -167,7 +169,68 @@ export const profileUpdate = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: "프로필이 수정되었습니다." });
   } catch (error) {
-    res.status(500).json({ message: `서버 에러: ${error}` });
+    res.status(500).json({ message: `프로필 수정에 실패했습니다. ${error}` });
+  }
+};
+
+// 유저 이미지 업로드
+export const profileImageUpload = async (req: Request, res: Response) => {
+  try {
+    const user = (req as IUserRequest).user;
+
+    if (!user) {
+      res.status(401).json({ message: "로그인이 필요합니다." });
+      return;
+    }
+
+    if (!req.file) {
+      res.status(400).json({ message: "이미지 파일이 없습니다." });
+      return;
+    }
+
+    await Auth.findByIdAndUpdate(
+      user._id,
+      { profile_image: (req.file as Express.MulterS3.File).location },
+      { new: true },
+    );
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: `프로필 이미지 수정에 실패했습니다. ${error}` });
+  }
+};
+
+// 유저 이미지 삭제
+export const profileImageDelete = async (req: Request, res: Response) => {
+  try {
+    const user = (req as IUserRequest).user;
+    const { key } = req.params;
+
+    if (!user) {
+      res.status(401).json({ message: "로그인이 필요합니다." });
+      return;
+    }
+
+    if (!key) {
+      res.status(400).json({ message: "삭제할 이미지 키가 필요합니다." });
+      return;
+    }
+
+    const deleteImage = new DeleteObjectCommand({
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: key,
+    });
+
+    await s3.send(deleteImage);
+    await Auth.findByIdAndUpdate(
+      user._id,
+      { profile_image: null },
+      { new: true },
+    );
+
+    res.status(200).json({ message: "프로필 이미지가 삭제되었습니다." });
+  } catch (error) {
+    console.error(`서버 에러: ${error}`);
   }
 };
 

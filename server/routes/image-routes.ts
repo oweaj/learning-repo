@@ -1,9 +1,10 @@
 import express from "express";
-import { imageUpload } from "../controllers/image";
-import { s3ImageUpload } from "../middleware/image-middleware";
+import { s3ImageDelete } from "../controllers/image";
+
+import { isLoginUser } from "../middleware/user-middleware";
 
 const router = express.Router();
 
-router.post("/upload/:prefix", s3ImageUpload.single("file"), imageUpload);
+router.delete("/:imageUrl", isLoginUser, s3ImageDelete);
 
 export default router;

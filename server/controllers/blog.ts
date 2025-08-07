@@ -112,23 +112,23 @@ export const blogUpdate = async (req: Request, res: Response) => {
       return;
     }
 
-    const checkBlog = await Blog.findById(id);
-    if (!checkBlog) {
+    const blogData = await Blog.findById(id);
+    if (!blogData) {
       res.status(404).json({ message: "존재하지 않는 블로그입니다." });
       return;
     }
 
-    if (checkBlog.user_id.toString() !== user_id.toString()) {
+    if (blogData.user_id.toString() !== user_id.toString()) {
       res.status(403).json({ message: "해당 블로그 수정 권한이 없습니다." });
       return;
     }
 
     const updateBlogData = {
-      title: title ?? checkBlog.title,
-      main_image: main_image ?? checkBlog.main_image,
-      sub_image: sub_image ?? checkBlog.sub_image,
-      category_id: category_id ?? checkBlog.category_id,
-      content: content ?? checkBlog.content,
+      title: title ?? blogData.title,
+      main_image: main_image ?? blogData.main_image,
+      sub_image: sub_image ?? blogData.sub_image,
+      category_id: category_id ?? blogData.category_id,
+      content: content ?? blogData.content,
     };
 
     await Blog.findOneAndUpdate(
@@ -140,6 +140,22 @@ export const blogUpdate = async (req: Request, res: Response) => {
     res.status(200).json({ message: "블로그가 수정되었습니다." });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
+  }
+};
+
+// 블로그 이미지 업로드
+export const blogImageUpload = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ message: "현재 파일이 없습니다." });
+      return;
+    }
+
+    const file = req.file as Express.MulterS3.File;
+
+    res.status(200).json({ url: file.location });
+  } catch (error) {
+    console.error("블로그 이미지 업로드 실패", error);
   }
 };
 
