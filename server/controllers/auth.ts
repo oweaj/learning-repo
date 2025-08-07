@@ -193,6 +193,7 @@ export const profileImageUpload = async (req: Request, res: Response) => {
       { profile_image: (req.file as Express.MulterS3.File).location },
       { new: true },
     );
+    res.status(200).json({ message: "프로필 이미지 업로드를 했습니다." });
   } catch (error) {
     res
       .status(500)
