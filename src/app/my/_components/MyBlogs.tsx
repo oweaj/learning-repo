@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import MyBlogList from "./MyBlogList";
+import MyBlogList from "../blogs/_components/MyBlogList";
 
 const MyBlogs = () => {
   const router = useRouter();

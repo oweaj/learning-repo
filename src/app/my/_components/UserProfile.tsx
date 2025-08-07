@@ -13,24 +13,26 @@ const UserProfile = ({ user }: { user: IUserDataType }) => {
 
   return (
     <div className="w-full border rounded-sm p-6 flex gap-6 items-center">
-      <div className="min-w-[60px] min-h-[60px]">
+      <div className="w-[70px] h-[70px] shrink-0 rounded-xl overflow-hidden">
         {user.profile_image ? (
           <Image
             src={user.profile_image}
-            fill
-            sizes="60px"
-            className="object-cover"
+            width={100}
+            height={100}
+            className="w-full h-full object-cover"
             alt={"프로필 이미지"}
             priority
           />
         ) : (
-          <DefaultProfile width={60} height={60} />
+          <DefaultProfile className="w-full h-full object-cover" />
         )}
       </div>
       <div className="w-full flex items-center max-[500px]:flex-col max-[500px]:items-start max-[500px]:gap-2">
-        <div className="flex-1 w-0 min-w-0">
+        <div className="flex-1 w-0 min-w-0 max-[500px]:w-full">
           <span>{user.name}</span>
-          <p className="truncate">{user.email}</p>
+          <p className="w-full max-[400px]:max-w-[150px] truncate">
+            {user.email}
+          </p>
         </div>
         <div className="flex gap-2 text-sm">
           <Button
