@@ -51,7 +51,7 @@ const BlogCard = (props: IBlogDataType) => {
           <p className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden w-11/12">
             {content}
           </p>
-          <p className="text-sm text-gray-600 font-medium max-sm:text-[12px]">
+          <p className="text-sm text-gray-600 font-medium line-clamp-1 overflow-hidden max-sm:text-[12px]">
             작성일시 : {formatDate}
           </p>
         </div>
