@@ -9,12 +9,11 @@ import { userSchema } from "@/schemas/auth.schema";
 import type { IUserDataType } from "@/types/auth.type";
 import type { IMyProfileDataType } from "@/types/mypage.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import LikeCategoryButton from "./LikeCategoryButton";
 
 const ProfileEditForm = ({ user }: { user: IUserDataType }) => {
-  const { mutate: queryUserUpdate } = useUserUpdate();
-
   if (!user) return null;
 
   const form = useForm<IMyProfileDataType>({
@@ -25,6 +24,14 @@ const ProfileEditForm = ({ user }: { user: IUserDataType }) => {
     },
     resolver: zodResolver(userSchema),
   });
+
+  const { mutate: queryUserUpdate, isSuccess } = useUserUpdate(form.reset);
+
+  useEffect(() => {
+    if (isSuccess) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [isSuccess]);
 
   const onSubmit = (data: IMyProfileDataType) => {
     return queryUserUpdate(data);
