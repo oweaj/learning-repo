@@ -8,7 +8,14 @@ export const mockBlogData: IBlogDataType = {
   sub_image: null,
   category_id: "daily_life",
   deleted_at: null,
-  user_id: { _id: "user-id", email: "test@test.com", name: "테스트" },
+  user_id: {
+    _id: "user-id",
+    email: "test@test.com",
+    name: "테스트",
+    profile_image: null,
+    introduce: null,
+    like_category: [],
+  },
   createdAt: "2025-01-01T00:00:00.000Z",
   updateAt: null,
 };
