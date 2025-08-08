@@ -34,7 +34,7 @@ describe("로그인 및 회원가입 공통 인증 form 컴포넌트", () => {
     fireEvent.click(screen.getByRole("button", { name: "회원가입" }));
 
     expect(
-      await screen.findByText("아이디는 최소 2자 이상입니다."),
+      await screen.findByText("닉네임은 최소 2자 이상입니다."),
     ).toBeInTheDocument();
     expect(
       await screen.findByText("이메일 형식으로 입력해주세요."),

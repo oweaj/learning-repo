@@ -13,7 +13,7 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
-jest.mock("@/lib/queries/blog/useUser", () => ({
+jest.mock("@/lib/queries/auth/useUser", () => ({
   useUser: () => mockUser(),
 }));
 

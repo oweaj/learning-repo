@@ -12,13 +12,13 @@ import BlogForm from "./BlogForm";
 
 const mockBlogCreate = jest.fn();
 const mockBlogUpdate = jest.fn();
-const mockImageUpload = jest.fn();
+const mockBlogImageUpload = jest.fn();
 window.confirm = jest.fn();
 
 jest.mock("next-navigation-guard");
 
-jest.mock("@/lib/api/image/upload", () => ({
-  imageUploadApi: () => mockImageUpload(),
+jest.mock("@/lib/api/blog/blog", () => ({
+  blogImageUploadApi: () => mockBlogImageUpload(),
 }));
 
 jest.mock("@/lib/queries/blog/useBlogCreate", () => ({
@@ -111,7 +111,7 @@ describe("blogform 컴포넌트", () => {
       type: "image/jpeg",
     });
 
-    mockImageUpload.mockResolvedValue({ url: mockBlogData.main_image });
+    mockBlogImageUpload.mockResolvedValue({ url: mockBlogData.main_image });
 
     fireEvent.click(screen.getByTestId("main-image-upload"));
     fireEvent.change(screen.getByTestId("main-image-upload"), {
@@ -119,7 +119,7 @@ describe("blogform 컴포넌트", () => {
     });
 
     await waitFor(() => {
-      expect(mockImageUpload).toHaveBeenCalledTimes(1);
+      expect(mockBlogImageUpload).toHaveBeenCalledTimes(1);
     });
 
     // 카테고리 선택

@@ -9,10 +9,10 @@ import { useForm } from "react-hook-form";
 import BlogImageUpload from "./ImageUpload";
 
 const mockOnChange = jest.fn();
-const mockImageUpload = jest.fn();
+const mockBlogImageUpload = jest.fn();
 
-jest.mock("@/lib/api/image/upload", () => ({
-  imageUploadApi: () => mockImageUpload(),
+jest.mock("@/lib/api/blog/blog", () => ({
+  blogImageUploadApi: () => mockBlogImageUpload(),
 }));
 
 const MockImageUploadComponent = ({ tag }: { tag: "main" | "sub" }) => {
@@ -79,7 +79,7 @@ describe("이미지 업로드 컴포넌트", () => {
     });
 
     const mockImageUrl = mockBlogData.main_image;
-    mockImageUpload.mockResolvedValue({ url: mockImageUrl });
+    mockBlogImageUpload.mockResolvedValue({ url: mockImageUrl });
 
     fireEvent.click(screen.getByTestId("main-image-upload"));
     fireEvent.change(screen.getByTestId("main-image-upload"), {
@@ -87,7 +87,7 @@ describe("이미지 업로드 컴포넌트", () => {
     });
 
     await waitFor(() => {
-      expect(mockImageUpload).toHaveBeenCalledTimes(1);
+      expect(mockBlogImageUpload).toHaveBeenCalledTimes(1);
       expect(mockOnChange).toHaveBeenCalledWith(mockImageUrl);
     });
 

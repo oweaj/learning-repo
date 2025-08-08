@@ -19,7 +19,7 @@ jest.mock("@/lib/queries/blog/useBlogDelete", () => ({
   }),
 }));
 
-jest.mock("@/lib/queries/blog/useUser", () => ({
+jest.mock("@/lib/queries/auth/useUser", () => ({
   useUser: () => mockUser(),
 }));
 

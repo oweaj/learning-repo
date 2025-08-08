@@ -24,7 +24,7 @@ describe("bloglist 컴포넌트", () => {
   });
 
   it("list에 데이터가 없다면 null을 반환한다.", async () => {
-    mockBlogList.mockReturnValue(null);
+    mockBlogList.mockReturnValue({ data: null });
     const { container } = render(
       <BlogList category={mockBlogData.category_id} page={1} />,
     );
@@ -37,7 +37,7 @@ describe("bloglist 컴포넌트", () => {
   });
 
   it("data가 있다면 해당 데이터가 렌더링된다.", async () => {
-    mockBlogList.mockReturnValue(mockBlogListData);
+    mockBlogList.mockReturnValue({ data: mockBlogListData });
     const { container } = render(
       <BlogList category={mockBlogData.category_id} page={1} />,
     );
@@ -50,21 +50,25 @@ describe("bloglist 컴포넌트", () => {
   });
 
   it("데이터 리스트 개수가 10개가 안되면 페이지 네이션 버튼은 랜더링 되지않는다.", () => {
-    mockBlogList.mockReturnValue(mockBlogListData);
+    mockBlogList.mockReturnValue({ data: mockBlogListData });
     render(<BlogList category={null} page={1} />);
 
     expect(screen.queryByRole("button", { name: "1" })).toBeNull();
   });
 
   it("데이터 리스트 개수가 10개가 넘어가면 페이지 네이션 버튼이 표시된다.", () => {
-    mockBlogList.mockReturnValue({ ...mockBlogListData, totalCount: 12 });
+    mockBlogList.mockReturnValue({
+      data: { ...mockBlogListData, totalCount: 12 },
+    });
     render(<BlogList category={null} page={1} />);
 
     expect(screen.queryByRole("button", { name: "1" }));
   });
 
   it("카테고리가 있다면 쿼리스트링에 선택된 카테고리와 현재 페이지 수가 표시된다.", () => {
-    mockBlogList.mockReturnValue({ ...mockBlogListData, totalCount: 12 });
+    mockBlogList.mockReturnValue({
+      data: { ...mockBlogListData, totalCount: 12 },
+    });
     render(<BlogList category={mockBlogData.category_id} page={1} />);
 
     fireEvent.click(screen.getByRole("button", { name: "1" }));
@@ -76,9 +80,11 @@ describe("bloglist 컴포넌트", () => {
   describe("데이터 목록 페이지 네이션", () => {
     beforeEach(() => {
       mockBlogList.mockReturnValue({
-        ...mockBlogListData,
-        totalCount: 12,
-        totalPages: 2,
+        data: {
+          ...mockBlogListData,
+          totalCount: 12,
+          totalPages: 2,
+        },
       });
     });
 
