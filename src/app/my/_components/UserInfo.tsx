@@ -18,7 +18,7 @@ const UserInfo = () => {
                 <div className="min-h-20 flex flex-col items-center gap-2">
                   <Icon className="w-6 h-6 text-gray-700" />
                   <span>{name}</span>
-                  {id === "blogCount" && <span>{data?.length}</span>}
+                  {id === "blogCount" && <span>{data?.length ?? 0}</span>}
                 </div>
               </Link>
             ) : (
