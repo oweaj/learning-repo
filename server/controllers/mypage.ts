@@ -85,7 +85,6 @@ export const noticeUpdate = async (req: Request, res: Response) => {
 export const noticeDetail = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
     const noticeDetail = await Notice.findById(id).select("title content");
 
     if (!noticeDetail) {
@@ -133,11 +132,6 @@ export const noticeDelete = async (req: Request, res: Response) => {
 export const myBlogs = async (req: Request, res: Response) => {
   try {
     const user_id = (req as IUserRequest).user._id;
-
-    if (!user_id) {
-      res.status(400).json({ message: "해당 계정 id가 유효하지 않습니다." });
-      return;
-    }
 
     const result = await Blog.find({ user_id, deleted_at: null })
       .sort({ createdAt: -1 })

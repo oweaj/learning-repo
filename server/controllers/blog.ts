@@ -18,11 +18,6 @@ export const blogCreate = async (req: Request, res: Response) => {
       return;
     }
 
-    if (!user_id) {
-      res.status(401).json({ message: "로그인이 필요합니다." });
-      return;
-    }
-
     const blog = new Blog({
       title,
       main_image,
@@ -107,11 +102,6 @@ export const blogUpdate = async (req: Request, res: Response) => {
     const { title, main_image, sub_image, category_id, content } = req.body;
     const user_id = (req as IUserRequest).user._id;
 
-    if (!user_id) {
-      res.status(401).json({ message: "로그인이 필요합니다." });
-      return;
-    }
-
     const blogData = await Blog.findById(id);
     if (!blogData) {
       res.status(404).json({ message: "존재하지 않는 블로그입니다." });
@@ -132,7 +122,7 @@ export const blogUpdate = async (req: Request, res: Response) => {
     };
 
     await Blog.findOneAndUpdate(
-      { _id: id, user_id: user_id },
+      { _id: id, user_id },
       { $set: updateBlogData },
       { new: true },
     );
@@ -163,12 +153,7 @@ export const blogImageUpload = async (req: Request, res: Response) => {
 export const blogDelete = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const user = (req as IUserRequest).user;
-
-    if (!user) {
-      res.status(401).json({ message: "로그인이 필요합니다." });
-      return;
-    }
+    const user_id = (req as IUserRequest).user._id;
 
     const blog = await Blog.findById(id);
     if (!blog) {
@@ -176,7 +161,7 @@ export const blogDelete = async (req: Request, res: Response) => {
       return;
     }
 
-    if (blog.user_id.toString() !== user._id.toString()) {
+    if (blog.user_id.toString() !== user_id.toString()) {
       res.status(403).json({ message: "블로그 삭제 권한이 없습니다." });
       return;
     }
@@ -196,11 +181,6 @@ export const blogLike = async (req: Request, res: Response) => {
     const { id } = req.params;
     const user_id = (req as IUserRequest).user._id;
 
-    if (!user_id) {
-      res.status(401).json({ message: "로그인이 필요합니다." });
-      return;
-    }
-
     const checkBlog = await Blog.findById(id);
     if (!checkBlog) {
       res.status(404).json({ message: "존재하지 않는 블로그입니다." });
@@ -216,7 +196,7 @@ export const blogLike = async (req: Request, res: Response) => {
       : { $addToSet: { like_user: user_id }, $inc: { like_count: 1 } };
 
     const result = await Blog.findOneAndUpdate(
-      { _id: id, user_id: user_id },
+      { _id: id, user_id },
       updateBlogData,
       { new: true },
     );

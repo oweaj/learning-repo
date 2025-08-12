@@ -130,26 +130,16 @@ export const activeRefreshToken = (req: Request, res: Response) => {
 export const getUser = (req: Request, res: Response) => {
   const user = (req as IUserRequest).user;
 
-  if (!user) {
-    res.status(400).json({ message: "로그인이 필요합니다." });
-    return;
-  }
-
   res.status(200).json({ user, message: "유저 정보 조회 완료" });
 };
 
 // 유저 프로필 수정
 export const profileUpdate = async (req: Request, res: Response) => {
   try {
-    const user_id = (req as IUserRequest).user._id;
+    const user = (req as IUserRequest).user;
     const { name, introduce, like_category } = req.body;
 
-    if (!user_id) {
-      res.status(400).json({ message: "해당 계정 id가 유효하지 않습니다." });
-      return;
-    }
-
-    const userData = await Auth.findById(user_id);
+    const userData = await Auth.findById(user._id);
     if (!userData) {
       res.status(404).json({ message: "존재하지 않는 사용자 입니다." });
       return;
@@ -162,7 +152,7 @@ export const profileUpdate = async (req: Request, res: Response) => {
     };
 
     await Auth.findByIdAndUpdate(
-      user_id,
+      user._id,
       { $set: updateUserData },
       { new: true },
     );
@@ -177,11 +167,6 @@ export const profileUpdate = async (req: Request, res: Response) => {
 export const profileImageUpload = async (req: Request, res: Response) => {
   try {
     const user = (req as IUserRequest).user;
-
-    if (!user) {
-      res.status(401).json({ message: "로그인이 필요합니다." });
-      return;
-    }
 
     if (!req.file) {
       res.status(400).json({ message: "이미지 파일이 없습니다." });
@@ -206,11 +191,6 @@ export const profileImageDelete = async (req: Request, res: Response) => {
   try {
     const user = (req as IUserRequest).user;
     const { key } = req.params;
-
-    if (!user) {
-      res.status(401).json({ message: "로그인이 필요합니다." });
-      return;
-    }
 
     if (!key) {
       res.status(400).json({ message: "삭제할 이미지 키가 필요합니다." });
@@ -238,14 +218,9 @@ export const profileImageDelete = async (req: Request, res: Response) => {
 // 계정 탈퇴
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const user_id = (req as IUserRequest).user._id;
+    const user = (req as IUserRequest).user;
 
-    if (!user_id) {
-      res.status(401).json({ message: "해당 계정 id가 유효하지 않습니다." });
-      return;
-    }
-
-    const result = await Auth.findByIdAndUpdate(user_id, {
+    const result = await Auth.findByIdAndUpdate(user._id, {
       deleted: true,
       deleted_at: new Date(),
     });
