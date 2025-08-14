@@ -1,10 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
+import type { Types } from "mongoose";
 import { Auth } from "../schemas/auth-schema.js";
 import { verifyToken } from "../utils/jwt.js";
 
 export interface IUserRequest extends Request {
   user: {
-    _id: string;
+    _id: string | Types.ObjectId;
     email: string;
     name: string;
     profile_image: string | null;
