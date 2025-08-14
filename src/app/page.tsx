@@ -1,5 +1,4 @@
 import BlogCreate from "@/assets/icons/icon_create.svg";
-import NoticeBanner from "@/components/common/NoticeBanner";
 import BottomNavbar from "@/components/home/BottomNavbar";
 import Header from "@/components/home/Header";
 import { blogListApi } from "@/lib/api/blog/blog";
@@ -33,10 +32,6 @@ const Home = async ({ searchParams }: IPropsType) => {
       <div className="relative px-4 max-w-screen-xl h-auto mx-auto pb-28">
         <HydrationBoundary state={dehydrate(queryClient)}>
           <main className="space-y-6">
-            <NoticeBanner
-              subTitle="공지"
-              notice="앱 출시 기념 각종 이벤트 진행 예정(공지사항 참고)"
-            />
             <section className="space-y-6">
               <BlogCategory />
               <BlogList category={category} page={page} />
