@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import type { Types } from "mongoose";
 import type { IUserRequest } from "../middleware/user-middleware.js";
 import { Blog } from "../schemas/blog-schema.js";
 
@@ -187,24 +188,23 @@ export const blogLike = async (req: Request, res: Response) => {
       return;
     }
 
-    const checkUserLike = checkBlog.like_user.some(
-      (user: string) => user === user_id.toString(),
+    const checkUserLike = checkBlog.like_user.some((user: Types.ObjectId) =>
+      user.equals(user_id),
     );
 
     const updateBlogData = checkUserLike
       ? { $pull: { like_user: user_id }, $inc: { like_count: -1 } }
       : { $addToSet: { like_user: user_id }, $inc: { like_count: 1 } };
 
-    const result = await Blog.findOneAndUpdate({ _id: id }, updateBlogData, {
-      new: true,
-    });
+    await Blog.findOneAndUpdate({ _id: id }, updateBlogData, { new: true });
 
-    res.status(200).json({
-      message: checkUserLike
-        ? "좋아요가 취소되었습니다."
-        : "좋아요가 등록되었습니다.",
-      data: result,
-    });
+    res
+      .status(200)
+      .json({
+        message: checkUserLike
+          ? "좋아요가 취소되었습니다."
+          : "좋아요가 등록되었습니다.",
+      });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
