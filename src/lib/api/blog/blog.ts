@@ -93,6 +93,19 @@ export const blogImageUploadApi = async ({
   }
 };
 
+// 블로그 공감
+export const blogLikeApi = async (id: string) => {
+  try {
+    const { data } = await clientAxios.patch(`/api/blog/like/${id}`);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
+    }
+  }
+};
+
 // 블로그 삭제
 export const blogDeleteApi = async (id: string) => {
   try {
