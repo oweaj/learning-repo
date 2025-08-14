@@ -11,6 +11,8 @@ export interface IBlogDataType {
   user_id: IUserDataType;
   createdAt: string;
   updateAt: string | null;
+  like_count: number;
+  like_user: string[];
 }
 
 export interface IBlogFormDataType {
