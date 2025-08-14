@@ -6,8 +6,7 @@ export const useBlogLike = () => {
 
   return useMutation({
     mutationFn: blogLikeApi,
-    onSuccess: (data) => {
-      alert(data.message);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blog_list"] });
       queryClient.invalidateQueries({ queryKey: ["blogDetail"] });
     },
