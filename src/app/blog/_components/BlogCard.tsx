@@ -7,18 +7,21 @@ import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import type { IBlogDataType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const BlogCard = (props: IBlogDataType) => {
-  const { _id, title, content, main_image, createdAt, user_id } = props;
+  const { _id, title, content, main_image, createdAt, user_id, like_count } =
+    props;
   const formatDate = createdAt && dateFormat(createdAt);
   const [isOpen, setIsOpen] = useState(false);
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
   const { mutate: blogDelete } = useBlogDelete();
+
   const user = useUser();
 
   if (!_id || !user) return null;
@@ -33,8 +36,11 @@ const BlogCard = (props: IBlogDataType) => {
       ref={ListRef}
       className="relative hover:bg-gray-50 rounded-xl transition-all duration-200"
     >
-      <Link href={`/blog/${_id}`} className="flex gap-10 max-md:gap-4">
-        <div className="relative w-[250px] rounded-xl overflow-hidden aspect-square">
+      <Link
+        href={`/blog/${_id}`}
+        className="flex gap-10 max-md:gap-4 transition-all duration-200 max-mlg:flex-col"
+      >
+        <div className="relative w-[250px] rounded-xl overflow-hidden aspect-[4/3] max-mlg:w-full max-mlg:aspect-video">
           <Image
             src={main_image || ""}
             width={300}
@@ -44,16 +50,25 @@ const BlogCard = (props: IBlogDataType) => {
             priority
           />
         </div>
-        <div className="w-3/4 flex flex-col justify-between overflow-hidden">
-          <div className="flex items-center justify-between">
-            <p className="text-lg font-semibold">{title}</p>
+        <div className="w-3/4 flex flex-col justify-between overflow-hidden max-mlg:w-full max-mlg:gap-4">
+          <div className="w-5/6 flex items-center justify-between">
+            <p className="text-lg font-semibold line-clamp-1 overflow-hidden">
+              {title}
+            </p>
           </div>
-          <p className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden w-11/12">
+          <p className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden w-11/12 max-mlg:w-full">
             {content}
           </p>
-          <p className="text-sm text-gray-600 font-medium line-clamp-1 overflow-hidden max-sm:text-[12px]">
-            작성일시 : {formatDate}
-          </p>
+          <div className="flex items-center [&>*:not(:last-child)]:after:content-['·'] [&>*:not(:last-child)]:after:mx-2">
+            <p className="text-sm text-gray-600 font-medium line-clamp-1 overflow-hidden max-sm:text-[12px]">
+              {formatDate}
+            </p>
+            <p className="text-sm text-gray-600 font-medium">0개의 댓글</p>
+            <div className="flex items-center gap-[2px] text-sm text-gray-600">
+              <Star className="w-[15px] h-[15px] stroke-1" />
+              {like_count}
+            </div>
+          </div>
         </div>
       </Link>
       {user_id._id === user._id && (

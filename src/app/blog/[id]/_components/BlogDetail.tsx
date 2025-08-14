@@ -2,43 +2,78 @@
 
 import PageTitle from "@/components/common/PageTitle";
 import { useUser } from "@/lib/queries/auth/useUser";
+import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
+import { useBlogLike } from "@/lib/queries/blog/useBlogLike";
 import { dateFormat } from "@/utils/dateFormat";
+import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const BlogDetail = ({ id }: { id: string }) => {
   const user = useUser();
   const data = useBlogDetail({ id });
+  const { mutate: blogDelete } = useBlogDelete();
+  const { mutate: blogLike } = useBlogLike();
 
   if (!data || !user) return null;
 
+  const isLiked = data.like_user.includes(user._id);
+
+  const handleBlogLike = () => {
+    blogLike(id);
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between text-xl border-b-1 pb-4">
+      <div className="text-xl border-b-1 pb-4">
         <PageTitle title={data.title} />
-        {data.user_id._id === user._id && (
-          <Link
-            href={`/blog/edit?id=${id}`}
-            className="text-lg font-semibold cursor-pointer p-1 border border-gray-600 rounded-xl px-3 hover:bg-gray-800 hover:text-white transition-all"
-          >
-            수정
-          </Link>
-        )}
       </div>
-      <div className="flex flex-col gap-6 text-gray-600 font-medium px-4">
-        <div className="relative w-full max-w-[500px] aspect-video rounded-xl overflow-hidden mx-auto">
+      <div className="flex flex-col gap-6 text-gray-600 font-medium">
+        <div className="relative w-full aspect-video rounded-xl overflow-hidden mx-auto">
           <Image
             src={data.main_image}
-            fill
-            sizes="(max-width: 768px) 100vw, 500px"
-            className="object-cover"
+            width={300}
+            height={300}
+            className="w-full h-full object-cover"
             alt="블로그 상세 이미지"
             priority
           />
         </div>
-        <div>작성일시 : {dateFormat(data.createdAt)}</div>
-        <div className="text-sm text-gray-600 font-medium line-clamp-4 overflow-hidden break-words">
+        <div className="flex items-center justify-between text-gray-700 font-medium border-b py-1">
+          <div className="flex [&>*:not(:last-child)]:after:content-['·'] [&>*:not(:last-child)]:after:mx-2">
+            <p className="font-semibold">{user.name}</p>
+            <p>{dateFormat(data.createdAt)}</p>
+          </div>
+          {data.user_id._id === user._id ? (
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/blog/edit?id=${id}`}
+                className="cursor-pointer hover:text-black"
+              >
+                수정
+              </Link>
+              <button
+                type="button"
+                className="cursor-pointer hover:text-black"
+                onClick={() => blogDelete(id)}
+              >
+                삭제
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={handleBlogLike}>
+              <Star
+                className={`w-[22px] h-[22px] stroke-[1.5] cursor-pointer ${
+                  isLiked
+                    ? "fill-yellow-400 stroke-yellow-400"
+                    : "stroke-gray-500"
+                }`}
+              />
+            </button>
+          )}
+        </div>
+        <div className="text-gray-600 line-clamp-4 overflow-hidden break-words">
           {data.content}
         </div>
       </div>
