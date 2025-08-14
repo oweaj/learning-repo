@@ -4,6 +4,7 @@ import {
   blogDelete,
   blogDetail,
   blogImageUpload,
+  blogLike,
   blogList,
   blogUpdate,
 } from "../controllers/blog.js";
@@ -17,6 +18,7 @@ router.post("/create", isLoginUser, blogCreate);
 router.get("/:id", blogDetail);
 router.patch("/:id", isLoginUser, blogUpdate);
 router.post("/image/:prefix", s3ImageUpload.single("file"), blogImageUpload);
+router.patch("/like/:id", isLoginUser, blogLike);
 router.delete("/:id", isLoginUser, blogDelete);
 
 export default router;

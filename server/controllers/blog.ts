@@ -195,11 +195,9 @@ export const blogLike = async (req: Request, res: Response) => {
       ? { $pull: { like_user: user_id }, $inc: { like_count: -1 } }
       : { $addToSet: { like_user: user_id }, $inc: { like_count: 1 } };
 
-    const result = await Blog.findOneAndUpdate(
-      { _id: id, user_id },
-      updateBlogData,
-      { new: true },
-    );
+    const result = await Blog.findOneAndUpdate({ _id: id }, updateBlogData, {
+      new: true,
+    });
 
     res.status(200).json({
       message: checkUserLike
