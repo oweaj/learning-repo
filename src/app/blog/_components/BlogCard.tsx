@@ -65,7 +65,7 @@ const BlogCard = (props: IBlogDataType) => {
             </p>
             <p className="text-sm text-gray-600 font-medium">0개의 댓글</p>
             <div className="flex items-center gap-[2px] text-sm text-gray-600">
-              <Star className="w-[15px] h-[15px] stroke-1" />
+              <Star className="w-[15px] h-[15px] stroke-1 fill-yellow-400 stroke-yellow-400" />
               {like_count}
             </div>
           </div>

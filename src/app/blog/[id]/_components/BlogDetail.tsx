@@ -62,15 +62,18 @@ const BlogDetail = ({ id }: { id: string }) => {
               </button>
             </div>
           ) : (
-            <button type="button" onClick={handleBlogLike}>
-              <Star
-                className={`w-[22px] h-[22px] stroke-[1.5] cursor-pointer ${
-                  isLiked
-                    ? "fill-yellow-400 stroke-yellow-400"
-                    : "stroke-gray-500"
-                }`}
-              />
-            </button>
+            <div className="flex gap-1">
+              <button type="button" onClick={handleBlogLike}>
+                <Star
+                  className={`w-[22px] h-[22px] stroke-[1.5] cursor-pointer ${
+                    isLiked
+                      ? "fill-yellow-400 stroke-yellow-400"
+                      : "stroke-gray-500"
+                  }`}
+                />
+              </button>
+              {data.like_count}
+            </div>
           )}
         </div>
         <div className="text-gray-600 line-clamp-4 overflow-hidden break-words">
