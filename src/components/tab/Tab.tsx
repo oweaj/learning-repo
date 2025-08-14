@@ -24,10 +24,10 @@ const Tab = ({ category }: TabProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center max-mlg:flex-1 max-mlg:min-w-9">
       <button
         type="button"
-        className={`whitespace-nowrap p-2 font-semibold cursor-pointer hover:text-gray-900 ${
+        className={`whitespace-nowrap p-2 font-semibold cursor-pointer hover:text-gray-900 max-xs:text-sm ${
           isSelected ? "text-gray-900" : "text-gray-500"
         }`}
         onClick={() => handleCategoryClick()}
