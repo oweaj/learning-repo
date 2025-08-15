@@ -4,6 +4,8 @@ import { mockBlogData } from "@/tests/mockData/mockBlogData";
 import BlogDetail from "./BlogDetail";
 
 const mockBlogDetail = jest.fn();
+const mockBlogDelete = jest.fn();
+const mockBlogLike = jest.fn();
 const mockUser = jest.fn();
 
 jest.mock("next/navigation", () => ({
@@ -19,6 +21,18 @@ jest.mock("@/lib/queries/auth/useUser", () => ({
 
 jest.mock("@/lib/queries/blog/useBlogDetail", () => ({
   useBlogDetail: () => mockBlogDetail(),
+}));
+
+jest.mock("@/lib/queries/blog/useBlogDelete", () => ({
+  useBlogDelete: () => ({
+    mutate: mockBlogDelete,
+  }),
+}));
+
+jest.mock("@/lib/queries/blog/useBlogLike", () => ({
+  useBlogLike: () => ({
+    mutate: mockBlogLike,
+  }),
 }));
 
 jest.mock("next/image", () => {
@@ -49,7 +63,7 @@ describe("상세페이지 컴포넌트", () => {
       "src",
       "/test-image.jpg",
     );
-    expect(screen.getByText("작성일시 : 2025.01.01 09:00")).toBeInTheDocument();
+    expect(screen.getByText("2025.01.01")).toBeInTheDocument();
     expect(mockBlogDetail).toHaveBeenCalled();
   });
 
