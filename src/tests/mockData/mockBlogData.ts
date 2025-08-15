@@ -7,6 +7,8 @@ export const mockBlogData: IBlogDataType = {
   main_image: "/test-image.jpg",
   sub_image: null,
   category_id: "daily_life",
+  like_user: [],
+  like_count: 0,
   deleted_at: null,
   user_id: {
     _id: "user-id",
