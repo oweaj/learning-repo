@@ -128,10 +128,11 @@ export const noticeDelete = async (req: Request, res: Response) => {
   }
 };
 
-// 등록한 블로그
+// 등록한 블로그 및 최대 공감 수
 export const myBlogs = async (req: Request, res: Response) => {
   try {
     const user_id = (req as IUserRequest).user._id;
+    let maxLikeCount = 0;
 
     const result = await Blog.find({ user_id, deleted_at: null })
       .sort({ createdAt: -1 })
@@ -144,9 +145,16 @@ export const myBlogs = async (req: Request, res: Response) => {
       return;
     }
 
+    result.forEach((blog) => {
+      if (blog.like_count > maxLikeCount) {
+        maxLikeCount = blog.like_count;
+      }
+    });
+
     res.status(200).json({
       message: "등록한 블로그 조회 완료되었습니다.",
-      data: result,
+      blogs: result,
+      maxLikeCount,
     });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
