@@ -65,7 +65,7 @@ const BlogDetail = ({ id }: { id: string }) => {
             <div className="flex gap-1">
               <button type="button" onClick={handleBlogLike}>
                 <Star
-                  className={`w-[22px] h-[22px] stroke-[1.5] cursor-pointer ${
+                  className={`w-[22px] h-[22px] stroke-[1.5] cursor-pointer hover:stroke-yellow-400 ${
                     isLiked
                       ? "fill-yellow-400 stroke-yellow-400"
                       : "stroke-gray-500"
