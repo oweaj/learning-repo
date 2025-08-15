@@ -8,13 +8,13 @@ import { BlogSkeleton } from "./BlogSkeleton";
 const MyBlogList = ({ preview = false }: { preview?: boolean }) => {
   const { data, isLoading, error } = useMyBlogList();
 
-  const renderData = preview ? data?.slice(0, 3) : data;
+  const renderData = preview ? data?.blogs.slice(0, 3) : data?.blogs;
 
   return (
     <div>
       {isLoading ? (
         <BlogSkeleton limit={preview ? 3 : 5} />
-      ) : data && data.length > 0 ? (
+      ) : data && data.blogs.length > 0 ? (
         <ul className="space-y-8">
           {renderData?.map((item: IBlogDataType) => (
             <BlogCard key={item._id} {...item} />

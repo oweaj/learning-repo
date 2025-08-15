@@ -74,7 +74,8 @@ export const noticeDeleteApi = async (id: string) => {
 export const myblogListApi = async () => {
   try {
     const { data } = await clientAxios.get("/api/my/blog");
-    return data.data;
+
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.message || error.message;

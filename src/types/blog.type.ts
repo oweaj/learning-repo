@@ -30,3 +30,8 @@ export interface IBlogListType {
   totalCount: number;
   totalPages: number;
 }
+
+export interface IMyBlogDataType {
+  blogs: IBlogDataType[];
+  maxLikeCount: number;
+}

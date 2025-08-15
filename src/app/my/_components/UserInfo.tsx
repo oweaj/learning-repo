@@ -18,13 +18,16 @@ const UserInfo = () => {
                 <div className="min-h-20 flex flex-col items-center gap-2">
                   <Icon className="w-6 h-6 text-gray-700" />
                   <span>{name}</span>
-                  {id === "blogCount" && <span>{data?.length ?? 0}</span>}
+                  {id === "blogCount" && <span>{data?.blogs.length ?? 0}</span>}
                 </div>
               </Link>
             ) : (
               <div className="flex flex-col items-center gap-2">
-                <Icon className="w-6 h-6 text-gray-700" />
+                <Icon
+                  className={`w-6 h-6 text-gray-700 ${id === "likeCount" && "fill-yellow-400 stroke-yellow-400"}`}
+                />
                 {name}
+                <span>{id === "likeCount" && (data?.maxLikeCount ?? 0)}</span>
               </div>
             )}
           </div>
