@@ -106,6 +106,22 @@ export const blogLikeApi = async (id: string) => {
   }
 };
 
+// 블로그 공감 랭킹
+export const blogLikeRankApi = async () => {
+  try {
+    const isServer = typeof window === "undefined";
+    const axiosInstance = isServer ? serverAxios : clientAxios;
+    const { data } = await axiosInstance.get("/api/blog/like_rank");
+
+    return data.blogRank;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
+    }
+  }
+};
+
 // 블로그 삭제
 export const blogDeleteApi = async (id: string) => {
   try {
