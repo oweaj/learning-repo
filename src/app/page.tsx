@@ -29,7 +29,7 @@ const Home = async ({ searchParams }: IPropsType) => {
   return (
     <>
       <Header />
-      <div className="relative px-4 max-w-screen-xl h-auto mx-auto pb-28">
+      <div className="relative px-4 max-w-screen-xl h-auto mx-auto pb-24">
         <HydrationBoundary state={dehydrate(queryClient)}>
           <main className="space-y-6">
             <section className="space-y-6">

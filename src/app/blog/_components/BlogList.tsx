@@ -48,7 +48,7 @@ const BlogList = ({
         ))}
       </ul>
       {data.totalCount > 10 && (
-        <ul className="flex items-center justify-center gap-4 mt-16">
+        <ul className="flex items-center justify-center gap-4 mt-12">
           <li>
             <button
               type="button"

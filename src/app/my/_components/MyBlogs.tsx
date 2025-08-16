@@ -11,7 +11,7 @@ const MyBlogs = () => {
   return (
     <div>
       <h3 className="text-lg font-semibold mb-4 pb-2 border-b-1">내 블로그</h3>
-      <div className="flex flex-col justify-center gap-15">
+      <div className="flex flex-col justify-center gap-12">
         <MyBlogList preview />
         <Button
           type="button"
