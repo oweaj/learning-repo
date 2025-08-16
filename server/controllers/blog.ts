@@ -198,13 +198,27 @@ export const blogLike = async (req: Request, res: Response) => {
 
     await Blog.findOneAndUpdate({ _id: id }, updateBlogData, { new: true });
 
-    res
-      .status(200)
-      .json({
-        message: checkUserLike
-          ? "좋아요가 취소되었습니다."
-          : "좋아요가 등록되었습니다.",
-      });
+    res.status(200).json({
+      message: checkUserLike
+        ? "좋아요가 취소되었습니다."
+        : "좋아요가 등록되었습니다.",
+    });
+  } catch (error) {
+    res.status(500).json({ message: `서버 에러: ${error}` });
+  }
+};
+
+// 블로그 공감 랭킹
+export const blogLikeRank = async (_req: Request, res: Response) => {
+  try {
+    const blogRank = await Blog.find({
+      deleted_at: null,
+      like_count: { $gt: 0 },
+    })
+      .sort({ like_count: -1, createdAt: -1 })
+      .limit(10);
+
+    res.status(200).json({ message: "공감 랭킹 조회 완료", blogRank });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
