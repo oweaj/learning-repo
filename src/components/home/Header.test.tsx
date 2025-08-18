@@ -64,8 +64,6 @@ describe("헤더 컴포넌트", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "로그아웃" }));
     expect(mockLogout).toHaveBeenCalledTimes(1);
-
-    screen.debug();
   });
 
   it("마이페이지 링크 클릭시 마이페이지로 이동된다.", () => {

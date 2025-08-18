@@ -9,7 +9,7 @@ const Header = () => {
   const router = useRouter();
 
   return (
-    <header className="max-w-screen-xl flex items-center justify-between py-6 mx-auto px-4">
+    <header className="max-w-screen-xl flex items-center justify-between py-7 mx-auto px-4">
       <Link href="/">
         <h1 className="text-3xl font-black text-orange-400">BLOG</h1>
       </Link>
