@@ -1,4 +1,4 @@
-import { BLOG_CATEGORY } from "@/constants/blogCategory";
+import { BLOG_CATEGORY } from "@/constants/blog/blog";
 import * as z from "zod";
 
 const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== "all").map(

@@ -2,7 +2,7 @@ import Select from "@/components/common/Select";
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { BLOG_CATEGORY } from "@/constants/blogCategory";
+import { BLOG_CATEGORY } from "@/constants/blog/blog";
 import { useBlogCreate } from "@/lib/queries/blog/useBlogCreate";
 import { useBlogUpdate } from "@/lib/queries/blog/useBlogUpdate";
 import { cn } from "@/lib/utils";
