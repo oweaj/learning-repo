@@ -1,6 +1,6 @@
 "use client";
 
-import { BOTTOM_NAV_LIST } from "@/constants/bottomNavbar";
+import { BOTTOM_NAV_LIST } from "@/constants/blog/blog";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, SVGProps } from "react";

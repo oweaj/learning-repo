@@ -1,6 +1,6 @@
 "use client";
 
-import { BLOG_CATEGORY } from "@/constants/blogCategory";
+import { BLOG_CATEGORY } from "@/constants/blog/blog";
 import { cn } from "@/lib/utils";
 import type { IMyProfileDataType } from "@/types/mypage.type";
 import type { UseFormReturn } from "react-hook-form";
