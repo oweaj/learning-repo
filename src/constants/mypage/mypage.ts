@@ -1,6 +1,6 @@
 import { NotebookPen } from "lucide-react";
 import { Star } from "lucide-react";
-import { Pencil } from "lucide-react";
+import { BookHeart } from "lucide-react";
 import { Megaphone } from "lucide-react";
 
 export const MYPAGE_USER_INFO = [
@@ -10,8 +10,13 @@ export const MYPAGE_USER_INFO = [
     path: "/my/blogs",
     Icon: NotebookPen,
   },
-  { id: "likeCount", name: "최대 공감 수", path: null, Icon: Star },
-  { id: "reviewCount", name: "최대 댓글 수", path: null, Icon: Pencil },
+  {
+    id: "likeBlogs",
+    name: "공감한 블로그 수",
+    path: "/my/liked-blogs",
+    Icon: BookHeart,
+  },
+  { id: "likeCount", name: "받은 최대 공감 수", path: null, Icon: Star },
   { id: "notice", name: "공지사항", path: "/my/notice", Icon: Megaphone },
 ];
 
