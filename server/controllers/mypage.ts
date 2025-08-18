@@ -160,3 +160,28 @@ export const myBlogs = async (req: Request, res: Response) => {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }
 };
+
+// 공감한 블로그
+export const myLikeBlogs = async (req: Request, res: Response) => {
+  try {
+    const user_id = (req as IUserRequest).user._id;
+
+    const result = await Blog.find({ like_user: user_id, deleted_at: null })
+      .sort({ createdAt: -1 })
+      .populate("user_id", "email name profile_image")
+      .populate("category_id")
+      .lean();
+
+    if (!result || result.length === 0) {
+      res.status(400).json({ message: "공감한 블로그가 없습니다." });
+      return;
+    }
+
+    res.status(200).json({
+      message: "공감한 블로그 조회 완료되었습니다.",
+      likeBlogs: result,
+    });
+  } catch (error) {
+    res.status(500).json({ message: `서버 에러: ${error}` });
+  }
+};
