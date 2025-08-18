@@ -35,3 +35,7 @@ export interface IMyBlogDataType {
   blogs: IBlogDataType[];
   maxLikeCount: number;
 }
+
+export interface IMyLikeBlogDataType {
+  likeBlogs: IBlogDataType[];
+}

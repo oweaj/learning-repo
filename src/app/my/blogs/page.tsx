@@ -1,6 +1,11 @@
-import MyBlogList from "./_components/MyBlogList";
+"use client";
+
+import { useMyBlogList } from "@/lib/queries/my/useMyBlogList";
+import MyDataList from "./_components/MyDataList";
 
 const MyBlogs = () => {
+  const { data, isLoading } = useMyBlogList();
+
   return (
     <div className="w-full space-y-4">
       <div className="flex items-baseline gap-3 pb-3 border-b-1 max-[400px]:flex-col max-[400px]:gap-1">
@@ -9,7 +14,7 @@ const MyBlogs = () => {
           ※ 삭제된 블로그는 포함되지않습니다.
         </span>
       </div>
-      <MyBlogList />
+      <MyDataList data={data?.blogs} isLoading={isLoading} />
     </div>
   );
 };

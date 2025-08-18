@@ -49,7 +49,7 @@ const UserProfile = ({ user }: { user: IUserDataType }) => {
             className="max-[500px]:py-1 max-[500px]:px-2"
             onClick={() => router.push("/my/blogs")}
           >
-            내 블로그
+            내 작성글
           </Button>
         </div>
       </div>
