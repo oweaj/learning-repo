@@ -22,7 +22,7 @@ const BlogRank = async () => {
       <div className="max-w-screen-xl p-4 mx-auto space-y-4 pb-24">
         <HydrationBoundary state={dehydrate(queryClient)}>
           <div className="text-[22px] font-semibold border-b pb-2">
-            블로그 공감 랭킹
+            블로그 공감 TOP 10
           </div>
           <LikeRankList />
         </HydrationBoundary>
