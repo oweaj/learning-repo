@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { BLOG_CATEGORY } from "@/constants/blogCategory";
+import { BLOG_CATEGORY } from "@/constants/blog/blog";
 import BlogCategory from "./BlogCategory";
 
 jest.mock("@/components/tab/Tab", () => (props: any) => {
