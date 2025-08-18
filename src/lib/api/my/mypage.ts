@@ -96,3 +96,16 @@ export const myblogLikeApi = async () => {
     }
   }
 };
+
+// 공감한 블로그 목록
+export const myLikeBlogsApi = async () => {
+  try {
+    const { data } = await clientAxios.patch("/api/my/like-blogs");
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
+    }
+  }
+};

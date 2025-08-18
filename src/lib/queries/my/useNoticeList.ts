@@ -5,6 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 export const useNoticeList = () => {
   return useQuery<INoticeDataType[]>({
     queryKey: ["notice_list"],
-    queryFn: () => noticeListApi(),
+    queryFn: noticeListApi,
   });
 };

@@ -5,6 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 export const useMyBlogList = () => {
   return useQuery<IMyBlogDataType>({
     queryKey: ["myBlogs"],
-    queryFn: () => myblogListApi(),
+    queryFn: myblogListApi,
   });
 };
