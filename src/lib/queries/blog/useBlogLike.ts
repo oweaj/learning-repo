@@ -9,6 +9,7 @@ export const useBlogLike = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blog_list"] });
       queryClient.invalidateQueries({ queryKey: ["blogDetail"] });
+      queryClient.invalidateQueries({ queryKey: ["myLikeBlogs"] });
     },
     onError: (error) => alert(error.message),
   });
