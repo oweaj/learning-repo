@@ -140,11 +140,6 @@ export const myBlogs = async (req: Request, res: Response) => {
       .populate("category_id")
       .lean();
 
-    if (!result || result.length === 0) {
-      res.status(400).json({ message: "등록한 블로그가 없습니다." });
-      return;
-    }
-
     result.forEach((blog) => {
       if (blog.like_count > maxLikeCount) {
         maxLikeCount = blog.like_count;
@@ -171,11 +166,6 @@ export const myLikeBlogs = async (req: Request, res: Response) => {
       .populate("user_id", "email name profile_image")
       .populate("category_id")
       .lean();
-
-    if (!result || result.length === 0) {
-      res.status(400).json({ message: "공감한 블로그가 없습니다." });
-      return;
-    }
 
     res.status(200).json({
       message: "공감한 블로그 조회 완료되었습니다.",

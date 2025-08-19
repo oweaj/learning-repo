@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get("/blog", isLoginUser, myBlogs);
 router.patch("/blog-like", isLoginUser, blogLike);
-router.patch("/like-blogs", isLoginUser, myLikeBlogs);
+router.get("/like-blogs", isLoginUser, myLikeBlogs);
 router.post("/notice/create", isLoginUser, noticeCreate);
 router.get("/notice/list", isLoginUser, noticeList);
 router.patch("/notice/:id", isLoginUser, noticeUpdate);
