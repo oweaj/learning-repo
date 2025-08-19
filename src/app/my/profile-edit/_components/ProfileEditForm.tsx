@@ -13,14 +13,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import LikeCategoryButton from "./LikeCategoryButton";
 
-const ProfileEditForm = ({ user }: { user: IUserDataType }) => {
-  if (!user) return null;
-
+const ProfileEditForm = ({ user }: { user?: IUserDataType }) => {
   const form = useForm<IMyProfileDataType>({
     defaultValues: {
-      name: user.name ?? "",
-      introduce: user.introduce ?? "",
-      like_category: user.like_category ?? [],
+      name: user?.name ?? "",
+      introduce: user?.introduce ?? "",
+      like_category: user?.like_category ?? [],
     },
     resolver: zodResolver(userSchema),
   });

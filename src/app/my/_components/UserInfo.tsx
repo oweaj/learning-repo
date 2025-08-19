@@ -22,9 +22,9 @@ const UserInfo = () => {
                   <span>{name}</span>
                   <span>
                     {id === "blogCount"
-                      ? (queryBlogs?.blogs.length ?? 0)
+                      ? queryBlogs?.blogs.length
                       : id === "likeBlogs"
-                        ? (queryLikeblogs?.likeBlogs.length ?? 0)
+                        ? queryLikeblogs?.likeBlogs.length
                         : null}
                   </span>
                 </div>
@@ -35,9 +35,7 @@ const UserInfo = () => {
                   className={`w-6 h-6 text-gray-700 ${id === "likeCount" && "fill-yellow-400 stroke-yellow-400"}`}
                 />
                 {name}
-                <span>
-                  {id === "likeCount" && (queryBlogs?.maxLikeCount ?? 0)}
-                </span>
+                <span>{id === "likeCount" && queryBlogs?.maxLikeCount}</span>
               </div>
             )}
           </div>

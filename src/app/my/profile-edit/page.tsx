@@ -7,8 +7,6 @@ import ProfileEditForm from "./_components/ProfileEditForm";
 const ProfileEdit = () => {
   const user = useUser();
 
-  if (!user) return null;
-
   return (
     <div className="w-full">
       <div className="flex items-baseline justify-between gap-3 pb-5 border-b-2 border-gray-700">

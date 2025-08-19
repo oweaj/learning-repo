@@ -100,7 +100,7 @@ export const myblogLikeApi = async () => {
 // 공감한 블로그 목록
 export const myLikeBlogsApi = async () => {
   try {
-    const { data } = await clientAxios.patch("/api/my/like-blogs");
+    const { data } = await clientAxios.get("/api/my/like-blogs");
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
