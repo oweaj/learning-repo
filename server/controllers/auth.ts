@@ -68,6 +68,7 @@ export const signin = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
+      domain: "blog-mission.site",
       maxAge: 10 * 60 * 1000,
     });
 
@@ -75,6 +76,7 @@ export const signin = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
+      domain: "blog-mission.site",
       maxAge: 1 * 24 * 60 * 60 * 1000,
     });
 
@@ -120,6 +122,7 @@ export const activeRefreshToken = (req: Request, res: Response) => {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
+    domain: "blog-mission.site",
     maxAge: 10 * 60 * 1000,
   });
 

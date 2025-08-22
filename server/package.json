@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "server": "nodemon --exec tsx server.ts"
+    "server": "nodemon --exec tsx server.ts",
+    "dev": "cross-env NODE_ENV=development nodemon --exec tsx server.ts",
+    "prod": "cross-env NODE_ENV=production nodemon --exec tsx server.ts"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "cross-env": "^10.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
