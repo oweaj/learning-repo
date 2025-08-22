@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test": "jest --coverage",
     "prepare": "husky",
-    "dev:https": "next dev --experimental-https"
+    "dev:https": "next dev --experimental-https -H dev.blog-mission.site -p 3000"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
