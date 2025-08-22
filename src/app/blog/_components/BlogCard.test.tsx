@@ -63,7 +63,7 @@ describe("blog card 컴포넌트", () => {
 
   it("블로그 id가 없을경우 null을 반환한다.", () => {
     const noBlogId = { ...mockBlogData, _id: null as any };
-    const { container } = render(<BlogCard {...noBlogId} />);
+    const { container } = render(<BlogCard item={noBlogId} />);
 
     expect(container.firstChild).toBeNull();
   });
@@ -74,7 +74,7 @@ describe("blog card 컴포넌트", () => {
       email: "another-email",
       name: "another-name",
     });
-    render(<BlogCard {...mockBlogData} />);
+    render(<BlogCard item={mockBlogData} />);
 
     expect(screen.queryByTestId("mock-modal")).not.toBeInTheDocument();
   });
@@ -85,13 +85,13 @@ describe("blog card 컴포넌트", () => {
       email: mockBlogData.user_id.email,
       name: mockBlogData.user_id.name,
     });
-    render(<BlogCard {...mockBlogData} />);
+    render(<BlogCard item={mockBlogData} />);
 
     expect(screen.getByTestId("mock-modal")).toBeInTheDocument();
   });
 
   it("모달 트리거를 클릭하면 모달이 열리고 해당 콘텐츠가 표시되어야 한다.", () => {
-    render(<BlogCard {...mockBlogData} />);
+    render(<BlogCard item={mockBlogData} />);
 
     expect(screen.getByTestId("modal-trigger")).toBeInTheDocument();
     fireEvent.click(screen.getByTestId("modal-trigger"));
@@ -111,7 +111,7 @@ describe("blog card 컴포넌트", () => {
         email: mockBlogData.user_id.email,
         name: mockBlogData.user_id.name,
       });
-      render(<BlogCard {...mockBlogData} />);
+      render(<BlogCard item={mockBlogData} />);
 
       expect(screen.getByTestId("modal-trigger")).toBeInTheDocument();
       fireEvent.click(screen.getByTestId("modal-trigger"));
