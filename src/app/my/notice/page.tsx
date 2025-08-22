@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import NoticeList from "./_components/NoticeList";
 
 const Notice = () => {
-  const user = useUser();
+  const { data: user } = useUser();
   const router = useRouter();
 
   return (

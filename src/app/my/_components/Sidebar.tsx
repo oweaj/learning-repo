@@ -12,7 +12,7 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const { mutate: userDelete } = useUserDelete();
-  const user = useUser();
+  const { data: user } = useUser();
 
   return (
     <nav className="flex flex-col gap-8 max-md:hidden min-w-[250px]">

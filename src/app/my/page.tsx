@@ -1,35 +1,36 @@
-"use client";
-
-import { getUserApi } from "@/lib/api/auth/auth";
+import { getUserAction } from "@/lib/actions/getUser";
+import { myLikeBlogsApi, myblogListApi } from "@/lib/api/my/mypage";
 import {
-  myLikeBlogsApi,
-  myblogListApi,
-  noticeListApi,
-} from "@/lib/api/my/mypage";
-import { useQueries } from "@tanstack/react-query";
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
 import MyBlogs from "./_components/MyBlogs";
 import UserInfo from "./_components/UserInfo";
 import UserProfile from "./_components/UserProfile";
 
-const MyPage = () => {
-  const result = useQueries({
-    queries: [
-      { queryKey: ["user"], queryFn: getUserApi },
-      { queryKey: ["myBlogs"], queryFn: myblogListApi },
-      { queryKey: ["myLikeBlogs"], queryFn: myLikeBlogsApi },
-      { queryKey: ["notice_list"], queryFn: noticeListApi },
-    ],
-  });
+const MyPage = async () => {
+  const queryClient = new QueryClient();
+  const user = await getUserAction();
 
-  const isSuccess = result.every((query) => query.isSuccess);
-
-  if (!isSuccess) return null;
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: ["myBlogs"],
+      queryFn: myblogListApi,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["myLikeBlogs"],
+      queryFn: myLikeBlogsApi,
+    }),
+  ]);
 
   return (
     <div className="w-full space-y-8">
-      <UserProfile />
-      <UserInfo />
-      <MyBlogs />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <UserProfile user={user} />
+        <UserInfo />
+        <MyBlogs />
+      </HydrationBoundary>
     </div>
   );
 };

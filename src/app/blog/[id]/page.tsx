@@ -1,3 +1,4 @@
+import { getUserAction } from "@/lib/actions/getUser";
 import { blogDetailApi } from "@/lib/api/blog/blog";
 import {
   HydrationBoundary,
@@ -11,6 +12,7 @@ const BlogDetailPage = async ({
 }: { params: Promise<{ id: string }> }) => {
   const queryClient = new QueryClient();
   const { id } = await params;
+  const userAction = await getUserAction();
 
   await queryClient.prefetchQuery({
     queryKey: ["blogDetail", id],
@@ -20,7 +22,7 @@ const BlogDetailPage = async ({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="max-w-screen-sm h-full py-6 mx-auto px-4">
-        <BlogDetail id={id} />
+        <BlogDetail id={id} userAction={userAction} />
       </div>
     </HydrationBoundary>
   );

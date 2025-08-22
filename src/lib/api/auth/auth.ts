@@ -1,4 +1,5 @@
 import { clientAxios } from "@/lib/axios/clientAxios";
+import { serverAxios } from "@/lib/axios/serverAxios";
 import type { IAuthFormType } from "@/types/auth.type";
 import type { IMyProfileDataType } from "@/types/mypage.type";
 
@@ -46,7 +47,9 @@ export const logoutApi = async () => {
 // 토큰 갱신
 export const refreshTokenApi = async () => {
   try {
-    const { data } = await clientAxios.post("/api/auth/refresh");
+    const isServer = typeof window === "undefined";
+    const axiosInstance = isServer ? serverAxios : clientAxios;
+    const { data } = await axiosInstance.post("/api/auth/refresh");
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -59,7 +62,9 @@ export const refreshTokenApi = async () => {
 // 유저 정보 조회
 export const getUserApi = async () => {
   try {
-    const { data } = await clientAxios.get("/api/auth/user");
+    const isServer = typeof window === "undefined";
+    const axiosInstance = isServer ? serverAxios : clientAxios;
+    const { data } = await axiosInstance.get("/api/auth/user");
     return data.user;
   } catch (error) {
     if (axios.isAxiosError(error)) {

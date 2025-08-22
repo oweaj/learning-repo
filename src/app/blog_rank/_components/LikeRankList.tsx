@@ -11,7 +11,7 @@ const LikeRankList = () => {
     <div className="">
       <ul className="space-y-8">
         {data?.map((item: IBlogDataType) => (
-          <BlogCard key={item._id} {...item} />
+          <BlogCard key={item._id} item={item} />
         ))}
       </ul>
     </div>

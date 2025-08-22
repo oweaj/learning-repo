@@ -1,6 +1,8 @@
 import BlogCreate from "@/assets/icons/icon_create.svg";
 import BottomNavbar from "@/components/home/BottomNavbar";
 import Header from "@/components/home/Header";
+import SearchBar from "@/components/home/SearchBar";
+import { getUserAction } from "@/lib/actions/getUser";
 import { blogListApi } from "@/lib/api/blog/blog";
 import {
   HydrationBoundary,
@@ -20,6 +22,7 @@ const Home = async ({ searchParams }: IPropsType) => {
   const params = await searchParams;
   const category = params.category || null;
   const page = Number(params.page) || 1;
+  const userAction = await getUserAction();
 
   await queryClient.prefetchQuery({
     queryKey: ["blog_list", category, page],
@@ -31,10 +34,17 @@ const Home = async ({ searchParams }: IPropsType) => {
       <Header />
       <div className="relative px-4 max-w-screen-xl h-auto mx-auto pb-24">
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <main className="space-y-6">
-            <section className="space-y-6">
-              <BlogCategory />
-              <BlogList category={category} page={page} />
+          <main>
+            <section className="space-y-7">
+              <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
+                <BlogCategory />
+                <SearchBar />
+              </div>
+              <BlogList
+                category={category}
+                page={page}
+                userAction={userAction}
+              />
             </section>
           </main>
         </HydrationBoundary>

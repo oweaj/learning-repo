@@ -5,20 +5,24 @@ import { useUser } from "@/lib/queries/auth/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 import { useBlogLike } from "@/lib/queries/blog/useBlogLike";
+import type { IUserDataType } from "@/types/auth.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const BlogDetail = ({ id }: { id: string }) => {
-  const user = useUser();
+const BlogDetail = ({
+  id,
+  userAction,
+}: { id: string; userAction: IUserDataType }) => {
+  const { data: user } = useUser(userAction);
   const data = useBlogDetail({ id });
   const { mutate: blogDelete } = useBlogDelete();
   const { mutate: blogLike } = useBlogLike();
 
-  if (!data || !user) return null;
+  if (!data) return null;
 
-  const isLiked = data.like_user.includes(user._id);
+  const isLiked = data.like_user.includes(user?._id as string);
 
   const handleBlogLike = () => {
     blogLike(id);
@@ -42,10 +46,10 @@ const BlogDetail = ({ id }: { id: string }) => {
         </div>
         <div className="flex items-center justify-between text-gray-700 font-medium border-b py-1">
           <div className="flex [&>*:not(:last-child)]:after:content-['·'] [&>*:not(:last-child)]:after:mx-2">
-            <p className="font-semibold">{user.name}</p>
+            <p className="font-semibold">{data.user_id.name}</p>
             <p>{dateFormat(data.createdAt)}</p>
           </div>
-          {data.user_id._id === user._id ? (
+          {data.user_id._id === user?._id ? (
             <div className="flex items-center gap-2">
               <Link
                 href={`/blog/edit?id=${id}`}

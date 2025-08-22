@@ -1,6 +1,7 @@
 "use client";
 
 import { useBlogList } from "@/lib/queries/blog/useBlogList";
+import type { IUserDataType } from "@/types/auth.type";
 import type { IBlogDataType } from "@/types/blog.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,12 @@ import BlogCard from "./BlogCard";
 const BlogList = ({
   category,
   page,
-}: { category: string | null; page: number }) => {
+  userAction,
+}: {
+  category: string | null;
+  page: number;
+  userAction: IUserDataType;
+}) => {
   const router = useRouter();
   const { data } = useBlogList({ category, page });
 
@@ -44,7 +50,7 @@ const BlogList = ({
       )}
       <ul className="space-y-8">
         {data.bloglist.map((item: IBlogDataType) => (
-          <BlogCard key={item._id} {...item} />
+          <BlogCard key={item._id} item={item} userAction={userAction} />
         ))}
       </ul>
       {data.totalCount > 10 && (

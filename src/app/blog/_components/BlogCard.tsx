@@ -4,6 +4,7 @@ import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/lib/queries/auth/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
+import type { IUserDataType } from "@/types/auth.type";
 import type { IBlogDataType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
@@ -13,18 +14,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-const BlogCard = (props: IBlogDataType) => {
+const BlogCard = ({
+  item,
+  userAction,
+}: { item: IBlogDataType; userAction?: IUserDataType }) => {
   const { _id, title, content, main_image, createdAt, user_id, like_count } =
-    props;
+    item;
   const formatDate = createdAt && dateFormat(createdAt);
   const [isOpen, setIsOpen] = useState(false);
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
   const { mutate: blogDelete } = useBlogDelete();
+  const { data: user } = useUser(userAction as IUserDataType);
 
-  const user = useUser();
-
-  if (!_id || !user) return null;
+  if (!_id) return null;
 
   const handleBlogDelete = (id: string) => {
     blogDelete(id);
@@ -71,7 +74,7 @@ const BlogCard = (props: IBlogDataType) => {
           </div>
         </div>
       </Link>
-      {user_id._id === user._id && (
+      {user_id._id === user?._id && (
         <div className="absolute right-2 top-0">
           <Modal
             isOpen={isOpen}

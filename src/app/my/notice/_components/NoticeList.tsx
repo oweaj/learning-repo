@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const NoticeList = () => {
   const { data } = useNoticeList();
-  const user = useUser();
+  const { data: user } = useUser();
   const [openItem, setOpenItem] = useState<string>("");
 
   return (

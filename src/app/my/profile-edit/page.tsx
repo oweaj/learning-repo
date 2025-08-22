@@ -1,11 +1,9 @@
-"use client";
-
-import { useUser } from "@/lib/queries/auth/useUser";
+import { getUserAction } from "@/lib/actions/getUser";
 import MyProfileImage from "./_components/MyProfileImage";
 import ProfileEditForm from "./_components/ProfileEditForm";
 
-const ProfileEdit = () => {
-  const user = useUser();
+const ProfileEdit = async () => {
+  const user = await getUserAction();
 
   return (
     <div className="w-full">
