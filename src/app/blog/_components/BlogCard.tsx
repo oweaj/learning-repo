@@ -4,7 +4,6 @@ import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/lib/queries/auth/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
-import type { IUserDataType } from "@/types/auth.type";
 import type { IBlogDataType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
@@ -14,10 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-const BlogCard = ({
-  item,
-  userAction,
-}: { item: IBlogDataType; userAction?: IUserDataType }) => {
+const BlogCard = ({ item }: { item: IBlogDataType }) => {
   const { _id, title, content, main_image, createdAt, user_id, like_count } =
     item;
   const formatDate = createdAt && dateFormat(createdAt);
@@ -25,7 +21,7 @@ const BlogCard = ({
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
   const { mutate: blogDelete } = useBlogDelete();
-  const { data: user } = useUser(userAction as IUserDataType);
+  const { data: user } = useUser();
 
   if (!_id) return null;
 

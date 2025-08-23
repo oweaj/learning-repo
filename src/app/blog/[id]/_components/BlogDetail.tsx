@@ -5,17 +5,13 @@ import { useUser } from "@/lib/queries/auth/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 import { useBlogLike } from "@/lib/queries/blog/useBlogLike";
-import type { IUserDataType } from "@/types/auth.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const BlogDetail = ({
-  id,
-  userAction,
-}: { id: string; userAction: IUserDataType }) => {
-  const { data: user } = useUser(userAction);
+const BlogDetail = ({ id }: { id: string }) => {
+  const { data: user } = useUser();
   const data = useBlogDetail({ id });
   const { mutate: blogDelete } = useBlogDelete();
   const { mutate: blogLike } = useBlogLike();
