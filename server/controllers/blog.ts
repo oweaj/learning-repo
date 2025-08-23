@@ -78,6 +78,7 @@ export const blogList = async (req: Request, res: Response) => {
 export const blogDetail = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+    const user_id = (req as IUserRequest).user._id;
 
     const blogDetail = await Blog.findById(id)
       .populate("user_id", "email name")
@@ -88,9 +89,14 @@ export const blogDetail = async (req: Request, res: Response) => {
       return;
     }
 
+    const isWriter = blogDetail.user_id._id.toString() === user_id.toString();
+
     res
       .status(200)
-      .json({ message: "블로그 상세 조회 완료", data: blogDetail });
+      .json({
+        message: "블로그 상세 조회 완료",
+        data: { ...blogDetail.toObject(), isWriter },
+      });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }

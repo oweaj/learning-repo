@@ -19,7 +19,7 @@ router.post("/create", isLoginUser, blogCreate);
 router.get("/like_rank", blogLikeRank);
 router.patch("/like/:id", isLoginUser, blogLike);
 router.post("/image/:prefix", s3ImageUpload.single("file"), blogImageUpload);
-router.get("/:id", blogDetail);
+router.get("/:id", isLoginUser, blogDetail);
 router.patch("/:id", isLoginUser, blogUpdate);
 router.delete("/:id", isLoginUser, blogDelete);
 

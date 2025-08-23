@@ -13,6 +13,7 @@ export interface IBlogDataType {
   updateAt: string | null;
   like_count: number;
   like_user: string[];
+  isWriter?: boolean;
 }
 
 export interface IBlogFormDataType {

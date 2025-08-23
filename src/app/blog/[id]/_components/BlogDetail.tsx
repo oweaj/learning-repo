@@ -45,7 +45,7 @@ const BlogDetail = ({ id }: { id: string }) => {
             <p className="font-semibold">{data.user_id.name}</p>
             <p>{dateFormat(data.createdAt)}</p>
           </div>
-          {data.user_id._id === user?._id ? (
+          {data.isWriter ? (
             <div className="flex items-center gap-2">
               <Link
                 href={`/blog/edit?id=${id}`}
