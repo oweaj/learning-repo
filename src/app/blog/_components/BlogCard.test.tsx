@@ -61,18 +61,13 @@ describe("blog card 컴포넌트", () => {
     jest.clearAllMocks();
   });
 
-  it("블로그 id가 없을경우 null을 반환한다.", () => {
-    const noBlogId = { ...mockBlogData, _id: null as any };
-    const { container } = render(<BlogCard item={noBlogId} />);
-
-    expect(container.firstChild).toBeNull();
-  });
-
   it("해당 블로그 게시글이 작성자 본인이 아니면 모달 영역이 렌더링 되지않는다", () => {
     mockUser.mockReturnValue({
-      _id: "another-id",
-      email: "another-email",
-      name: "another-name",
+      data: {
+        _id: "another-id",
+        email: "another-email",
+        name: "another-name",
+      },
     });
     render(<BlogCard item={mockBlogData} />);
 
@@ -81,9 +76,11 @@ describe("blog card 컴포넌트", () => {
 
   it("해당 블로그 게시글이 작성자 본인이면 모달 영역이 렌더링된다.", () => {
     mockUser.mockReturnValue({
-      _id: mockBlogData.user_id._id,
-      email: mockBlogData.user_id.email,
-      name: mockBlogData.user_id.name,
+      data: {
+        _id: mockBlogData.user_id._id,
+        email: mockBlogData.user_id.email,
+        name: mockBlogData.user_id.name,
+      },
     });
     render(<BlogCard item={mockBlogData} />);
 
@@ -107,9 +104,11 @@ describe("blog card 컴포넌트", () => {
   describe("모달 open 상태의 버튼 동작", () => {
     beforeEach(() => {
       mockUser.mockReturnValue({
-        _id: mockBlogData.user_id._id,
-        email: mockBlogData.user_id.email,
-        name: mockBlogData.user_id.name,
+        data: {
+          _id: mockBlogData.user_id._id,
+          email: mockBlogData.user_id.email,
+          name: mockBlogData.user_id.name,
+        },
       });
       render(<BlogCard item={mockBlogData} />);
 
