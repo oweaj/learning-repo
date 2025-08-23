@@ -15,7 +15,12 @@ clientAxios.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await refreshTokenApi();
+        const { accessToken } = await refreshTokenApi();
+
+        if (accessToken) {
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        }
+
         return clientAxios(originalRequest);
       } catch (refreshError) {
         window.location.href = "/auth/signin";

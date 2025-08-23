@@ -2,7 +2,6 @@ import { clientAxios } from "@/lib/axios/clientAxios";
 import { serverAxios } from "@/lib/axios/serverAxios";
 import type { IAuthFormType } from "@/types/auth.type";
 import type { IMyProfileDataType } from "@/types/mypage.type";
-
 import axios from "axios";
 
 // 로그인

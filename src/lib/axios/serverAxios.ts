@@ -33,7 +33,8 @@ serverAxios.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await refreshTokenApi();
+        const { accessToken } = await refreshTokenApi();
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return serverAxios(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);

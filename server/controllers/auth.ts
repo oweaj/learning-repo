@@ -91,8 +91,18 @@ export const signin = async (req: Request, res: Response) => {
 // 로그아웃
 export const logout = async (_req: Request, res: Response) => {
   try {
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      domain: ".blog-mission.site",
+    });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      domain: ".blog-mission.site",
+    });
 
     res.status(200).json({ message: "로그아웃 되었습니다." });
   } catch (error) {
@@ -126,7 +136,10 @@ export const activeRefreshToken = (req: Request, res: Response) => {
     maxAge: 10 * 60 * 1000,
   });
 
-  res.status(200).json({ message: "access token 재발급 완료했습니다." });
+  res.status(200).json({
+    message: "access token 재발급 완료했습니다.",
+    accessToken: newAccessToken,
+  });
 };
 
 // 유저 정보 조회

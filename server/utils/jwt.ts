@@ -27,5 +27,5 @@ export const verifyToken = (token: string): JwtPayload | null => {
   }
 };
 
-export const accessToken = (userId: string) => createToken(userId, "30m");
-export const refreshToken = (userId: string) => createToken(userId, "7d");
+export const accessToken = (userId: string) => createToken(userId, "10m");
+export const refreshToken = (userId: string) => createToken(userId, "1d");
