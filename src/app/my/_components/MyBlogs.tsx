@@ -17,7 +17,7 @@ const MyBlogs = () => {
       </h3>
       <div className="flex flex-col justify-center gap-12 min-h-56">
         <MyDataList preview data={data?.blogs} isLoading={isLoading} />
-        {data?.blogs.length && (
+        {data?.blogs.length ? (
           <Button
             type="button"
             variant="outline"
@@ -27,7 +27,7 @@ const MyBlogs = () => {
             <Plus />
             <span>작성한 블로그 전체보기</span>
           </Button>
-        )}
+        ) : null}
       </div>
     </div>
   );

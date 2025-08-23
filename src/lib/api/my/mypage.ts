@@ -77,7 +77,6 @@ export const myblogListApi = async () => {
     const isServer = typeof window === "undefined";
     const axiosInstance = isServer ? serverAxios : clientAxios;
     const { data } = await axiosInstance.get("/api/my/blog");
-
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

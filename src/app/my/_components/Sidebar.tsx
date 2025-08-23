@@ -49,7 +49,7 @@ const Sidebar = () => {
                   content={
                     <span className="flex flex-col items-center gap-2">
                       <span>
-                        <strong className="underline">{user?.email}</strong>{" "}
+                        <strong className="underline">{user?.email}</strong>
                         계정의 모든 데이터가 삭제되며 복구할 수 없습니다.
                       </span>
                       <label className="flex items-center gap-1">

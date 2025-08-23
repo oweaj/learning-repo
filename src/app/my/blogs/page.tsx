@@ -4,7 +4,7 @@ import { useMyBlogList } from "@/lib/queries/my/useMyBlogList";
 import MyDataList from "./_components/MyDataList";
 
 const MyBlogs = () => {
-  const { data, isLoading } = useMyBlogList();
+  const { data } = useMyBlogList();
 
   return (
     <div className="w-full space-y-4">
@@ -14,7 +14,7 @@ const MyBlogs = () => {
           ※ 삭제된 블로그는 포함되지않습니다.
         </span>
       </div>
-      <MyDataList data={data?.blogs} isLoading={isLoading} />
+      <MyDataList data={data?.blogs} />
     </div>
   );
 };

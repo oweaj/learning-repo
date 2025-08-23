@@ -4,14 +4,15 @@ import DefaultProfile from "@/assets/images/default-profile.svg";
 import { Button } from "@/components/ui/button";
 import { useImageDelete } from "@/lib/queries/auth/useImageDelete";
 import { useImageUpload } from "@/lib/queries/auth/useImageUpload";
-import type { IUserDataType } from "@/types/auth.type";
+import { useUser } from "@/lib/queries/auth/useUser";
 import Image from "next/image";
 import { type ChangeEvent, useRef } from "react";
 
-const MyProfileImage = ({ user }: { user: IUserDataType }) => {
+const MyProfileImage = () => {
   const { mutate: queryUploadImage } = useImageUpload();
   const { mutate: queryDeleteImage } = useImageDelete();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { data: user } = useUser();
 
   const handleProfileImage = () => {
     inputRef.current?.click();
@@ -29,15 +30,15 @@ const MyProfileImage = ({ user }: { user: IUserDataType }) => {
   };
 
   const handleProfileImageDelete = () => {
-    if (user.profile_image) {
-      queryDeleteImage(user.profile_image);
+    if (user?.profile_image) {
+      queryDeleteImage(user?.profile_image);
     }
   };
 
   return (
     <div className="flex items-center gap-6 py-5 border-b">
       <div className="relative w-[60px] h-[60px] rounded-xl overflow-hidden">
-        {user.profile_image ? (
+        {user?.profile_image ? (
           <Image
             src={user.profile_image}
             fill
@@ -51,7 +52,7 @@ const MyProfileImage = ({ user }: { user: IUserDataType }) => {
         )}
       </div>
       <div className="flex flex-col justify-center gap-2">
-        <span className="text-lg font-semibold">{user.name}</span>
+        <span className="text-lg font-semibold">{user?.name}</span>
         <div className="space-x-3">
           <input
             ref={inputRef}
