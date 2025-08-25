@@ -9,9 +9,10 @@ import BlogCard from "./BlogCard";
 const BlogList = ({
   category,
   page,
-}: { category: string | null; page: number }) => {
+  keyword,
+}: { category: string | null; page: number; keyword: string | null }) => {
   const router = useRouter();
-  const { data } = useBlogList({ category, page });
+  const { data } = useBlogList({ category, page, keyword });
 
   if (!data) return null;
 

@@ -5,9 +5,14 @@ import { useQuery } from "@tanstack/react-query";
 export const useBlogList = ({
   category,
   page,
-}: { category: string | null; page: number }) => {
+  keyword,
+}: {
+  category: string | null;
+  page: number;
+  keyword?: string | null;
+}) => {
   return useQuery<IBlogListType>({
-    queryKey: ["blog_list", category, page],
-    queryFn: () => blogListApi(category, page),
+    queryKey: ["blog_list", category, page, keyword],
+    queryFn: () => blogListApi(category, page, keyword),
   });
 };

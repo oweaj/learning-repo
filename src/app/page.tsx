@@ -21,10 +21,11 @@ const Home = async ({ searchParams }: IPropsType) => {
   const params = await searchParams;
   const category = params.category || null;
   const page = Number(params.page) || 1;
+  const keyword = params.keyword || null;
 
   await queryClient.prefetchQuery({
-    queryKey: ["blog_list", category, page],
-    queryFn: () => blogListApi(category, page),
+    queryKey: ["blog_list", category, page, keyword],
+    queryFn: () => blogListApi(category, page, keyword),
   });
 
   return (
@@ -36,9 +37,9 @@ const Home = async ({ searchParams }: IPropsType) => {
             <section className="space-y-7">
               <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
                 <BlogCategory />
-                <SearchBar />
+                <SearchBar keyword={keyword} />
               </div>
-              <BlogList category={category} page={page} />
+              <BlogList category={category} page={page} keyword={keyword} />
             </section>
           </main>
         </HydrationBoundary>

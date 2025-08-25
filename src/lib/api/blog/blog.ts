@@ -17,13 +17,23 @@ export const blogCreateApi = async (formData: IBlogFormDataType) => {
 };
 
 // 블로그 목록
-export const blogListApi = async (category: string | null, page: number) => {
+export const blogListApi = async (
+  category: string | null,
+  page: number,
+  keyword?: string | null,
+) => {
   try {
     const isServer = typeof window === "undefined";
     const axiosInstance = isServer ? serverAxios : clientAxios;
-    const query = category
-      ? `category=${category}&page=${page}&limit=10`
-      : `page=${page}&limit=10`;
+    let query = `page=${page}&limit=10`;
+
+    if (category) {
+      query += `&category=${category}`;
+    }
+
+    if (keyword) {
+      query += `&keyword=${encodeURIComponent(keyword)}`;
+    }
 
     const { data } = await axiosInstance.get(`/api/blog/list?${query}`);
 
