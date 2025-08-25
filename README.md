@@ -5,9 +5,9 @@
 ```
 main : supabase에서 express, mongodb로 전환 및 활용해보는 학습 브랜치
 
-submit-test-blog : 과제 테스트를 진행한 브랜치
-
 supabase-test-blog : 과제 테스트 서버가 중단되어 대체로 supabase를 활용해보는 학습 브랜치
+
+submit-test-blog : 과제 테스트를 진행한 브랜치
 ```
 
 ---
