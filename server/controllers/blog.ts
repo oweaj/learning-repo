@@ -3,11 +3,6 @@ import type { Types } from "mongoose";
 import type { IUserRequest } from "../middleware/user-middleware.js";
 import { Blog } from "../schemas/blog-schema.js";
 
-interface IBlogListFilter {
-  deleted_at?: Date | null;
-  category_id?: string;
-}
-
 // 블로그 생성
 export const blogCreate = async (req: Request, res: Response) => {
   try {
@@ -40,13 +35,21 @@ export const blogList = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const category = (req.query.category as string) || null;
+    const keyword = req.query.keyword || null;
     const limit = Number(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const filterData: IBlogListFilter = { deleted_at: null };
+    const filterData: Record<string, any> = { deleted_at: null };
 
     if (category) {
       filterData.category_id = category;
+    }
+
+    if (keyword) {
+      filterData.$or = [
+        { title: { $regex: keyword, $options: "i" } },
+        { content: { $regex: keyword, $options: "i" } },
+      ];
     }
 
     const bloglist = await Blog.find(filterData)
@@ -54,7 +57,6 @@ export const blogList = async (req: Request, res: Response) => {
       .skip(skip)
       .limit(limit)
       .populate("user_id", "email name profile_image")
-      .populate("category_id")
       .lean();
 
     const totalCount = await Blog.countDocuments(filterData);
@@ -80,9 +82,10 @@ export const blogDetail = async (req: Request, res: Response) => {
     const { id } = req.params;
     const user_id = (req as IUserRequest).user._id;
 
-    const blogDetail = await Blog.findById(id)
-      .populate("user_id", "email name")
-      .populate("category_id");
+    const blogDetail = await Blog.findById(id).populate(
+      "user_id",
+      "email name",
+    );
 
     if (!blogDetail) {
       res.status(404).json({ message: "존재하지 않는 블로그입니다." });
@@ -91,12 +94,10 @@ export const blogDetail = async (req: Request, res: Response) => {
 
     const isWriter = blogDetail.user_id._id.toString() === user_id.toString();
 
-    res
-      .status(200)
-      .json({
-        message: "블로그 상세 조회 완료",
-        data: { ...blogDetail.toObject(), isWriter },
-      });
+    res.status(200).json({
+      message: "블로그 상세 조회 완료",
+      data: { ...blogDetail.toObject(), isWriter },
+    });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
   }

@@ -137,7 +137,6 @@ export const myBlogs = async (req: Request, res: Response) => {
     const result = await Blog.find({ user_id, deleted_at: null })
       .sort({ createdAt: -1 })
       .populate("user_id", "email name profile_image")
-      .populate("category_id")
       .lean();
 
     result.forEach((blog) => {
@@ -164,7 +163,6 @@ export const myLikeBlogs = async (req: Request, res: Response) => {
     const result = await Blog.find({ like_user: user_id, deleted_at: null })
       .sort({ createdAt: -1 })
       .populate("user_id", "email name profile_image")
-      .populate("category_id")
       .lean();
 
     res.status(200).json({
