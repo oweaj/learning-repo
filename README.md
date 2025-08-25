@@ -17,6 +17,17 @@ supabase-test-blog : 과제 테스트 서버가 중단되어 대체로 supabase�
 - mongodb 연동 및 스키마 정의
 - presigned url로 이미지 업로드를 위한 aws s3 bucket 설정
 
+---
+
+##### 추가 및 수정
+
+- 마이페이지 추가 구성
+- 블로그 공감 및 검색 조회 추가
+- ec2 배포 및 서버 https 구성
+- 서버 및 클라이언트 인터셉트 쿠키 갱신 수정
+
+---
+
 #### 사용한 기술 스택 및 라이브러리
 
 express, next.js, tanstack-query, typescript, tailwindcss, shadcn ui, react-hook-form, zod, jest, react testing library, mongodb
