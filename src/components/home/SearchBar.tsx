@@ -39,7 +39,7 @@ const SearchBar = ({ keyword }: { keyword: string | null }) => {
       </button>
       <input
         type="text"
-        className="w-full focus:outline-0"
+        className="w-full focus:outline-0 placeholder:text-sm"
         value={searchData}
         onChange={(e) => setSearchData(e.target.value)}
         onKeyDown={(e) => {
