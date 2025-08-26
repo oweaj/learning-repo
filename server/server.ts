@@ -9,23 +9,18 @@ import mypageRouter from "./routes/mypage-routes.js";
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === "production";
+const app = express();
+const corsOrigins = [];
 
-if (isProduction) {
-  dotenv.config({ path: "./.env.production", override: true });
-} else {
-  dotenv.config({ path: "./.env.development", override: true });
+if (process.env.PRODUCTION_URL) {
+  corsOrigins.push(process.env.PRODUCTION_URL);
+}
+if (process.env.CLIENT_URL) {
+  corsOrigins.push(process.env.CLIENT_URL);
 }
 
-const app = express();
-
 app.use(express.json());
-app.use(
-  cors({
-    origin: isProduction ? process.env.PRODUCTION_URL : process.env.CLIENT_URL,
-    credentials: true,
-  }),
-);
+app.use(cors({ origin: corsOrigins, credentials: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
