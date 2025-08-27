@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useMyBlogList } from "@/lib/queries/my/useMyBlogList";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import MyDataList from "../blogs/_components/MyDataList";
+import MyDataList from "./MyDataList";
 
 const MyBlogs = () => {
   const router = useRouter();
-  const { data, isLoading } = useMyBlogList();
+  const { data } = useMyBlogList();
 
   return (
     <div>
@@ -16,7 +16,7 @@ const MyBlogs = () => {
         작성한 블로그
       </h3>
       <div className="flex flex-col justify-center gap-12 min-h-56">
-        <MyDataList preview data={data?.blogs} isLoading={isLoading} />
+        <MyDataList preview data={data?.blogs} />
         {data?.blogs.length ? (
           <Button
             type="button"

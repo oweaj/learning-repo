@@ -1,7 +1,7 @@
 "use client";
 
 import { useMyLikeBlogList } from "@/lib/queries/my/useMyLikeBlogList";
-import MyDataList from "../blogs/_components/MyDataList";
+import MyDataList from "../_components/MyDataList";
 
 const MyLikeBlogs = () => {
   const { data } = useMyLikeBlogList();
