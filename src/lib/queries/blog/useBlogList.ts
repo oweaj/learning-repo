@@ -14,5 +14,6 @@ export const useBlogList = ({
   return useQuery<IBlogListType>({
     queryKey: ["blog_list", category, page, keyword],
     queryFn: () => blogListApi(category, page, keyword),
+    placeholderData: (previousData) => previousData,
   });
 };
