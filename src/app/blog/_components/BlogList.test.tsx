@@ -3,14 +3,8 @@ import "@testing-library/jest-dom";
 import { mockBlogData, mockBlogListData } from "@/tests/mockData/mockBlogData";
 import BlogList from "./BlogList";
 
-const mockRouterPush = jest.fn();
 const mockBlogList = jest.fn();
-
-jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: mockRouterPush,
-  }),
-}));
+const mockHandleQueryChange = jest.fn();
 
 jest.mock("@/lib/queries/blog/useBlogList", () => ({
   useBlogList: (args: any) => mockBlogList(args),
@@ -26,7 +20,12 @@ describe("bloglist 컴포넌트", () => {
   it("list에 데이터가 없다면 null을 반환한다.", async () => {
     mockBlogList.mockReturnValue({ data: null });
     const { container } = render(
-      <BlogList category={mockBlogData.category_id} page={1} keyword={null} />,
+      <BlogList
+        category={mockBlogData.category_id}
+        page={1}
+        keyword={null}
+        handleQueryChange={mockHandleQueryChange}
+      />,
     );
 
     expect(mockBlogList).toHaveBeenCalledWith({
@@ -40,7 +39,12 @@ describe("bloglist 컴포넌트", () => {
   it("data가 있다면 해당 데이터가 렌더링된다.", async () => {
     mockBlogList.mockReturnValue({ data: mockBlogListData });
     const { container } = render(
-      <BlogList category={mockBlogData.category_id} page={1} keyword={null} />,
+      <BlogList
+        category={mockBlogData.category_id}
+        page={1}
+        keyword={null}
+        handleQueryChange={mockHandleQueryChange}
+      />,
     );
 
     expect(mockBlogList).toHaveBeenCalledWith({
@@ -53,7 +57,14 @@ describe("bloglist 컴포넌트", () => {
 
   it("데이터 리스트 개수가 10개가 안되면 페이지 네이션 버튼은 랜더링 되지않는다.", () => {
     mockBlogList.mockReturnValue({ data: mockBlogListData });
-    render(<BlogList category={null} page={1} keyword={null} />);
+    render(
+      <BlogList
+        category={null}
+        page={1}
+        keyword={null}
+        handleQueryChange={mockHandleQueryChange}
+      />,
+    );
 
     expect(screen.queryByRole("button", { name: "1" })).toBeNull();
   });
@@ -62,7 +73,14 @@ describe("bloglist 컴포넌트", () => {
     mockBlogList.mockReturnValue({
       data: { ...mockBlogListData, totalCount: 12 },
     });
-    render(<BlogList category={null} page={1} keyword={null} />);
+    render(
+      <BlogList
+        category={null}
+        page={1}
+        keyword={null}
+        handleQueryChange={mockHandleQueryChange}
+      />,
+    );
 
     expect(screen.queryByRole("button", { name: "1" }));
   });
@@ -72,13 +90,15 @@ describe("bloglist 컴포넌트", () => {
       data: { ...mockBlogListData, totalCount: 12 },
     });
     render(
-      <BlogList category={mockBlogData.category_id} page={1} keyword={null} />,
+      <BlogList
+        category={mockBlogData.category_id}
+        page={1}
+        keyword={null}
+        handleQueryChange={mockHandleQueryChange}
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: "1" }));
-    expect(mockRouterPush).toHaveBeenCalledWith(
-      `/?category=${mockBlogData.category_id}&page=${mockBlogListData.page}&limit=10`,
-    );
   });
 
   describe("데이터 목록 페이지 네이션", () => {
@@ -98,6 +118,7 @@ describe("bloglist 컴포넌트", () => {
           category={mockBlogData.category_id}
           page={1}
           keyword={null}
+          handleQueryChange={mockHandleQueryChange}
         />,
       );
 
@@ -106,10 +127,8 @@ describe("bloglist 컴포넌트", () => {
 
       fireEvent.click(screen.getByRole("button", { name: "2" }));
 
-      expect(mockRouterPush).toHaveBeenCalled();
-      expect(mockRouterPush).toHaveBeenCalledWith(
-        `/?category=${mockBlogData.category_id}&page=2&limit=10`,
-      );
+      expect(mockHandleQueryChange).toHaveBeenCalledTimes(1);
+      expect(mockHandleQueryChange).toHaveBeenCalledWith({ newPage: 2 });
     });
 
     it("다음 페이지 버튼을 클릭하면 다음 페이지의 데이터가 렌더링된다.", () => {
@@ -118,6 +137,7 @@ describe("bloglist 컴포넌트", () => {
           category={mockBlogData.category_id}
           page={1}
           keyword={null}
+          handleQueryChange={mockHandleQueryChange}
         />,
       );
 
@@ -126,10 +146,8 @@ describe("bloglist 컴포넌트", () => {
       ).toBeInTheDocument();
       fireEvent.click(screen.getByRole("button", { name: "다음 페이지" }));
 
-      expect(mockRouterPush).toHaveBeenCalled();
-      expect(mockRouterPush).toHaveBeenCalledWith(
-        `/?category=${mockBlogData.category_id}&page=2&limit=10`,
-      );
+      expect(mockHandleQueryChange).toHaveBeenCalledTimes(1);
+      expect(mockHandleQueryChange).toHaveBeenCalledWith({ newPage: 2 });
     });
 
     it("이전 페이지 버튼을 클릭하면 이전 페이지의 데이터가 렌더링된다.", () => {
@@ -138,6 +156,7 @@ describe("bloglist 컴포넌트", () => {
           category={mockBlogData.category_id}
           page={2}
           keyword={null}
+          handleQueryChange={mockHandleQueryChange}
         />,
       );
 
@@ -146,9 +165,7 @@ describe("bloglist 컴포넌트", () => {
       ).toBeInTheDocument();
       fireEvent.click(screen.getByRole("button", { name: "이전 페이지" }));
 
-      expect(mockRouterPush).toHaveBeenCalledWith(
-        `/?category=${mockBlogData.category_id}&page=1&limit=10`,
-      );
+      expect(mockHandleQueryChange).toHaveBeenCalledWith({ newPage: 1 });
     });
   });
 });
