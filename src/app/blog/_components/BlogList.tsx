@@ -3,12 +3,19 @@
 import { useBlogList } from "@/lib/queries/blog/useBlogList";
 import type { IBlogDataType } from "@/types/blog.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
 import BlogCard from "./BlogCard";
 import type { IMainProps } from "./MainContent";
 
-const BlogList = ({ category, page, keyword }: IMainProps) => {
-  const router = useRouter();
+interface IPageQueryType {
+  handleQueryChange: ({ newPage }: { newPage: number }) => void;
+}
+
+const BlogList = ({
+  category,
+  page,
+  keyword,
+  handleQueryChange,
+}: IMainProps & IPageQueryType) => {
   const { data } = useBlogList({ category, page, keyword });
 
   if (!data) return null;
@@ -18,18 +25,11 @@ const BlogList = ({ category, page, keyword }: IMainProps) => {
     (_, i) => 1 + i,
   );
 
-  const handlePageChange = (pageNumber: number) => {
-    const query = category
-      ? `/?category=${category}&page=${pageNumber}&limit=10`
-      : `/?page=${pageNumber}&limit=10`;
-    router.push(query);
-  };
-
   const handleMovePage = (move: "prev" | "next") => {
     if (move === "prev" && page > 1) {
-      handlePageChange(page - 1);
+      handleQueryChange({ newPage: page - 1 });
     } else if (move === "next" && page < data.totalPages) {
-      handlePageChange(page + 1);
+      handleQueryChange({ newPage: page + 1 });
     }
   };
 
@@ -62,7 +62,7 @@ const BlogList = ({ category, page, keyword }: IMainProps) => {
             <li key={num}>
               <button
                 type="button"
-                onClick={() => handlePageChange(num)}
+                onClick={() => handleQueryChange({ newPage: num })}
                 className={`px-4 py-2 rounded cursor-pointer ${
                   num === page ? "bg-orange-500 text-white" : "bg-gray-200"
                 }`}

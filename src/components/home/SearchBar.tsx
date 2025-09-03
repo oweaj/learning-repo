@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SearchBar = ({
   keyword,
@@ -12,6 +12,10 @@ const SearchBar = ({
   handleQueryChange: ({ newKeyword }: { newKeyword: string | null }) => void;
 }) => {
   const [searchData, setSearchData] = useState(keyword || "");
+
+  useEffect(() => {
+    setSearchData(keyword || "");
+  }, [keyword]);
 
   return (
     <div className="flex items-center gap-2 w-56 border border-gray-400 px-3 py-[6px] rounded-lg order-1 max-md:order-0 max-md:w-full">

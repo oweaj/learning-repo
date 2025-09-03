@@ -52,6 +52,7 @@ const MainContent = ({
 
     if (!newCategory) {
       params.delete("category");
+      setCategory(null);
     } else {
       params.set("category", newCategory);
       setCategory(newCategory);
@@ -72,6 +73,7 @@ const MainContent = ({
     const queryString = params.toString();
     const queryUrl = queryString ? `${pathname}?${queryString}` : pathname;
     window.history.pushState(null, "", queryUrl);
+    window.scrollTo({ top: 0 });
   };
 
   const handleQueryReset = () => {
@@ -96,7 +98,12 @@ const MainContent = ({
               handleQueryChange={handleQueryChange}
             />
           </div>
-          <BlogList category={category} page={page} keyword={keyword} />
+          <BlogList
+            category={category}
+            page={page}
+            keyword={keyword}
+            handleQueryChange={handleQueryChange}
+          />
         </div>
       </main>
     </>
