@@ -22,7 +22,7 @@ const Home = async () => {
   });
 
   return (
-    <div className="relative px-4 max-w-screen-xl h-auto mx-auto pb-24">
+    <div>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <MainContent category={category} page={page} keyword={keyword} />
       </HydrationBoundary>

@@ -86,26 +86,28 @@ const MainContent = ({
   return (
     <>
       <Header handleQueryReset={handleQueryReset} />
-      <main>
-        <div className="space-y-7">
-          <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
-            <BlogCategory
+      <div className="relative p-4 max-w-screen-xl h-auto mx-auto pb-24">
+        <main>
+          <div className="space-y-7">
+            <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
+              <BlogCategory
+                category={category}
+                handleQueryChange={handleQueryChange}
+              />
+              <SearchBar
+                keyword={keyword}
+                handleQueryChange={handleQueryChange}
+              />
+            </div>
+            <BlogList
               category={category}
-              handleQueryChange={handleQueryChange}
-            />
-            <SearchBar
+              page={page}
               keyword={keyword}
               handleQueryChange={handleQueryChange}
             />
           </div>
-          <BlogList
-            category={category}
-            page={page}
-            keyword={keyword}
-            handleQueryChange={handleQueryChange}
-          />
-        </div>
-      </main>
+        </main>
+      </div>
     </>
   );
 };
