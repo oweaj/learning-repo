@@ -5,12 +5,9 @@ import type { IBlogDataType } from "@/types/blog.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import BlogCard from "./BlogCard";
+import type { IMainProps } from "./MainContent";
 
-const BlogList = ({
-  category,
-  page,
-  keyword,
-}: { category: string | null; page: number; keyword: string | null }) => {
+const BlogList = ({ category, page, keyword }: IMainProps) => {
   const router = useRouter();
   const { data } = useBlogList({ category, page, keyword });
 

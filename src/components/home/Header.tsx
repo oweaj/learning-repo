@@ -1,18 +1,17 @@
 "use client";
 
 import { useLogout } from "@/lib/queries/auth/useLogout";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const Header = () => {
+const Header = ({ handleQueryReset }: { handleQueryReset: () => void }) => {
   const { mutate: logout } = useLogout();
   const router = useRouter();
 
   return (
     <header className="max-w-screen-xl flex items-center justify-between py-7 mx-auto px-4">
-      <Link href="/">
+      <button type="button" onClick={handleQueryReset}>
         <h1 className="text-3xl font-black text-orange-400">BLOG</h1>
-      </Link>
+      </button>
       <div className="flex items-center justify-between gap-4 text-sm">
         <button
           type="button"

@@ -11,14 +11,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 const BlogDetail = ({ id }: { id: string }) => {
-  const { data: user } = useUser();
+  const user = useUser();
   const data = useBlogDetail({ id });
   const { mutate: blogDelete } = useBlogDelete();
   const { mutate: blogLike } = useBlogLike();
 
-  if (!data) return null;
+  if (!data || !user) return null;
 
-  const isLiked = data.like_user.includes(user?._id as string);
+  const isLiked = data.like_user.includes(user._id);
 
   const handleBlogLike = () => {
     blogLike(id);
@@ -42,10 +42,10 @@ const BlogDetail = ({ id }: { id: string }) => {
         </div>
         <div className="flex items-center justify-between text-gray-700 font-medium border-b py-1">
           <div className="flex [&>*:not(:last-child)]:after:content-['·'] [&>*:not(:last-child)]:after:mx-2">
-            <p className="font-semibold">{data.user_id.name}</p>
+            <p className="font-semibold">{user.name}</p>
             <p>{dateFormat(data.createdAt)}</p>
           </div>
-          {data.isWriter ? (
+          {data.user_id._id === user._id ? (
             <div className="flex items-center gap-2">
               <Link
                 href={`/blog/edit?id=${id}`}
