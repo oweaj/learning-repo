@@ -26,12 +26,13 @@ describe("bloglist 컴포넌트", () => {
   it("list에 데이터가 없다면 null을 반환한다.", async () => {
     mockBlogList.mockReturnValue({ data: null });
     const { container } = render(
-      <BlogList category={mockBlogData.category_id} page={1} />,
+      <BlogList category={mockBlogData.category_id} page={1} keyword={null} />,
     );
 
     expect(mockBlogList).toHaveBeenCalledWith({
       category: mockBlogData.category_id,
       page: 1,
+      keyword: null,
     });
     expect(container.firstChild).toBeNull();
   });
@@ -39,19 +40,20 @@ describe("bloglist 컴포넌트", () => {
   it("data가 있다면 해당 데이터가 렌더링된다.", async () => {
     mockBlogList.mockReturnValue({ data: mockBlogListData });
     const { container } = render(
-      <BlogList category={mockBlogData.category_id} page={1} />,
+      <BlogList category={mockBlogData.category_id} page={1} keyword={null} />,
     );
 
     expect(mockBlogList).toHaveBeenCalledWith({
       category: mockBlogData.category_id,
       page: 1,
+      keyword: null,
     });
     expect(container.firstChild).not.toBeNull();
   });
 
   it("데이터 리스트 개수가 10개가 안되면 페이지 네이션 버튼은 랜더링 되지않는다.", () => {
     mockBlogList.mockReturnValue({ data: mockBlogListData });
-    render(<BlogList category={null} page={1} />);
+    render(<BlogList category={null} page={1} keyword={null} />);
 
     expect(screen.queryByRole("button", { name: "1" })).toBeNull();
   });
@@ -60,7 +62,7 @@ describe("bloglist 컴포넌트", () => {
     mockBlogList.mockReturnValue({
       data: { ...mockBlogListData, totalCount: 12 },
     });
-    render(<BlogList category={null} page={1} />);
+    render(<BlogList category={null} page={1} keyword={null} />);
 
     expect(screen.queryByRole("button", { name: "1" }));
   });
@@ -69,7 +71,9 @@ describe("bloglist 컴포넌트", () => {
     mockBlogList.mockReturnValue({
       data: { ...mockBlogListData, totalCount: 12 },
     });
-    render(<BlogList category={mockBlogData.category_id} page={1} />);
+    render(
+      <BlogList category={mockBlogData.category_id} page={1} keyword={null} />,
+    );
 
     fireEvent.click(screen.getByRole("button", { name: "1" }));
     expect(mockRouterPush).toHaveBeenCalledWith(
@@ -89,7 +93,13 @@ describe("bloglist 컴포넌트", () => {
     });
 
     it("기본 페이지 번호는 1번 페이지이고 다른 페이지 번호를 클릭하면 해당 페이지 번호로 이동된다.", () => {
-      render(<BlogList category={mockBlogData.category_id} page={1} />);
+      render(
+        <BlogList
+          category={mockBlogData.category_id}
+          page={1}
+          keyword={null}
+        />,
+      );
 
       expect(screen.getByRole("button", { name: "1" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "2" })).toBeInTheDocument();
@@ -103,7 +113,13 @@ describe("bloglist 컴포넌트", () => {
     });
 
     it("다음 페이지 버튼을 클릭하면 다음 페이지의 데이터가 렌더링된다.", () => {
-      render(<BlogList category={mockBlogData.category_id} page={1} />);
+      render(
+        <BlogList
+          category={mockBlogData.category_id}
+          page={1}
+          keyword={null}
+        />,
+      );
 
       expect(
         screen.getByRole("button", { name: "다음 페이지" }),
@@ -117,7 +133,13 @@ describe("bloglist 컴포넌트", () => {
     });
 
     it("이전 페이지 버튼을 클릭하면 이전 페이지의 데이터가 렌더링된다.", () => {
-      render(<BlogList category={mockBlogData.category_id} page={2} />);
+      render(
+        <BlogList
+          category={mockBlogData.category_id}
+          page={2}
+          keyword={null}
+        />,
+      );
 
       expect(
         screen.getByRole("button", { name: "이전 페이지" }),
