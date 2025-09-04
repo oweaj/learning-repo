@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const BlogDetail = ({ id }: { id: string }) => {
-  const user = useUser();
+  const { data: user } = useUser();
   const data = useBlogDetail({ id });
   const { mutate: blogDelete } = useBlogDelete();
   const { mutate: blogLike } = useBlogLike();
