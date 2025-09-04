@@ -8,6 +8,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import Link from "next/link";
+import { Suspense } from "react";
 import MainContent from "./blog/_components/MainContent";
 
 const Home = async () => {
@@ -24,7 +25,9 @@ const Home = async () => {
   return (
     <div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <MainContent category={category} page={page} keyword={keyword} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MainContent category={category} page={page} keyword={keyword} />
+        </Suspense>
       </HydrationBoundary>
       <Link
         href={"/blog/create"}
