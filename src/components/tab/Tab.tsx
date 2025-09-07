@@ -1,5 +1,8 @@
 "use client";
 
+import { blogListApi } from "@/lib/api/blog/blog";
+import { useQueryClient } from "@tanstack/react-query";
+
 interface ITabProps {
   item: { id: number; name: string; value: string };
   category: string | null;
@@ -7,6 +10,7 @@ interface ITabProps {
 }
 
 const Tab = ({ item, category, handleQueryChange }: ITabProps) => {
+  const queryClient = useQueryClient();
   const isSelected =
     item.value === "all" ? category === null : item.value === category;
 
@@ -17,6 +21,12 @@ const Tab = ({ item, category, handleQueryChange }: ITabProps) => {
         className={`whitespace-nowrap p-2 font-semibold cursor-pointer hover:text-gray-900 max-xs:text-sm ${
           isSelected ? "text-gray-900" : "text-gray-500"
         }`}
+        onMouseEnter={() =>
+          queryClient.prefetchQuery({
+            queryKey: ["blog_list", item.value, 1, null],
+            queryFn: () => blogListApi(item.value, 1, null),
+          })
+        }
         onClick={() =>
           handleQueryChange({
             newCategory: item.value === "all" ? null : item.value,

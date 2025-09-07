@@ -2,8 +2,8 @@
 
 import Header from "@/components/home/Header";
 import SearchBar from "@/components/home/SearchBar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import BlogCategory from "./BlogCategory";
 import BlogList from "./BlogList";
 
@@ -20,26 +20,12 @@ const MainContent = ({
 }: IMainProps) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const categoryQuery = searchParams.get("category") || initialCategory;
-  const pageQuery = Number(searchParams.get("page")) || initialPage;
-  const keywordQuery = searchParams.get("keyword") || initialKeyword;
-  const [category, setCategory] = useState(categoryQuery);
-  const [page, setPage] = useState(pageQuery);
-  const [keyword, setKeyword] = useState(keywordQuery);
+  const category = searchParams.get("category") || initialCategory;
+  const page = Number(searchParams.get("page")) || initialPage;
+  const keyword = searchParams.get("keyword") || initialKeyword;
+  const queryClient = new QueryClient();
 
-  useEffect(() => {
-    const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search);
-      setCategory(params.get("category") || null);
-      setPage(Number(params.get("page")) || 1);
-      setKeyword(params.get("keyword") || null);
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
-
-  const handleQueryChange = ({
+  const handleQueryChange = async ({
     newCategory,
     newPage,
     newKeyword,
@@ -52,22 +38,17 @@ const MainContent = ({
 
     if (!newCategory) {
       params.delete("category");
-      setCategory(null);
     } else {
       params.set("category", newCategory);
-      setCategory(newCategory);
     }
 
     if (newPage) {
       params.set("page", newPage.toString());
-      setPage(newPage);
     }
 
     if (!newKeyword) {
-      params.delete("keyword");
     } else {
       params.set("keyword", newKeyword);
-      setKeyword(newKeyword);
     }
 
     const queryString = params.toString();
@@ -78,35 +59,34 @@ const MainContent = ({
 
   const handleQueryReset = () => {
     window.history.pushState(null, "", "/");
-    setCategory(initialCategory);
-    setPage(initialPage);
-    setKeyword(initialKeyword);
   };
 
   return (
     <>
       <Header handleQueryReset={handleQueryReset} />
       <div className="relative p-4 max-w-screen-xl h-auto mx-auto pb-24">
-        <main>
-          <div className="space-y-7">
-            <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
-              <BlogCategory
+        <QueryClientProvider client={queryClient}>
+          <main>
+            <div className="space-y-7">
+              <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-4">
+                <BlogCategory
+                  category={category}
+                  handleQueryChange={handleQueryChange}
+                />
+                <SearchBar
+                  keyword={keyword}
+                  handleQueryChange={handleQueryChange}
+                />
+              </div>
+              <BlogList
                 category={category}
-                handleQueryChange={handleQueryChange}
-              />
-              <SearchBar
+                page={page}
                 keyword={keyword}
                 handleQueryChange={handleQueryChange}
               />
             </div>
-            <BlogList
-              category={category}
-              page={page}
-              keyword={keyword}
-              handleQueryChange={handleQueryChange}
-            />
-          </div>
-        </main>
+          </main>
+        </QueryClientProvider>
       </div>
     </>
   );
