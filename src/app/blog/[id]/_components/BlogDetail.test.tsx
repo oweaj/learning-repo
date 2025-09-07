@@ -44,7 +44,7 @@ jest.mock("next/image", () => {
 describe("상세페이지 컴포넌트", () => {
   it("상세 데이터가 없을경우 null을 반환한다.", () => {
     mockBlogDetail.mockReturnValue(null);
-    mockUser.mockReturnValue(mockBlogData.user_id);
+    mockUser.mockReturnValue({ data: mockBlogData.user_id._id });
 
     const { container } = render(<BlogDetail id={mockBlogData._id} />);
     expect(container.firstChild).toBeNull();
@@ -59,6 +59,8 @@ describe("상세페이지 컴포넌트", () => {
       screen.getByText(mockBlogData.content as string),
     ).toBeInTheDocument();
     expect(screen.getByAltText("블로그 상세 이미지")).toBeInTheDocument();
+
+    screen.debug;
     expect(screen.getByAltText("블로그 상세 이미지")).toHaveAttribute(
       "src",
       "/test-image.jpg",
@@ -73,7 +75,7 @@ describe("상세페이지 컴포넌트", () => {
     });
 
     it("로그인 상태가 아니면 상세페이지에 수정 링크가 표시되지 않는다", () => {
-      mockUser.mockReturnValue(null);
+      mockUser.mockReturnValue({ data: null });
       render(<BlogDetail id={mockBlogData._id} />);
 
       expect(screen.queryByText("수정")).not.toBeInTheDocument();
@@ -81,7 +83,7 @@ describe("상세페이지 컴포넌트", () => {
     });
 
     it("작성자가 본인이 아니면 상세페이지에 수정 링크가 표시되지 않는다", () => {
-      mockUser.mockReturnValue("no-userId");
+      mockUser.mockReturnValue({ data: "no-userId" });
       render(<BlogDetail id={mockBlogData._id} />);
 
       expect(screen.queryByText("수정")).not.toBeInTheDocument();
@@ -89,7 +91,7 @@ describe("상세페이지 컴포넌트", () => {
     });
 
     it("작성자가 본인이면 상세페이지에 수정 링크가 표시된다.", () => {
-      mockUser.mockReturnValue(mockBlogData.user_id);
+      mockUser.mockReturnValue({ data: mockBlogData.user_id });
       render(<BlogDetail id={mockBlogData._id} />);
 
       expect(screen.getByText("수정")).toBeInTheDocument();
