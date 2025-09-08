@@ -2,14 +2,15 @@
 
 import type { INavItemType } from "@/components/home/BottomNavbar";
 import { MYPAGE_USER_INFO } from "@/constants/mypage/mypage";
-import { useMyBlogList } from "@/lib/queries/my/useMyBlogList";
-import { useMyLikeBlogList } from "@/lib/queries/my/useMyLikeBlogList";
+import type { IMyBlogDataType, IMyLikeBlogDataType } from "@/types/blog.type";
 import Link from "next/link";
 
-const UserInfo = () => {
-  const { data: queryBlogs } = useMyBlogList();
-  const { data: queryLikeblogs } = useMyLikeBlogList();
+interface IMyInfoType {
+  queryBlogs: IMyBlogDataType;
+  queryLikeblogs: IMyLikeBlogDataType;
+}
 
+const UserInfo = ({ queryBlogs, queryLikeblogs }: IMyInfoType) => {
   return (
     <div className="w-full border rounded-sm py-8 flex justify-center">
       <div className="w-full grid grid-cols-4 gap-6 max-md:grid-cols-2 max-md:gap-8">

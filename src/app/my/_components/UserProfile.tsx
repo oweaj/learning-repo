@@ -2,12 +2,15 @@
 
 import DefaultProfile from "@/assets/images/default-profile.svg";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/lib/queries/auth/useUser";
+import type { IUserDataType } from "@/types/auth.type";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-const UserProfile = () => {
-  const { data: user } = useUser();
+interface IUserProfileType {
+  user: IUserDataType;
+}
+
+const UserProfile = ({ user }: IUserProfileType) => {
   const router = useRouter();
 
   return (
