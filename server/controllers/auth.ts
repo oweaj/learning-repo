@@ -29,7 +29,8 @@ export const signup = async (req: Request, res: Response) => {
       return;
     }
 
-    const hashPassword = await hash(password, 10);
+    const checkPassword = password.toLowerCase();
+    const hashPassword = await hash(checkPassword, 10);
 
     const user = new Auth({
       email,
