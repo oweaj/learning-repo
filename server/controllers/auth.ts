@@ -4,6 +4,7 @@ import type { Request, Response } from "express";
 import { s3 } from "../middleware/image-middleware.js";
 import type { IUserRequest } from "../middleware/user-middleware.js";
 import { Auth } from "../schemas/auth-schema.js";
+import { Blog } from "../schemas/blog-schema.js";
 import { accessToken, refreshToken, verifyToken } from "../utils/jwt.js";
 
 // 회원가입
@@ -241,6 +242,12 @@ export const deleteUser = async (req: Request, res: Response) => {
       deleted: true,
       deleted_at: new Date(),
     });
+
+    await Blog.updateMany({ user_id: user._id }, { deleted_at: new Date() });
+    await Blog.updateMany(
+      { like_user: user._id },
+      { $pull: { like_user: user._id }, $inc: { like_count: -1 } },
+    );
 
     if (!result) {
       res
