@@ -256,8 +256,18 @@ export const deleteUser = async (req: Request, res: Response) => {
       return;
     }
 
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      domain: ".blog-mission.site",
+    });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      domain: ".blog-mission.site",
+    });
     res.status(200).json({ message: "회원 탈퇴 처리 완료" });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
