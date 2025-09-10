@@ -69,7 +69,7 @@ export const signin = async (req: Request, res: Response) => {
       secure: true,
       sameSite: "lax",
       domain: ".blog-mission.site",
-      maxAge: 1 * 60 * 1000,
+      maxAge: 10 * 60 * 1000,
     });
 
     res.cookie("refreshToken", refresh, {
