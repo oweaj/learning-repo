@@ -1,7 +1,6 @@
 "use client";
 
 import PageTitle from "@/components/common/PageTitle";
-import { useUser } from "@/lib/queries/auth/useUser";
 import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
 import { useBlogLike } from "@/lib/queries/blog/useBlogLike";
@@ -11,14 +10,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const BlogDetail = ({ id }: { id: string }) => {
-  const { data: user } = useUser();
   const data = useBlogDetail({ id });
   const { mutate: blogDelete } = useBlogDelete();
   const { mutate: blogLike } = useBlogLike();
 
-  if (!data || !user) return null;
-
-  const isLiked = data.like_user.includes(user._id);
+  if (!data) return null;
 
   const handleBlogLike = () => {
     blogLike(id);
@@ -42,10 +38,10 @@ const BlogDetail = ({ id }: { id: string }) => {
         </div>
         <div className="flex items-center justify-between text-gray-700 font-medium border-b py-1">
           <div className="flex [&>*:not(:last-child)]:after:content-['·'] [&>*:not(:last-child)]:after:mx-2">
-            <p className="font-semibold">{user.name}</p>
+            <p className="font-semibold">{data.user_id.name}</p>
             <p>{dateFormat(data.createdAt)}</p>
           </div>
-          {data.user_id._id === user._id ? (
+          {data.isWriter ? (
             <div className="flex items-center gap-2">
               <Link
                 href={`/blog/edit?id=${id}`}
@@ -63,13 +59,18 @@ const BlogDetail = ({ id }: { id: string }) => {
             </div>
           ) : (
             <div className="flex gap-1">
-              <button type="button" onClick={handleBlogLike}>
+              <button
+                type="button"
+                data-testid="liked-button"
+                onClick={handleBlogLike}
+              >
                 <Star
                   className={`w-[22px] h-[22px] stroke-[1.5] cursor-pointer hover:stroke-yellow-400 ${
-                    isLiked
+                    data.isLiked
                       ? "fill-yellow-400 stroke-yellow-400"
                       : "stroke-gray-500"
-                  }`}
+                  }
+                  `}
                 />
               </button>
               {data.like_count}
