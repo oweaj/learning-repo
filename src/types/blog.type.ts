@@ -14,6 +14,7 @@ export interface IBlogDataType {
   like_count: number;
   like_user: string[];
   isWriter?: boolean;
+  isLiked?: boolean;
 }
 
 export interface IBlogFormDataType {

@@ -21,6 +21,7 @@ export const mockBlogData: IBlogDataType = {
   createdAt: "2025-01-01T00:00:00.000Z",
   updateAt: null,
   isWriter: false,
+  isLiked: false,
 };
 
 export const mockBlogListData: IBlogListType = {
