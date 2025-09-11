@@ -93,10 +93,13 @@ export const blogDetail = async (req: Request, res: Response) => {
     }
 
     const isWriter = blogDetail.user_id._id.toString() === user_id.toString();
+    const isLiked = blogDetail.like_user.some(
+      (userId: string) => userId.toString() === user_id.toString(),
+    );
 
     res.status(200).json({
       message: "블로그 상세 조회 완료",
-      data: { ...blogDetail.toObject(), isWriter },
+      data: { ...blogDetail.toObject(), isWriter, isLiked },
     });
   } catch (error) {
     res.status(500).json({ message: `서버 에러: ${error}` });
