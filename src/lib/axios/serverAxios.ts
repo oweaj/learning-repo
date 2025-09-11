@@ -36,8 +36,8 @@ serverAxios.interceptors.response.use(
         const { accessToken } = await refreshTokenApi();
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return serverAxios(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
+      } catch (error) {
+        return Promise.reject(error);
       }
     }
 

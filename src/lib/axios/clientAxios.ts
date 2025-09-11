@@ -16,15 +16,11 @@ clientAxios.interceptors.response.use(
 
       try {
         const { accessToken } = await refreshTokenApi();
-
-        if (accessToken) {
-          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-        }
-
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return clientAxios(originalRequest);
-      } catch (refreshError) {
+      } catch (error) {
         window.location.href = "/auth/signin";
-        return Promise.reject(refreshError);
+        return Promise.reject(error);
       }
     }
 
