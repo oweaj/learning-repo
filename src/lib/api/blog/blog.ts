@@ -25,7 +25,7 @@ export const blogListApi = async (
   try {
     const isServer = typeof window === "undefined";
     const axiosInstance = isServer ? serverAxios : clientAxios;
-    let query = `page=${page}&limit=10`;
+    let query = `page=${page}`;
 
     if (category) {
       query += `&category=${category}`;
