@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { signinSchema, signupSchema } from "@/schemas/auth.schema";
 import type { IAuthFormType } from "@/types/auth.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -71,7 +72,13 @@ const AuthForm = ({ submit }: { submit: string }) => {
             className={cn("w-full h-full text-base font-bold bg-gray-400")}
             disabled={signinPending}
           >
-            {submit === "signin" ? "로그인" : "회원가입"}
+            {signinPending ? (
+              <LoaderCircle className="size-7 animate-spin" />
+            ) : submit === "signin" ? (
+              "로그인"
+            ) : (
+              "회원가입"
+            )}
           </Button>
           {submit === "signin" && (
             <Button
