@@ -31,3 +31,12 @@ export const mockBlogListData: IBlogListType = {
   totalPages: 1,
   totalCount: 1,
 };
+
+export const mockBlogLikeRankData = [
+  { ...mockBlogData, _id: "test-1", like_count: 5 },
+  { ...mockBlogData, _id: "test-2", like_count: 10 },
+  { ...mockBlogData, _id: "test-3", like_count: 3 },
+  { ...mockBlogData, _id: "test-4", like_count: 0 },
+  { ...mockBlogData, _id: "test-5", like_count: 7 },
+  { ...mockBlogData, _id: "test-6", like_count: 1 },
+];
