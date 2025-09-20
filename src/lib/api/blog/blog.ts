@@ -119,9 +119,7 @@ export const blogLikeApi = async (id: string) => {
 // 블로그 공감 랭킹
 export const blogLikeRankApi = async () => {
   try {
-    const isServer = typeof window === "undefined";
-    const axiosInstance = isServer ? serverAxios : clientAxios;
-    const { data } = await axiosInstance.get("/api/blog/like_rank");
+    const { data } = await clientAxios.get("/api/blog/like_rank");
 
     return data.blogRank;
   } catch (error) {

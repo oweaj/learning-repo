@@ -1,5 +1,4 @@
 import { clientAxios } from "@/lib/axios/clientAxios";
-import { serverAxios } from "@/lib/axios/serverAxios";
 import type { INoticeFormDataType } from "@/types/mypage.type";
 import axios from "axios";
 
@@ -74,9 +73,7 @@ export const noticeDeleteApi = async (id: string) => {
 // 등록한 블로그
 export const myblogListApi = async () => {
   try {
-    const isServer = typeof window === "undefined";
-    const axiosInstance = isServer ? serverAxios : clientAxios;
-    const { data } = await axiosInstance.get("/api/my/blog");
+    const { data } = await clientAxios.get("/api/my/blog");
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -102,9 +99,7 @@ export const myblogLikeApi = async () => {
 // 공감한 블로그 목록
 export const myLikeBlogsApi = async () => {
   try {
-    const isServer = typeof window === "undefined";
-    const axiosInstance = isServer ? serverAxios : clientAxios;
-    const { data } = await axiosInstance.get("/api/my/like-blogs");
+    const { data } = await clientAxios.get("/api/my/like-blogs");
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
