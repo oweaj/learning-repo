@@ -23,44 +23,7 @@ jest.mock("@/lib/queries/auth/useUser", () => ({
   useUser: () => mockUser(),
 }));
 
-jest.mock("@/components/modal/Modal", () => {
-  return function MockModal({
-    isOpen,
-    setIsOpen,
-    content,
-    trigger,
-    actionButton,
-  }: any) {
-    return (
-      <div data-testid="mock-modal">
-        <button
-          type="button"
-          data-testid="modal-trigger"
-          onClick={() => setIsOpen(true)}
-        >
-          {trigger}
-        </button>
-        {isOpen && (
-          <div>
-            <button
-              type="button"
-              data-testid="modal-close"
-              onClick={() => setIsOpen(false)}
-            />
-            <p>{content}</p>
-            <div>{actionButton}</div>
-          </div>
-        )}
-      </div>
-    );
-  };
-});
-
 describe("blog card 컴포넌트", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("해당 블로그 게시글이 작성자 본인이 아니면 모달 영역이 렌더링 되지않는다", () => {
     mockUser.mockReturnValue({
       data: {
@@ -71,7 +34,9 @@ describe("blog card 컴포넌트", () => {
     });
     render(<BlogCard item={mockBlogData} />);
 
-    expect(screen.queryByTestId("mock-modal")).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText("블로그 옵션 트리거"),
+    ).not.toBeInTheDocument();
   });
 
   it("해당 블로그 게시글이 작성자 본인이면 모달 영역이 렌더링된다.", () => {
@@ -84,24 +49,10 @@ describe("blog card 컴포넌트", () => {
     });
     render(<BlogCard item={mockBlogData} />);
 
-    expect(screen.getByTestId("mock-modal")).toBeInTheDocument();
+    expect(screen.getByLabelText("블로그 옵션 트리거")).toBeInTheDocument();
   });
 
-  it("모달 트리거를 클릭하면 모달이 열리고 해당 콘텐츠가 표시되어야 한다.", () => {
-    render(<BlogCard item={mockBlogData} />);
-
-    expect(screen.getByTestId("modal-trigger")).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId("modal-trigger"));
-
-    expect(screen.getByTestId("mock-modal")).toBeInTheDocument();
-    expect(screen.getByText(mockBlogData.title)).toBeInTheDocument();
-    expect(
-      screen.getByText(mockBlogData.content as string),
-    ).toBeInTheDocument();
-    expect(screen.getByAltText("블로그 메인 이미지")).toBeInTheDocument();
-  });
-
-  describe("모달 open 상태의 버튼 동작", () => {
+  describe("모달 open 상태", () => {
     beforeEach(() => {
       mockUser.mockReturnValue({
         data: {
@@ -111,15 +62,23 @@ describe("blog card 컴포넌트", () => {
         },
       });
       render(<BlogCard item={mockBlogData} />);
+      const trigger = screen.getByLabelText("블로그 옵션 트리거");
+      expect(trigger).toBeInTheDocument();
+      fireEvent.click(trigger);
+    });
 
-      expect(screen.getByTestId("modal-trigger")).toBeInTheDocument();
-      fireEvent.click(screen.getByTestId("modal-trigger"));
+    it("모달 트리거를 클릭하면 모달이 열리고 해당 콘텐츠가 표시되어야 한다.", () => {
+      expect(screen.getByText(mockBlogData.title)).toBeInTheDocument();
+      expect(
+        screen.getByText(mockBlogData.content as string),
+      ).toBeInTheDocument();
     });
 
     it("모달 상단 X 아이콘을 클릭하면 모달이 닫혀야한다.", () => {
-      expect(screen.getByTestId("modal-close")).toBeInTheDocument();
-      fireEvent.click(screen.getByTestId("modal-close"));
+      const modalCloes = screen.getByTestId("modal-close");
+      expect(modalCloes).toBeInTheDocument();
 
+      fireEvent.click(modalCloes);
       expect(screen.queryByTestId("modal-close")).not.toBeInTheDocument();
     });
 
