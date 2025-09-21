@@ -79,7 +79,10 @@ const BlogCard = ({ item }: { item: IBlogDataType }) => {
               <span className="inline-block truncate">{`블로그 이름 : ${title}`}</span>
             }
             trigger={
-              <EllipsisVertical className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer" />
+              <EllipsisVertical
+                className="w-6 h-6 p-1 text-gray-600 hover:bg-gray-200 hover:rounded-lg cursor-pointer"
+                aria-label="블로그 옵션 트리거"
+              />
             }
             actionButton={
               <>
