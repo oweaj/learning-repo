@@ -8,7 +8,7 @@ jest.mock("@/app/blog/_components/BlogCard", () => ({
   default: ({ item }: { item: any }) => <li>{item._id}</li>,
 }));
 
-describe("마이페이지 컴포넌트", () => {
+describe("마이페이지 작성한 블로그", () => {
   it("내가 작성한 블로그가 존재하면 해당 데이터가 랜더링 된다.", () => {
     render(<MyDataList data={[mockBlogData]} />);
 
