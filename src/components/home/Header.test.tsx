@@ -1,10 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Header from "@/components/home/Header";
+import { mockBlogData } from "@/tests/mockData/mockBlogData";
 
 const mockLogout = jest.fn();
 const mockAlert = jest.fn();
 const mockRouterPush = jest.fn();
+const mockUser = jest.fn();
 window.alert = mockAlert;
 
 jest.mock("@/lib/queries/auth/useLogout", () => ({
@@ -19,9 +21,20 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
+jest.mock("@/lib/queries/auth/useUser", () => ({
+  useUser: () => mockUser(),
+}));
+
 describe("헤더 컴포넌트", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUser.mockReturnValue({
+      data: {
+        _id: mockBlogData.user_id._id,
+        email: mockBlogData.user_id.email,
+        name: mockBlogData.user_id.name,
+      },
+    });
   });
 
   it("로고, 마이페이지, 로그아웃 요소가 렌더링된다.", () => {
