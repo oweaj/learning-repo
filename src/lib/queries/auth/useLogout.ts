@@ -9,7 +9,7 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
-      router.replace("/auth/signin");
+      router.replace("/");
       queryClient.removeQueries({ queryKey: ["user"] });
       queryClient.removeQueries({ queryKey: ["myBlogs"] });
     },

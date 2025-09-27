@@ -4,6 +4,7 @@ import { BOTTOM_NAV_LIST } from "@/constants/blog/blog";
 import { getUserApi } from "@/lib/api/auth/auth";
 import { blogLikeRankApi } from "@/lib/api/blog/blog";
 import { myLikeBlogsApi, myblogListApi } from "@/lib/api/my/mypage";
+import { useUser } from "@/lib/queries/auth/useUser";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,6 +20,7 @@ export interface INavItemType {
 const BottomNavbar = () => {
   const pathname = usePathname();
   const queryClient = useQueryClient();
+  const { data: user } = useUser();
 
   const handleNavPrefetch = (path: string | null) => {
     if (path === "/blog_rank") {
@@ -28,7 +30,7 @@ const BottomNavbar = () => {
       });
     }
 
-    if (path === "/my") {
+    if (path === "/my" && user?._id) {
       queryClient.prefetchQuery({ queryKey: ["user"], queryFn: getUserApi });
       queryClient.prefetchQuery({
         queryKey: ["myBlogs"],
@@ -50,11 +52,19 @@ const BottomNavbar = () => {
             className="p-1"
             onMouseEnter={() => handleNavPrefetch(path)}
           >
-            <Link href={path ? path : "/"}>
-              <Icon
-                className={`w-7 h-7 stroke-[1.5] ${pathname === path && "stroke-orange-500"}`}
-              />
-            </Link>
+            {!user?._id && name === "user" ? (
+              <Link href={"/auth/signin"}>
+                <Icon
+                  className={`w-7 h-7 stroke-[1.5] ${pathname === path && "stroke-orange-500"}`}
+                />
+              </Link>
+            ) : (
+              <Link href={path ? path : "/"}>
+                <Icon
+                  className={`w-7 h-7 stroke-[1.5] ${pathname === path && "stroke-orange-500"}`}
+                />
+              </Link>
+            )}
           </li>
         ))}
       </ul>

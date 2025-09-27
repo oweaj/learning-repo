@@ -1,10 +1,12 @@
 "use client";
 
 import { useLogout } from "@/lib/queries/auth/useLogout";
+import { useUser } from "@/lib/queries/auth/useUser";
 import { useRouter } from "next/navigation";
 
 const Header = ({ handleQueryReset }: { handleQueryReset?: () => void }) => {
   const { mutate: logout } = useLogout();
+  const { data: user } = useUser();
   const router = useRouter();
 
   const handleLogoClick = () => {
@@ -12,6 +14,14 @@ const Header = ({ handleQueryReset }: { handleQueryReset?: () => void }) => {
       handleQueryReset();
     } else {
       router.push("/");
+    }
+  };
+
+  const handleAuthClick = (type: string) => {
+    if (type === "login") {
+      router.push("/auth/signin");
+    } else {
+      logout();
     }
   };
 
@@ -30,15 +40,25 @@ const Header = ({ handleQueryReset }: { handleQueryReset?: () => void }) => {
           className="cursor-pointer hover:font-semibold"
           onClick={() => router.push("/my")}
         >
-          마이페이지
+          {user?._id && "마이페이지"}
         </button>
-        <button
-          type="button"
-          className="cursor-pointer hover:font-semibold"
-          onClick={() => logout()}
-        >
-          로그아웃
-        </button>
+        {user?._id ? (
+          <button
+            type="button"
+            className="cursor-pointer hover:font-semibold"
+            onClick={() => handleAuthClick("logout")}
+          >
+            로그아웃
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="cursor-pointer hover:font-semibold"
+            onClick={() => handleAuthClick("login")}
+          >
+            로그인
+          </button>
+        )}
       </div>
     </header>
   );

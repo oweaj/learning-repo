@@ -18,7 +18,6 @@ clientAxios.interceptors.response.use(
         await refreshTokenApi();
         return clientAxios(originalRequest);
       } catch (error) {
-        window.location.href = "/auth/signin";
         return Promise.reject(error);
       }
     }
