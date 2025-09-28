@@ -19,7 +19,7 @@ router.post("/signup", signup);
 router.post("/signin", signin);
 router.post("/logout", logout);
 router.post("/refresh", activeRefreshToken);
-router.get("/user", getUser);
+router.get("/user", isLoginUser, getUser);
 router.patch("/update", isLoginUser, profileUpdate);
 router.patch(
   "/image/:prefix",
