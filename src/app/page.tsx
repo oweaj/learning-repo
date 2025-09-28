@@ -1,13 +1,9 @@
-import BlogCreate from "@/assets/icons/icon_create.svg";
-import BottomNavbar from "@/components/home/BottomNavbar";
-
 import { blogListApi } from "@/lib/api/blog/blog";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import Link from "next/link";
 import { Suspense } from "react";
 import MainContent from "./blog/_components/MainContent";
 
@@ -23,20 +19,11 @@ const Home = async () => {
   });
 
   return (
-    <div>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <MainContent category={category} page={page} keyword={keyword} />
-        </Suspense>
-      </HydrationBoundary>
-      <Link
-        href={"/blog/create"}
-        className="fixed bottom-20 right-4 flex items-center justify-center w-16 h-16 rounded-full bg-orange-400 hover:scale-105 hover:bg-black transition-all duration-300"
-      >
-        <BlogCreate className="w-8 h-8" />
-      </Link>
-      <BottomNavbar />
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <MainContent category={category} page={page} keyword={keyword} />
+      </Suspense>
+    </HydrationBoundary>
   );
 };
 
