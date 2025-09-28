@@ -146,9 +146,14 @@ export const activeRefreshToken = (req: Request, res: Response) => {
 
 // 유저 정보 조회
 export const getUser = (req: Request, res: Response) => {
-  const user = (req as IUserRequest).user;
+  const user = (req as IUserRequest).user || null;
 
-  res.status(200).json({ user, message: "유저 정보 조회 완료" });
+  res
+    .status(200)
+    .json({
+      user,
+      message: user ? "유저 정보 조회 완료" : "로그인 유저 정보 없음",
+    });
 };
 
 // 유저 프로필 수정
