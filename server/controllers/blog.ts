@@ -95,9 +95,10 @@ export const blogDetail = async (req: Request, res: Response) => {
       return;
     }
 
-    const isWriter = user_id
-      ? blogDetail.user_id._id.toString() === user_id.toString()
-      : false;
+    const isWriter =
+      user_id === null
+        ? null
+        : blogDetail.user_id._id.toString() === user_id.toString();
     const isLiked = user_id
       ? blogDetail.like_user.some(
           (userId: string) => userId.toString() === user_id.toString(),
