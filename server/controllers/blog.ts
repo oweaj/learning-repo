@@ -7,7 +7,7 @@ import { Blog } from "../schemas/blog-schema.js";
 export const blogCreate = async (req: Request, res: Response) => {
   try {
     const { title, main_image, sub_image, category_id, content } = req.body;
-    const user_id = (req as IUserRequest).user._id;
+    const user_id = (req as IUserRequest).user?._id || null;
 
     if (!title || !main_image || !category_id || !content) {
       res.status(400).json({ message: "필수 항목을 모두 입력해주세요." });
@@ -118,7 +118,7 @@ export const blogUpdate = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, main_image, sub_image, category_id, content } = req.body;
-    const user_id = (req as IUserRequest).user._id;
+    const user_id = (req as IUserRequest).user?._id || null;
 
     const blogData = await Blog.findById(id);
     if (!blogData) {
@@ -126,7 +126,7 @@ export const blogUpdate = async (req: Request, res: Response) => {
       return;
     }
 
-    if (blogData.user_id.toString() !== user_id.toString()) {
+    if (!user_id || blogData.user_id.toString() !== user_id.toString()) {
       res.status(403).json({ message: "해당 블로그 수정 권한이 없습니다." });
       return;
     }
@@ -171,7 +171,7 @@ export const blogImageUpload = async (req: Request, res: Response) => {
 export const blogDelete = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const user_id = (req as IUserRequest).user._id;
+    const user_id = (req as IUserRequest).user?._id || null;
 
     const blog = await Blog.findById(id);
     if (!blog) {
@@ -179,7 +179,7 @@ export const blogDelete = async (req: Request, res: Response) => {
       return;
     }
 
-    if (blog.user_id.toString() !== user_id.toString()) {
+    if (!user_id || blog.user_id.toString() !== user_id.toString()) {
       res.status(403).json({ message: "블로그 삭제 권한이 없습니다." });
       return;
     }
@@ -197,7 +197,7 @@ export const blogDelete = async (req: Request, res: Response) => {
 export const blogLike = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const user_id = (req as IUserRequest).user._id;
+    const user_id = (req as IUserRequest).user?._id || null;
 
     const checkBlog = await Blog.findById(id);
     if (!checkBlog) {

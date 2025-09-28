@@ -148,21 +148,19 @@ export const activeRefreshToken = (req: Request, res: Response) => {
 export const getUser = (req: Request, res: Response) => {
   const user = (req as IUserRequest).user || null;
 
-  res
-    .status(200)
-    .json({
-      user,
-      message: user ? "유저 정보 조회 완료" : "로그인 유저 정보 없음",
-    });
+  res.status(200).json({
+    user,
+    message: user ? "유저 정보 조회 완료" : "로그인 유저 정보 없음",
+  });
 };
 
 // 유저 프로필 수정
 export const profileUpdate = async (req: Request, res: Response) => {
   try {
-    const user = (req as IUserRequest).user;
+    const user_id = (req as IUserRequest).user?._id || null;
     const { name, introduce, like_category } = req.body;
 
-    const userData = await Auth.findById(user._id);
+    const userData = await Auth.findById(user_id);
     if (!userData) {
       res.status(404).json({ message: "존재하지 않는 사용자 입니다." });
       return;
@@ -175,7 +173,7 @@ export const profileUpdate = async (req: Request, res: Response) => {
     };
 
     await Auth.findByIdAndUpdate(
-      user._id,
+      user_id,
       { $set: updateUserData },
       { new: true },
     );
@@ -189,7 +187,7 @@ export const profileUpdate = async (req: Request, res: Response) => {
 // 유저 이미지 업로드
 export const profileImageUpload = async (req: Request, res: Response) => {
   try {
-    const user = (req as IUserRequest).user;
+    const user_id = (req as IUserRequest).user?._id || null;
 
     if (!req.file) {
       res.status(400).json({ message: "이미지 파일이 없습니다." });
@@ -197,7 +195,7 @@ export const profileImageUpload = async (req: Request, res: Response) => {
     }
 
     await Auth.findByIdAndUpdate(
-      user._id,
+      user_id,
       { profile_image: (req.file as Express.MulterS3.File).location },
       { new: true },
     );
@@ -212,7 +210,7 @@ export const profileImageUpload = async (req: Request, res: Response) => {
 // 유저 이미지 삭제
 export const profileImageDelete = async (req: Request, res: Response) => {
   try {
-    const user = (req as IUserRequest).user;
+    const user_id = (req as IUserRequest).user?._id || null;
     const { key } = req.params;
 
     if (!key) {
@@ -227,7 +225,7 @@ export const profileImageDelete = async (req: Request, res: Response) => {
 
     await s3.send(deleteImage);
     await Auth.findByIdAndUpdate(
-      user._id,
+      user_id,
       { profile_image: null },
       { new: true },
     );
@@ -241,17 +239,17 @@ export const profileImageDelete = async (req: Request, res: Response) => {
 // 계정 탈퇴
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const user = (req as IUserRequest).user;
+    const user_id = (req as IUserRequest).user?._id || null;
 
-    const result = await Auth.findByIdAndUpdate(user._id, {
+    const result = await Auth.findByIdAndUpdate(user_id, {
       deleted: true,
       deleted_at: new Date(),
     });
 
-    await Blog.updateMany({ user_id: user._id }, { deleted_at: new Date() });
+    await Blog.updateMany({ user_id: user_id }, { deleted_at: new Date() });
     await Blog.updateMany(
-      { like_user: user._id },
-      { $pull: { like_user: user._id }, $inc: { like_count: -1 } },
+      { like_user: user_id },
+      { $pull: { like_user: user_id }, $inc: { like_count: -1 } },
     );
 
     if (!result) {

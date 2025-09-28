@@ -12,13 +12,13 @@ export interface IUserRequest extends Request {
     introduce: string | null;
     like_category: string[];
     deleted: boolean;
-  };
+  } | null;
 }
 
 // 현재 로그인한 유저 정보
 export const isLoginUser = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   const cookieToken = req.cookies.accessToken;
@@ -29,22 +29,22 @@ export const isLoginUser = async (
     (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null);
 
   if (!token) {
-    res.status(401).json({ message: "토큰이 존재하지 않습니다." });
-    return;
+    (req as IUserRequest).user = null;
+    return next();
   }
 
   const decoded = verifyToken(token);
 
   if (!decoded) {
-    res.status(401).json({ message: "유효하지 않은 토큰입니다." });
-    return;
+    (req as IUserRequest).user = null;
+    return next();
   }
 
   const user = await Auth.findById(decoded._id).select("-password");
 
   if (!user) {
-    res.status(401).json({ message: "해당 유저가 존재하지 않습니다." });
-    return;
+    (req as IUserRequest).user = null;
+    return next();
   }
 
   (req as IUserRequest).user = user;

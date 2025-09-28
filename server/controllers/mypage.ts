@@ -7,7 +7,7 @@ import { Notice } from "../schemas/notice-schema";
 export const noticeCreate = async (req: Request, res: Response) => {
   try {
     const { title, content } = req.body;
-    const userName = (req as IUserRequest).user.name;
+    const userName = (req as IUserRequest).user?.name || null;
 
     if (!title || !content) {
       res.status(400).json({ message: "필수 항목을 모두 입력해주세요." });
@@ -51,7 +51,7 @@ export const noticeUpdate = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { title, content } = req.body;
-    const userName = (req as IUserRequest).user.name;
+    const userName = (req as IUserRequest).user?.name || null;
 
     if (userName !== "관리자") {
       res.status(403).json({ message: "공지사항을 수정할 권한이 없습니다." });
@@ -104,7 +104,7 @@ export const noticeDetail = async (req: Request, res: Response) => {
 export const noticeDelete = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userName = (req as IUserRequest).user.name;
+    const userName = (req as IUserRequest).user?.name || null;
 
     if (userName !== "관리자") {
       res
@@ -131,7 +131,7 @@ export const noticeDelete = async (req: Request, res: Response) => {
 // 등록한 블로그 및 최대 공감 수
 export const myBlogs = async (req: Request, res: Response) => {
   try {
-    const user_id = (req as IUserRequest).user._id;
+    const user_id = (req as IUserRequest).user?._id || null;
     let maxLikeCount = 0;
 
     const result = await Blog.find({ user_id, deleted_at: null })
@@ -158,7 +158,7 @@ export const myBlogs = async (req: Request, res: Response) => {
 // 공감한 블로그
 export const myLikeBlogs = async (req: Request, res: Response) => {
   try {
-    const user_id = (req as IUserRequest).user._id;
+    const user_id = (req as IUserRequest).user?._id || null;
 
     const result = await Blog.find({ like_user: user_id, deleted_at: null })
       .sort({ createdAt: -1 })
