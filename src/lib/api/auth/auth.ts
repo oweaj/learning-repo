@@ -65,9 +65,9 @@ export const getUserApi = async () => {
     return data.user;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 401) {
-      return null;
+      const message = error.response?.data?.message || error.message;
+      throw new Error(message);
     }
-    throw error;
   }
 };
 
