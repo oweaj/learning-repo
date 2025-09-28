@@ -89,7 +89,9 @@ export const blogDetail = async (req: Request, res: Response) => {
     );
 
     if (!blogDetail) {
-      res.status(404).json({ message: "존재하지 않는 블로그입니다." });
+      res
+        .status(404)
+        .json({ data: null, message: "존재하지 않는 블로그입니다." });
       return;
     }
 
@@ -107,7 +109,7 @@ export const blogDetail = async (req: Request, res: Response) => {
       data: { ...blogDetail.toObject(), isWriter, isLiked },
     });
   } catch (error) {
-    res.status(500).json({ message: `서버 에러: ${error}` });
+    res.status(500).json({ data: null, message: `서버 에러: ${error}` });
   }
 };
 
