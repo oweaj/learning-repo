@@ -234,7 +234,9 @@ export const blogLikeRank = async (_req: Request, res: Response) => {
       like_count: { $gt: 0 },
     })
       .sort({ like_count: -1, createdAt: -1 })
-      .limit(10);
+      .populate("user_id", "email name profile_image")
+      .limit(10)
+      .lean();
 
     res.status(200).json({ message: "공감 랭킹 조회 완료", blogRank });
   } catch (error) {
