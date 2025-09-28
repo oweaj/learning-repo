@@ -8,16 +8,22 @@ import { dateFormat } from "@/utils/dateFormat";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const BlogDetail = ({ id }: { id: string }) => {
   const data = useBlogDetail({ id });
   const { mutate: blogDelete } = useBlogDelete();
   const { mutate: blogLike } = useBlogLike();
+  const router = useRouter();
 
   if (!data) return null;
 
   const handleBlogLike = () => {
-    blogLike(id);
+    if (data.isWriter === null) {
+      router.push("/auth/signin");
+    } else {
+      blogLike(id);
+    }
   };
 
   return (
