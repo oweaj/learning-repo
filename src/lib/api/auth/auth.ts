@@ -64,11 +64,10 @@ export const getUserApi = async () => {
     const { data } = await clientAxios.get("/api/auth/user");
     return data.user;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      return null;
     }
-    return { user: null };
+    throw error;
   }
 };
 
