@@ -39,19 +39,23 @@ const MainContent = ({
   }) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    if (!newCategory) {
-      params.delete("category");
-    } else {
+    if (newCategory) {
       params.set("category", newCategory);
+      params.set("page", "1");
+      params.delete("keyword");
+    } else {
+      params.delete("category");
+      params.delete("keyword");
     }
 
     if (newPage) {
       params.set("page", newPage.toString());
     }
 
-    if (!newKeyword) {
-    } else {
+    if (newKeyword) {
       params.set("keyword", newKeyword);
+      params.set("page", "1");
+      params.delete("category");
     }
 
     const queryString = params.toString();
