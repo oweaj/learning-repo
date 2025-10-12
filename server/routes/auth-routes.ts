@@ -27,12 +27,7 @@ router.patch(
   s3ImageUpload.single("file"),
   profileImageUpload,
 );
-router.delete(
-  "/image/:key",
-  isLoginUser,
-  s3ImageUpload.single("file"),
-  profileImageDelete,
-);
+router.delete("/image/:key", isLoginUser, profileImageDelete);
 router.delete("/delete", isLoginUser, deleteUser);
 
 export default router;
