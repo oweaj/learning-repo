@@ -18,7 +18,7 @@ export interface IUserRequest extends Request {
 // 현재 로그인한 유저 정보
 export const isLoginUser = async (
   req: Request,
-  _res: Response,
+  res: Response,
   next: NextFunction,
 ) => {
   const cookieToken = req.cookies.accessToken;
@@ -29,24 +29,19 @@ export const isLoginUser = async (
     (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null);
 
   if (!token) {
-    (req as IUserRequest).user = null;
-    return next();
+    res.status(401).json({ message: "토큰이 존재하지 않습니다." });
+    return;
   }
 
   const decoded = verifyToken(token);
 
   if (!decoded) {
-    (req as IUserRequest).user = null;
-    return next();
+    res.status(401).json({ message: "유효하지 않은 토큰입니다." });
+    return;
   }
 
   const user = await Auth.findById(decoded._id).select("-password");
 
-  if (!user) {
-    (req as IUserRequest).user = null;
-    return next();
-  }
-
-  (req as IUserRequest).user = user;
+  (req as IUserRequest).user = user || null;
   next();
 };
