@@ -71,7 +71,7 @@ export const signin = async (req: Request, res: Response) => {
       secure: true,
       sameSite: "lax",
       domain: ".blog-mission.site",
-      maxAge: 10 * 60 * 1000,
+      maxAge: 1 * 60 * 1000,
     });
 
     res.cookie("refreshToken", refresh, {
@@ -135,7 +135,7 @@ export const activeRefreshToken = (req: Request, res: Response) => {
     secure: true,
     sameSite: "lax",
     domain: ".blog-mission.site",
-    maxAge: 10 * 60 * 1000,
+    maxAge: 1 * 60 * 1000,
   });
 
   res.status(200).json({

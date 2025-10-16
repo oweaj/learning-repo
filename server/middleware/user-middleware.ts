@@ -35,7 +35,10 @@ export const isLoginUser = async (
 
   const decoded = verifyToken(token);
 
+  console.log("토큰 유효", decoded);
+
   if (!decoded) {
+    console.log("토큰 유효 실패", decoded);
     res.status(401).json({ message: "토큰이 만료되거나 유효하지 않습니다." });
     return;
   }
