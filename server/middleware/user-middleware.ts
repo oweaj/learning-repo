@@ -21,25 +21,28 @@ export const isLoginUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const cookieToken = req.cookies.accessToken;
+  const accessToken = req.cookies.accessToken;
+  const refreshToken = req.cookies.refreshToken;
   const authHeader = req.headers.authorization;
 
   const token =
-    cookieToken ||
+    accessToken ||
     (authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : null);
 
   if (!token) {
     (req as IUserRequest).user = null;
+
+    if (refreshToken) {
+      res.status(401).json({ message: "토큰이 만료되었습니다." });
+      return;
+    }
     return next();
   }
 
   const decoded = verifyToken(token);
 
-  console.log("토큰 유효", decoded);
-
   if (!decoded) {
-    console.log("토큰 유효 실패", decoded);
-    res.status(401).json({ message: "토큰이 만료되거나 유효하지 않습니다." });
+    res.status(401).json({ message: "토큰이 유효하지 않습니다." });
     return;
   }
 
