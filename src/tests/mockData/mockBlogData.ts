@@ -1,4 +1,5 @@
 import type { IBlogDataType, IBlogListType } from "@/types/blog.type";
+import type { INoticeFormDataType } from "@/types/mypage.type";
 
 export const mockBlogData: IBlogDataType = {
   _id: "test-id",
@@ -22,6 +23,11 @@ export const mockBlogData: IBlogDataType = {
   updateAt: null,
   isWriter: false,
   isLiked: false,
+};
+
+export const mockNoticeData: INoticeFormDataType = {
+  title: "마이페이지 공지사항 테스트 제목",
+  content: "공지사항 테스트 내용 입력 입니다.",
 };
 
 export const mockBlogListData: IBlogListType = {
