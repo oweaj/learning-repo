@@ -53,8 +53,6 @@ describe("마이페이지 notice 컴포넌트", () => {
       mockNoticeData.title,
     );
     expect(screen.getByText(mockNoticeData.content)).toBeInTheDocument();
-
-    screen.debug();
   });
 
   describe("notice form 버튼", () => {
