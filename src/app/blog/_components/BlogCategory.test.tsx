@@ -22,8 +22,6 @@ describe("블로그 카테고리 컴포넌트", () => {
 
     expect(tabs).toHaveLength(BLOG_CATEGORY.length);
 
-    screen.debug();
-
     tabs.forEach((tab, i) => {
       const props = JSON.parse(tab.getAttribute("data-props") || "");
       expect(props.item.id).toBe(BLOG_CATEGORY[i].id);

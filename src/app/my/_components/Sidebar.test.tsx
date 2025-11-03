@@ -30,8 +30,6 @@ describe("마이페이지 사이드바", () => {
     expect(screen.getByText("공감한 블로그")).toBeInTheDocument();
     expect(screen.getByText("프로필 수정")).toBeInTheDocument();
     expect(screen.getByText("회원 탈퇴")).toBeInTheDocument();
-
-    screen.debug();
   });
 
   it("사이드바 목록을 클릭하면 해당 페이지로 이동된다.", () => {

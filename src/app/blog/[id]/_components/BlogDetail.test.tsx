@@ -52,7 +52,6 @@ describe("상세페이지 컴포넌트", () => {
     ).toBeInTheDocument();
     expect(screen.getByAltText("블로그 상세 이미지")).toBeInTheDocument();
 
-    screen.debug;
     expect(screen.getByAltText("블로그 상세 이미지")).toHaveAttribute(
       "src",
       "/test-image.jpg",
