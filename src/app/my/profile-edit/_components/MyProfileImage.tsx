@@ -59,6 +59,7 @@ const MyProfileImage = () => {
             type="file"
             className="hidden"
             onChange={handleFileChange}
+            data-testid={"profile-image-upload"}
           />
           <Button type="button" variant="outline" onClick={handleProfileImage}>
             이미지 변경
