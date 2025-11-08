@@ -1,6 +1,12 @@
 import { compare } from "bcryptjs";
 import NextAuth from "next-auth";
-import type { DefaultSession, DefaultUser, Session, User } from "next-auth";
+import type {
+  AuthOptions,
+  DefaultSession,
+  DefaultUser,
+  Session,
+  User,
+} from "next-auth";
 import type { DefaultJWT, JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connectDB from "./lib/database/db";
@@ -31,10 +37,10 @@ declare module "next-auth" {
   }
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         email: { label: "email", type: "email" },
         password: { label: "password", type: "password" },
@@ -72,7 +78,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
   callbacks: {
     async jwt({ token, user }: { token: JWT; user: User }) {
       if (user) {
@@ -96,4 +102,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       };
     },
   },
-});
+};
+
+export default NextAuth(authOptions);

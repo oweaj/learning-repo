@@ -59,17 +59,17 @@ export const refreshTokenApi = async () => {
 };
 
 // 유저 정보 조회
-export const getUserApi = async () => {
-  try {
-    const { data } = await clientAxios.get("/api/auth/user");
-    return data.user;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
-    }
-  }
-};
+// export const getUserApi = async () => {
+//   try {
+//     const { data } = await clientAxios.get("/api/auth/user");
+//     return data.user;
+//   } catch (error) {
+//     if (axios.isAxiosError(error) && error.response?.status === 401) {
+//       const message = error.response?.data?.message || error.message;
+//       throw new Error(message);
+//     }
+//   }
+// };
 
 // 유저 정보 수정
 export const userUpdateApi = async (formData: IMyProfileDataType) => {

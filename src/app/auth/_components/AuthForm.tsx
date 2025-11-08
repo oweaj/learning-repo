@@ -10,21 +10,26 @@ import { signinSchema, signupSchema } from "@/schemas/auth.schema";
 import type { IAuthFormType } from "@/types/auth.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 const AuthForm = ({ submit }: { submit: string }) => {
-  const router = useRouter();
-  const { mutate: signin, isPending: signinPending } = useSignin();
+  const { mutate: _signin, isPending: signinPending } = useSignin();
   const { mutate: signup, isPending: signupPending } = useSignup();
+  const router = useRouter();
+
   const form = useForm<IAuthFormType>({
     defaultValues: { email: "", password: "", name: "", passwordConfirm: "" },
     resolver: zodResolver(submit === "signin" ? signinSchema : signupSchema),
   });
 
-  const onSubmit = (data: IAuthFormType) => {
+  const onSubmit = async (data: IAuthFormType) => {
     if (submit === "signin") {
-      signin(data);
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+      });
     } else {
       signup(data);
     }

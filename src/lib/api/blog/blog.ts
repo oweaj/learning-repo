@@ -1,5 +1,4 @@
 import { clientAxios } from "@/lib/axios/clientAxios";
-import { serverAxios } from "@/lib/axios/serverAxios";
 import type { IBlogFormDataType } from "@/types/blog.type";
 import axios from "axios";
 
@@ -23,8 +22,6 @@ export const blogListApi = async (
   keyword?: string | null,
 ) => {
   try {
-    const isServer = typeof window === "undefined";
-    const axiosInstance = isServer ? serverAxios : clientAxios;
     let query = `page=${page}`;
 
     if (category) {
@@ -35,9 +32,12 @@ export const blogListApi = async (
       query += `&keyword=${encodeURIComponent(keyword)}`;
     }
 
-    const { data } = await axiosInstance.get(`/api/blog/list?${query}`);
+    const res = await fetch(`/api/blog/list?${query}`, {
+      next: { revalidate: 60, tags: ["blog_list"] },
+    });
 
-    return data.data;
+    const { data } = await res.json();
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.message || error.message;
@@ -49,10 +49,12 @@ export const blogListApi = async (
 // 블로그 상세
 export const blogDetailApi = async (id: string) => {
   try {
-    const isServer = typeof window === "undefined";
-    const axiosInstance = isServer ? serverAxios : clientAxios;
-    const { data } = await axiosInstance.get(`/api/blog/${id}`);
-    return data.data;
+    const res = await fetch(`/api/blog/${id}`, {
+      next: { revalidate: 60, tags: ["blogDetail"] },
+    });
+
+    const { data } = await res.json();
+    return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const message = error.response?.data?.message || error.message;
