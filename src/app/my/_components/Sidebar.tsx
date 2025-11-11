@@ -3,8 +3,8 @@
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
 import { MYPAGE_SIDE_BAR } from "@/constants/mypage/mypage";
-import { useUser } from "@/lib/queries/auth/useUser";
 import { useUserDelete } from "@/lib/queries/auth/useUserDelete";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -12,7 +12,7 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [checked, setChecked] = useState(false);
   const { mutate: userDelete } = useUserDelete();
-  const { data: user } = useUser();
+  const { data: session } = useSession();
 
   return (
     <nav className="flex flex-col gap-8 max-md:hidden min-w-[250px]">
@@ -49,7 +49,9 @@ const Sidebar = () => {
                   content={
                     <span className="flex flex-col items-center gap-2">
                       <span>
-                        <strong className="underline">{user?.email}</strong>
+                        <strong className="underline">
+                          {session?.user.email}
+                        </strong>
                         계정의 모든 데이터가 삭제되며 복구할 수 없습니다.
                       </span>
                       <label className="flex items-center gap-1">

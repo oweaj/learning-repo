@@ -3,23 +3,23 @@
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useUser } from "@/lib/queries/auth/useUser";
 import { useUserUpdate } from "@/lib/queries/auth/useUserUpdate";
 import { cn } from "@/lib/utils";
 import { userSchema } from "@/schemas/auth.schema";
 import type { IMyProfileDataType } from "@/types/mypage.type";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import LikeCategoryButton from "./LikeCategoryButton";
 
 const ProfileEditForm = () => {
-  const { data: user } = useUser();
+  const { data: session } = useSession();
   const form = useForm<IMyProfileDataType>({
     defaultValues: {
-      name: user?.name ?? "",
-      introduce: user?.introduce ?? "",
-      like_category: user?.like_category ?? [],
+      name: session?.user.name ?? "",
+      introduce: session?.user.introduce ?? "",
+      like_category: session?.user.like_category ?? [],
     },
     resolver: zodResolver(userSchema),
   });

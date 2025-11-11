@@ -2,14 +2,14 @@
 
 import AccordionItems from "@/components/accordion/Accordion";
 import { Accordion } from "@/components/ui/accordion";
-import { useUser } from "@/lib/queries/auth/useUser";
 import { useNoticeList } from "@/lib/queries/my/useNoticeList";
 import type { INoticeDataType } from "@/types/mypage.type";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 const NoticeList = () => {
   const { data } = useNoticeList();
-  const { data: user } = useUser();
+  const { data: session } = useSession();
   const [openItem, setOpenItem] = useState<string>("");
 
   return (
@@ -23,7 +23,7 @@ const NoticeList = () => {
         <AccordionItems
           key={notice._id}
           notice={notice}
-          userName={user ? user.name : null}
+          userName={session?.user ? session.user.name : null}
         />
       ))}
     </Accordion>
