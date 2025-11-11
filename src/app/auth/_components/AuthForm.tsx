@@ -1,10 +1,9 @@
 "use client";
 
+import { signupAction } from "@/app/actions/auth/signup-aciton";
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useSignin } from "@/lib/queries/auth/useSignin";
-import { useSignup } from "@/lib/queries/auth/useSignup";
 import { cn } from "@/lib/utils";
 import { signinSchema, signupSchema } from "@/schemas/auth.schema";
 import type { IAuthFormType } from "@/types/auth.type";
@@ -12,12 +11,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 const AuthForm = ({ submit }: { submit: string }) => {
-  const { mutate: _signin, isPending: signinPending } = useSignin();
-  const { mutate: signup, isPending: signupPending } = useSignup();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<IAuthFormType>({
     defaultValues: { email: "", password: "", name: "", passwordConfirm: "" },
@@ -25,14 +24,29 @@ const AuthForm = ({ submit }: { submit: string }) => {
   });
 
   const onSubmit = async (data: IAuthFormType) => {
-    if (submit === "signin") {
-      await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-      });
-    } else {
-      signup(data);
-    }
+    startTransition(async () => {
+      if (submit === "signin") {
+        const signin = await signIn("credentials", {
+          email: data.email,
+          password: data.password,
+          redirect: false,
+        });
+
+        if (signin?.ok) {
+          router.replace("/");
+        } else {
+          alert("이메일과 비밀번호를 다시 확인해주세요.");
+        }
+      } else {
+        const signup = await signupAction(data);
+
+        if (signup.ok) {
+          router.push("/auth/signin");
+        } else {
+          alert(signup.message);
+        }
+      }
+    });
   };
 
   return (
@@ -75,9 +89,9 @@ const AuthForm = ({ submit }: { submit: string }) => {
           <Button
             type="submit"
             className={cn("w-full h-full text-base font-bold bg-gray-400")}
-            disabled={signinPending}
+            disabled={isPending}
           >
-            {signinPending ? (
+            {isPending ? (
               <LoaderCircle className="size-7 animate-spin" />
             ) : submit === "signin" ? (
               "로그인"
@@ -90,7 +104,7 @@ const AuthForm = ({ submit }: { submit: string }) => {
               type="button"
               className={cn("w-full h-full text-base font-bold bg-gray-400")}
               onClick={() => router.push("/auth/signup")}
-              disabled={signupPending}
+              disabled={isPending}
             >
               회원가입
             </Button>

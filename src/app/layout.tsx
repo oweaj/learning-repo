@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import QueryProviders from "@/provider/QueryProvirder";
+import Providers from "@/provider/Providers";
 import { NavigationGuardProvider } from "next-navigation-guard";
 
 const geistSans = Geist({
@@ -29,9 +29,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryProviders>
+        <Providers>
           <NavigationGuardProvider>{children}</NavigationGuardProvider>
-        </QueryProviders>
+        </Providers>
       </body>
     </html>
   );
