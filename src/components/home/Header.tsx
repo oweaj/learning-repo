@@ -1,12 +1,10 @@
 "use client";
 
-import { useLogout } from "@/lib/queries/auth/useLogout";
-import { useUser } from "@/lib/queries/auth/useUser";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const Header = ({ handleQueryReset }: { handleQueryReset?: () => void }) => {
-  const { mutate: logout } = useLogout();
-  const { data: user } = useUser();
+  const { data: session } = useSession();
   const router = useRouter();
 
   const handleLogoClick = () => {
@@ -21,7 +19,7 @@ const Header = ({ handleQueryReset }: { handleQueryReset?: () => void }) => {
     if (type === "login") {
       router.push("/auth/signin");
     } else {
-      logout();
+      signOut({ callbackUrl: "/" });
     }
   };
 
@@ -40,9 +38,9 @@ const Header = ({ handleQueryReset }: { handleQueryReset?: () => void }) => {
           className="cursor-pointer hover:font-semibold"
           onClick={() => router.push("/my")}
         >
-          {user?._id && "마이페이지"}
+          {session?.user.id && "마이페이지"}
         </button>
-        {user?._id ? (
+        {session?.user.id ? (
           <button
             type="button"
             className="cursor-pointer hover:font-semibold"
