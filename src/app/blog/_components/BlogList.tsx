@@ -1,6 +1,6 @@
 "use client";
 
-import { useBlogList } from "@/lib/queries/blog/useBlogList";
+import { useBlogList } from "@/app/hooks/blog/useBlog";
 import type { IBlogDataType } from "@/types/blog.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import BlogCard from "./BlogCard";

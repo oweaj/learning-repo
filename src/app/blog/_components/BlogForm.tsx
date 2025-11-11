@@ -1,10 +1,9 @@
+import { useBlogCreate, useBlogUpdate } from "@/app/hooks/blog/useBlog";
 import Select from "@/components/common/Select";
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { BLOG_CATEGORY } from "@/constants/blog/blog";
-import { useBlogCreate } from "@/lib/queries/blog/useBlogCreate";
-import { useBlogUpdate } from "@/lib/queries/blog/useBlogUpdate";
 import { cn } from "@/lib/utils";
 import { BlogCreateSchema } from "@/schemas/blog.schema";
 import type { IBlogFormDataType } from "@/types/blog.type";
@@ -20,8 +19,8 @@ interface BlogFormProps {
 }
 
 const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
-  const { mutate: queryBlogCreate } = useBlogCreate();
-  const { mutate: queryBlogUpdate } = useBlogUpdate();
+  const { mutate: blogCreate } = useBlogCreate();
+  const { mutate: blogUpdate } = useBlogUpdate();
   const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== "all");
 
   const form = useForm<IBlogFormDataType>({
@@ -35,10 +34,10 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
     resolver: zodResolver(BlogCreateSchema),
   });
 
-  const onSubmit = (data: IBlogFormDataType) => {
+  const onSubmit = async (data: IBlogFormDataType) => {
     return editMode
-      ? queryBlogUpdate({ id: id || "", formData: data })
-      : queryBlogCreate(data);
+      ? blogUpdate({ id: id || "", formData: data })
+      : blogCreate(data);
   };
 
   useNavigationGuard({

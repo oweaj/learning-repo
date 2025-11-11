@@ -1,10 +1,10 @@
-import { blogListApi } from "@/lib/api/blog/blog";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import { Suspense } from "react";
+import { blogListAction } from "./actions/blog/list-action";
 import MainContent from "./blog/_components/MainContent";
 
 const Home = async () => {
@@ -15,7 +15,7 @@ const Home = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ["blog_list", category, page, keyword],
-    queryFn: () => blogListApi(category, page, keyword),
+    queryFn: () => blogListAction(category, page, keyword),
   });
 
   return (

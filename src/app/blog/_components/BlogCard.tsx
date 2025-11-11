@@ -1,13 +1,13 @@
 "use client";
 
+import { useBlogDelete } from "@/app/hooks/blog/useBlog";
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/lib/queries/auth/useUser";
-import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
 import type { IBlogDataType } from "@/types/blog.type";
 import { dateFormat } from "@/utils/dateFormat";
 import { EllipsisVertical } from "lucide-react";
 import { Star } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ const BlogCard = ({ item }: { item: IBlogDataType }) => {
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
   const { mutate: blogDelete } = useBlogDelete();
-  const { data: user } = useUser();
+  const { data: session } = useSession();
 
   if (!_id) return null;
 
@@ -70,7 +70,7 @@ const BlogCard = ({ item }: { item: IBlogDataType }) => {
           </div>
         </div>
       </Link>
-      {user_id._id === user?._id && (
+      {user_id.id === session?.user.id && (
         <div className="absolute right-2 top-0">
           <Modal
             isOpen={isOpen}

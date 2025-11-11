@@ -1,9 +1,11 @@
 "use client";
 
+import {
+  useBlogDelete,
+  useBlogDetail,
+  useBlogLike,
+} from "@/app/hooks/blog/useBlog";
 import PageTitle from "@/components/common/PageTitle";
-import { useBlogDelete } from "@/lib/queries/blog/useBlogDelete";
-import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
-import { useBlogLike } from "@/lib/queries/blog/useBlogLike";
 import { dateFormat } from "@/utils/dateFormat";
 import { Star } from "lucide-react";
 import Image from "next/image";

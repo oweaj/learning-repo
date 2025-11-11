@@ -1,7 +1,7 @@
 "use client";
 
 import FormWrapper from "@/app/blog/_components/FormWrapper";
-import { useBlogDetail } from "@/lib/queries/blog/useBlogDetail";
+import { useBlogDetail } from "@/app/hooks/blog/useBlog";
 
 const BlogEdit = ({ id }: { id: string }) => {
   if (!id) return null;
