@@ -1,16 +1,17 @@
-import { clientAxios } from "@/lib/axios/clientAxios";
+import { cfetch } from "@/lib/axios/cfetch";
 import type { IBlogFormDataType } from "@/types/blog.type";
-import axios from "axios";
 
 // 블로그 생성
 export const blogCreateApi = async (formData: IBlogFormDataType) => {
   try {
-    const { data } = await clientAxios.post("/api/blog/create", formData);
+    const { data } = await cfetch("api/blog/create", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
   }
 };
@@ -32,16 +33,13 @@ export const blogListApi = async (
       query += `&keyword=${encodeURIComponent(keyword)}`;
     }
 
-    const res = await fetch(`/api/blog/list?${query}`, {
+    const { data } = await cfetch(`/api/blog/list?${query}`, {
       next: { revalidate: 60, tags: ["blog_list"] },
     });
-
-    const { data } = await res.json();
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
   }
 };
@@ -49,16 +47,13 @@ export const blogListApi = async (
 // 블로그 상세
 export const blogDetailApi = async (id: string) => {
   try {
-    const res = await fetch(`/api/blog/${id}`, {
+    const { data } = await cfetch(`/api/blog/${id}`, {
       next: { revalidate: 60, tags: ["blogDetail"] },
     });
-
-    const { data } = await res.json();
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
   }
 };
@@ -69,14 +64,16 @@ export const blogUpdateApi = async ({
   formData,
 }: { id: string; formData: IBlogFormDataType }) => {
   try {
-    const { data } = await clientAxios.patch(`/api/blog/${id}`, formData);
+    const { data } = await cfetch(`/api/blog/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(formData),
+    });
     return { data, id };
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
-    throw new Error("서버 에러가 발생했습니다.");
+    throw new Error("알 수 없는 오류 발생");
   }
 };
 
@@ -91,16 +88,14 @@ export const blogImageUploadApi = async ({
     const formData = new FormData();
     formData.append("file", file);
 
-    const { data } = await clientAxios.post(
-      `/api/blog/image/${prefix}`,
-      formData,
-    );
-
+    const { data } = await cfetch(`/api/blog/image/${prefix}`, {
+      method: "POST",
+      body: formData,
+    });
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
   }
 };
@@ -108,12 +103,11 @@ export const blogImageUploadApi = async ({
 // 블로그 공감
 export const blogLikeApi = async (id: string) => {
   try {
-    const { data } = await clientAxios.patch(`/api/blog/like/${id}`);
+    const { data } = await cfetch(`/api/blog/like/${id}`, { method: "PATCH" });
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
   }
 };
@@ -121,13 +115,13 @@ export const blogLikeApi = async (id: string) => {
 // 블로그 공감 랭킹
 export const blogLikeRankApi = async () => {
   try {
-    const { data } = await clientAxios.get("/api/blog/like_rank");
-
-    return data.blogRank;
+    const { data } = await cfetch("/api/blog/like_rank", {
+      next: { revalidate: 60, tags: ["blog_rank"] },
+    });
+    return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
   }
 };
@@ -135,12 +129,11 @@ export const blogLikeRankApi = async () => {
 // 블로그 삭제
 export const blogDeleteApi = async (id: string) => {
   try {
-    const { data } = await clientAxios.delete(`/api/blog/${id}`);
+    const { data } = await cfetch(`/api/blog/${id}`, { method: "DELETE" });
     return data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const message = error.response?.data?.message || error.message;
-      throw new Error(message);
+    if (error instanceof Error) {
+      throw new Error(error.message);
     }
   }
 };
