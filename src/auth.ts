@@ -15,25 +15,29 @@ import { Auth } from "./lib/schemas/auth-schema";
 declare module "next-auth" {
   interface JWT extends DefaultJWT {
     id: string;
-    profile_image?: string | null;
-    introduce?: string | null;
-    like_category?: string[];
+    profile_image: string;
+    introduce: string | null;
+    like_category: string[];
   }
 
   interface Session {
     user: {
       id: string;
-      profile_image?: string | null;
-      introduce?: string | null;
-      like_category?: string[];
+      email: string;
+      name: string | null;
+      profile_image: string;
+      introduce: string | null;
+      like_category: string[];
     } & DefaultSession["user"];
   }
 
   interface User extends DefaultUser {
     id: string;
-    profile_image?: string | null;
-    introduce?: string | null;
-    like_category?: string[];
+    email: string;
+    name: string | null;
+    profile_image: string;
+    introduce: string | null;
+    like_category: string[];
   }
 }
 
