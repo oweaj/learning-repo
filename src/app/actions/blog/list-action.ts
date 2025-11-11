@@ -4,15 +4,11 @@ import connectDB from "@/lib/database/db";
 import { Blog } from "@/lib/schemas/blog-schema";
 
 // 블로그 목록
-export const blogListAction = async ({
-  page = 1,
-  category,
-  keyword,
-}: {
-  page?: number;
-  category?: string | null;
-  keyword?: string | null;
-}) => {
+export const blogListAction = async (
+  category: string | null,
+  page: number,
+  keyword?: string | null,
+) => {
   await connectDB();
 
   const limit = 10;
@@ -31,14 +27,14 @@ export const blogListAction = async ({
     ];
   }
 
-  const bloglist = await Blog.find(filterData)
+  const data = await Blog.find(filterData)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit)
-    .populate("user_id", "email name profile_image")
-    .lean();
+    .populate("user_id", "email name profile_image");
 
   const totalCount = await Blog.countDocuments(filterData);
+  const bloglist = JSON.parse(JSON.stringify(data));
 
   return {
     bloglist,

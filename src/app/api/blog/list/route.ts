@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get("category");
     const keyword = searchParams.get("keyword");
 
-    const data = await blogListAction({ page, category, keyword });
+    const data = await blogListAction(category, page, keyword);
 
     return NextResponse.json(
       { message: "블로그 목록 조회 완료", data },

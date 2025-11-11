@@ -1,27 +1,31 @@
 "use server";
 
+import { authOptions } from "@/auth";
 import connectDB from "@/lib/database/db";
 import { Blog } from "@/lib/schemas/blog-schema";
 import type { IBlogDataType } from "@/types/blog.type";
-import { requireSession } from "../requireSession";
+import { getServerSession } from "next-auth";
 
 // 블로그 상세
 export const blogDetailAction = async (id: string) => {
-  await connectDB();
-  const user_id = await requireSession();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id ?? null;
 
-  const blogDetail = await Blog.findById(id)
+  await connectDB();
+
+  const data = await Blog.findById(id)
     .populate("user_id", "email name")
     .lean<IBlogDataType>();
 
-  if (!blogDetail) {
+  if (!data) {
     throw new Error("해당 블로그를 찾을 수 없습니다.");
   }
 
-  const isWriter = user_id === blogDetail.user_id._id.toString();
-  const isLiked = user_id
-    ? blogDetail.like_user.some((id: string) => id.toString() === user_id)
+  const isWriter = userId ? userId === data.user_id?.id?.toString() : false;
+  const isLiked = userId
+    ? data.like_user.some((id: string) => id.toString() === userId)
     : false;
+  const blogDetail = JSON.parse(JSON.stringify(data));
 
   return { ...blogDetail, isWriter, isLiked };
 };

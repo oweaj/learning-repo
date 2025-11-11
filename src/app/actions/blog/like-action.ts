@@ -25,6 +25,8 @@ export const blogLikeAction = async (id: string) => {
 
   await Blog.findOneAndUpdate({ _id: id }, updateBlogData, { new: true });
   revalidateTag("blog_list");
+  revalidateTag("blogDetail");
+  revalidateTag("blog_rank");
 
   return {
     message: checkUserLike

@@ -3,10 +3,10 @@ import { type NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   _req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const data = await blogLikeAction(id);
 
     return NextResponse.json(data, { status: 200 });
