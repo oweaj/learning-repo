@@ -6,6 +6,7 @@ import {
   isServer,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SessionProvider } from "next-auth/react";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -29,15 +30,15 @@ function getQueryClient() {
   return browserQueryClient;
 }
 
-export default function QueryProviders({
-  children,
-}: { children: React.ReactNode }) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }
