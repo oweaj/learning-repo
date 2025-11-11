@@ -1,17 +1,21 @@
+import { getToken } from "next-auth/jwt";
 import { type NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get("accessToken")?.value;
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const url = req.nextUrl.clone();
 
-  if (
-    accessToken &&
-    (request.nextUrl.pathname === "/auth/signin" ||
-      request.nextUrl.pathname === "/auth/signup")
-  ) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (!token) {
+    return NextResponse.redirect(new URL("/auth/signin", req.url));
   }
+
+  if (token && url.pathname.startsWith("/auth")) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/auth:path*", "/", "/blog:path*", "/my:path*"],
+  matcher: ["/blog/create", "/my:path*"],
 };
