@@ -1,14 +1,16 @@
 "use server";
 
+import { authOptions } from "@/auth";
 import connectDB from "@/lib/database/db";
 import { Blog } from "@/lib/schemas/blog-schema";
 import type { Types } from "mongoose";
+import { getServerSession } from "next-auth";
 import { revalidateTag } from "next/cache";
-import { requireSession } from "../requireSession";
 
 export const blogLikeAction = async (id: string) => {
   await connectDB();
-  const user_id = await requireSession();
+  const session = await getServerSession(authOptions);
+  const user_id = session?.user?.id ?? null;
 
   const checkBlog = await Blog.findById(id);
   if (!checkBlog) {
