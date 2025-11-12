@@ -5,11 +5,11 @@ import { getServerSession } from "next-auth";
 
 export const requireSession = async () => {
   const session = await getServerSession(authOptions);
-  const user_id = session?.user?.id;
+  const user = session?.user;
 
-  if (!user_id) {
+  if (!user) {
     throw new Error("로그인이 필요합니다.");
   }
 
-  return user_id;
+  return user;
 };
