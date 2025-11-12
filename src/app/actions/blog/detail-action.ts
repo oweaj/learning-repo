@@ -21,7 +21,7 @@ export const blogDetailAction = async (id: string) => {
     throw new Error("해당 블로그를 찾을 수 없습니다.");
   }
 
-  const isWriter = userId ? userId === data.user_id?.id?.toString() : false;
+  const isWriter = userId ? userId === data.user_id?.id?.toString() : null;
   const isLiked = userId
     ? data.like_user.some((id: string) => id.toString() === userId)
     : false;
