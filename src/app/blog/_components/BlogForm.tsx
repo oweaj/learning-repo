@@ -19,8 +19,8 @@ interface BlogFormProps {
 }
 
 const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
-  const { mutate: blogCreate } = useBlogCreate();
-  const { mutate: blogUpdate } = useBlogUpdate();
+  const { mutate: queryBlogCreate } = useBlogCreate();
+  const { mutate: queryBlogUpdate } = useBlogUpdate();
   const filterCategory = BLOG_CATEGORY.filter((item) => item.value !== "all");
 
   const form = useForm<IBlogFormDataType>({
@@ -36,8 +36,8 @@ const BlogForm = ({ editMode, defaultData, id }: BlogFormProps) => {
 
   const onSubmit = async (data: IBlogFormDataType) => {
     return editMode
-      ? blogUpdate({ id: id || "", formData: data })
-      : blogCreate(data);
+      ? queryBlogUpdate({ id: id || "", data })
+      : queryBlogCreate(data);
   };
 
   useNavigationGuard({

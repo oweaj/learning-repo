@@ -20,13 +20,13 @@ const BlogCard = ({ item }: { item: IBlogDataType }) => {
   const [isOpen, setIsOpen] = useState(false);
   const ListRef = useRef<HTMLLIElement>(null);
   const router = useRouter();
-  const { mutate: blogDelete } = useBlogDelete();
+  const { mutate: queryBlogDelete } = useBlogDelete();
   const { data: session } = useSession();
 
   if (!_id) return null;
 
   const handleBlogDelete = (id: string) => {
-    blogDelete(id);
+    queryBlogDelete(id);
     setIsOpen(false);
   };
 
@@ -70,7 +70,7 @@ const BlogCard = ({ item }: { item: IBlogDataType }) => {
           </div>
         </div>
       </Link>
-      {user_id._id === session?.user.id && (
+      {user_id._id === session?.user._id && (
         <div className="absolute right-2 top-0">
           <Modal
             isOpen={isOpen}

@@ -1,4 +1,4 @@
-import { blogDetailApi } from "@/lib/api/blog/blog";
+import { blogDetailAction } from "@/app/actions/blog";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import BlogEdit from "./_components/BlogEdit";
@@ -11,7 +11,7 @@ const EditPage = async ({
 
   await queryClient.prefetchQuery({
     queryKey: ["blogDetail", id],
-    queryFn: () => blogDetailApi(id),
+    queryFn: () => blogDetailAction(id),
   });
 
   return (

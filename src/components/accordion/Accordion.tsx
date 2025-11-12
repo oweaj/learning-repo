@@ -1,11 +1,11 @@
 "use client";
 
+import { useNoticeDelete } from "@/app/hooks/my/useMy";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useNoticeDelete } from "@/lib/queries/my/useMyNoticeDelete";
 import type { INoticeDataType } from "@/types/mypage.type";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";

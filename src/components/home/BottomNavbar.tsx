@@ -1,8 +1,8 @@
 "use client";
 
+import { blogLikeRankAction } from "@/app/actions/blog";
+import { myBlogsAction, myLikeBlogsAction } from "@/app/actions/mypage";
 import { BOTTOM_NAV_LIST } from "@/constants/blog/blog";
-import { blogLikeRankApi } from "@/lib/api/blog/blog";
-import { myLikeBlogsApi, myblogListApi } from "@/lib/api/my/mypage";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -25,18 +25,18 @@ const BottomNavbar = () => {
     if (path === "/blog_rank") {
       queryClient.prefetchQuery({
         queryKey: ["blog_rank"],
-        queryFn: blogLikeRankApi,
+        queryFn: blogLikeRankAction,
       });
     }
 
-    if (path === "/my" && session?.user.id) {
+    if (path === "/my" && session?.user._id) {
       queryClient.prefetchQuery({
         queryKey: ["myBlogs"],
-        queryFn: myblogListApi,
+        queryFn: myBlogsAction,
       });
       queryClient.prefetchQuery({
         queryKey: ["myLikeBlogs"],
-        queryFn: myLikeBlogsApi,
+        queryFn: myLikeBlogsAction,
       });
     }
   };
@@ -50,7 +50,7 @@ const BottomNavbar = () => {
             className="p-1"
             onMouseEnter={() => handleNavPrefetch(path)}
           >
-            {!session?.user.id && name === "user" ? (
+            {!session?.user._id && name === "user" ? (
               <Link href={"/auth/signin"}>
                 <Icon
                   className={`w-7 h-7 stroke-[1.5] ${pathname === path && "stroke-orange-500"}`}

@@ -1,9 +1,9 @@
 "use client";
 
+import { useUserDelete } from "@/app/hooks/auth/useAuth";
 import Modal from "@/components/modal/Modal";
 import { Button } from "@/components/ui/button";
 import { MYPAGE_SIDE_BAR } from "@/constants/mypage/mypage";
-import { useUserDelete } from "@/lib/queries/auth/useUserDelete";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import { useState } from "react";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [checked, setChecked] = useState(false);
-  const { mutate: userDelete } = useUserDelete();
+  const { mutate: queryUserDelete } = useUserDelete();
   const { data: session } = useSession();
 
   return (
@@ -82,7 +82,7 @@ const Sidebar = () => {
                       <Button
                         type="submit"
                         className="w-1/3 h-10 border bg-red-500 font-semibold"
-                        onClick={() => userDelete()}
+                        onClick={() => queryUserDelete()}
                         disabled={!checked}
                       >
                         확인

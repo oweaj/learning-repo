@@ -1,8 +1,7 @@
 "use client";
 
-import { useMyBlogList } from "@/lib/queries/my/useMyBlogList";
-import { useMyLikeBlogList } from "@/lib/queries/my/useMyLikeBlogList";
 import { useSession } from "next-auth/react";
+import { useMyBlogList, useMyLikeBlogList } from "../hooks/my/useMy";
 import MyBlogs from "./_components/MyBlogs";
 import UserInfo from "./_components/UserInfo";
 import UserProfile from "./_components/UserProfile";

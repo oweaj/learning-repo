@@ -1,10 +1,9 @@
 "use client";
 
+import { useNoticeCreate, useNoticeUpdate } from "@/app/hooks/my/useMy";
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useNoticeUpdate } from "@/lib/queries/my/useMyNoticeUpdate";
-import { useNoticeCreate } from "@/lib/queries/my/useNoticeCreate";
 import { cn } from "@/lib/utils";
 import { NoticeCreateSchema } from "@/schemas/notice.schema";
 import type { INoticeFormDataType } from "@/types/mypage.type";
@@ -33,7 +32,7 @@ const NoticeForm = ({ editMode, defaultData, id }: NoticeFormProps) => {
 
   const onSubmit = (data: INoticeFormDataType) => {
     return editMode
-      ? queryNoticeUpdate({ id: id || "", formData: data })
+      ? queryNoticeUpdate({ id: id || "", data })
       : queryNoticeCreate(data);
   };
 

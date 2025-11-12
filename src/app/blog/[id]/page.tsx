@@ -1,4 +1,4 @@
-import { blogDetailApi } from "@/lib/api/blog/blog";
+import { blogDetailAction } from "@/app/actions/blog";
 import {
   HydrationBoundary,
   QueryClient,
@@ -14,7 +14,7 @@ const BlogDetailPage = async ({
 
   await queryClient.prefetchQuery({
     queryKey: ["blogDetail", id],
-    queryFn: () => blogDetailApi(id),
+    queryFn: () => blogDetailAction(id),
   });
 
   return (

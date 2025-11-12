@@ -38,9 +38,9 @@ const Header = ({ handleQueryReset }: { handleQueryReset?: () => void }) => {
           className="cursor-pointer hover:font-semibold"
           onClick={() => router.push("/my")}
         >
-          {session?.user.id && "마이페이지"}
+          {session?.user._id && "마이페이지"}
         </button>
-        {session?.user.id ? (
+        {session?.user._id ? (
           <button
             type="button"
             className="cursor-pointer hover:font-semibold"

@@ -1,17 +1,17 @@
 import {
-  blogCreateApi,
-  blogDeleteApi,
-  blogDetailApi,
-  blogLikeApi,
-  blogLikeRankApi,
-  blogListApi,
-  blogUpdateApi,
-} from "@/lib/api/blog/blog";
+  blogCreateAction,
+  blogDeleteAction,
+  blogDetailAction,
+  blogLikeAction,
+  blogLikeRankAction,
+  blogListAction,
+  blogUpdateAction,
+} from "@/app/actions/blog";
 import type { IBlogDataType, IBlogListType } from "@/types/blog.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-// 목록
+// 블로그 목록
 export const useBlogList = ({
   category,
   page,
@@ -23,18 +23,18 @@ export const useBlogList = ({
 }) => {
   return useQuery<IBlogListType>({
     queryKey: ["blog_list", category, page, keyword],
-    queryFn: () => blogListApi(category, page, keyword),
+    queryFn: () => blogListAction(category, page, keyword),
     placeholderData: (previousData) => previousData,
   });
 };
 
-// 생성
+// 블로그 생성
 export const useBlogCreate = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
-    mutationFn: blogCreateApi,
+    mutationFn: blogCreateAction,
     onSuccess: (data) => {
       alert(data.message);
       router.replace("/");
@@ -44,15 +44,15 @@ export const useBlogCreate = () => {
   });
 };
 
-// 수정
+// 블로그 수정
 export const useBlogUpdate = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
-    mutationFn: blogUpdateApi,
-    onSuccess: ({ data, id }) => {
-      alert(data.message);
+    mutationFn: blogUpdateAction,
+    onSuccess: ({ message, id }) => {
+      alert(message);
       router.replace(`/blog/${id}`);
       queryClient.invalidateQueries({ queryKey: ["blog_list"] });
       queryClient.invalidateQueries({ queryKey: ["blogDetail", id] });
@@ -61,15 +61,15 @@ export const useBlogUpdate = () => {
   });
 };
 
-// 삭제
+// 블로그 삭제
 export const useBlogDelete = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
-    mutationFn: blogDeleteApi,
-    onSuccess: (data) => {
-      alert(data.message);
+    mutationFn: blogDeleteAction,
+    onSuccess: ({ message }) => {
+      alert(message);
       router.push("/");
       queryClient.invalidateQueries({ queryKey: ["blog_list"] });
     },
@@ -77,22 +77,28 @@ export const useBlogDelete = () => {
   });
 };
 
-// 상세
+// 블로그 상세
 export const useBlogDetail = ({ id }: { id: string }) => {
-  const data = useQuery<IBlogDataType>({
+  return useQuery<IBlogDataType>({
     queryKey: ["blogDetail", id],
-    queryFn: () => blogDetailApi(id),
+    queryFn: () => blogDetailAction(id),
   });
-
-  return data.data;
 };
 
-// 공감
+// 블로그 공감 랭킹 리스트
+export const useBlogLikeRank = () => {
+  return useQuery<IBlogDataType[]>({
+    queryKey: ["blog_rank"],
+    queryFn: blogLikeRankAction,
+  });
+};
+
+// 블로그 공감
 export const useBlogLike = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: blogLikeApi,
+    mutationFn: blogLikeAction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blog_list"] });
       queryClient.invalidateQueries({ queryKey: ["blogDetail"] });
@@ -100,13 +106,5 @@ export const useBlogLike = () => {
       queryClient.invalidateQueries({ queryKey: ["myLikeBlogs"] });
     },
     onError: (error) => alert(error.message),
-  });
-};
-
-// 공감 랭킹
-export const useBlogLikeRank = () => {
-  return useQuery<IBlogDataType[]>({
-    queryKey: ["blog_rank"],
-    queryFn: blogLikeRankApi,
   });
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMyLikeBlogList } from "@/lib/queries/my/useMyLikeBlogList";
+import { useMyLikeBlogList } from "@/app/hooks/my/useMy";
 import MyDataList from "../_components/MyDataList";
 
 const MyLikeBlogs = () => {

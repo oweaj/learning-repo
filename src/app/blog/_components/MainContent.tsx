@@ -93,7 +93,7 @@ const MainContent = ({
           </div>
         </main>
       </div>
-      {session?.user.id && (
+      {session?.user._id && (
         <Link
           href={"/blog/create"}
           className="fixed bottom-20 right-4 flex items-center justify-center w-16 h-16 rounded-full bg-orange-400 hover:scale-105 hover:bg-black transition-all duration-300"

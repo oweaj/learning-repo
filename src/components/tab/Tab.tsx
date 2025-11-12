@@ -1,6 +1,6 @@
 "use client";
 
-import { blogListApi } from "@/lib/api/blog/blog";
+import { blogListAction } from "@/app/actions/blog";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface ITabProps {
@@ -24,7 +24,7 @@ const Tab = ({ item, category, handleQueryChange }: ITabProps) => {
         onMouseEnter={() =>
           queryClient.prefetchQuery({
             queryKey: ["blog_list", item.value, 1, null],
-            queryFn: () => blogListApi(item.value, 1, null),
+            queryFn: () => blogListAction(item.value, 1, null),
           })
         }
         onClick={() =>

@@ -13,9 +13,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const BlogDetail = ({ id }: { id: string }) => {
-  const data = useBlogDetail({ id });
-  const { mutate: blogDelete } = useBlogDelete();
-  const { mutate: blogLike } = useBlogLike();
+  const { data } = useBlogDetail({ id });
+  const { mutate: queryBlogDelete } = useBlogDelete();
+  const { mutate: queryBlogLike } = useBlogLike();
   const router = useRouter();
 
   if (!data) return null;
@@ -24,7 +24,7 @@ const BlogDetail = ({ id }: { id: string }) => {
     if (data.isWriter === null) {
       router.push("/auth/signin");
     } else {
-      blogLike(id);
+      queryBlogLike(id);
     }
   };
 
@@ -60,7 +60,7 @@ const BlogDetail = ({ id }: { id: string }) => {
               <button
                 type="button"
                 className="cursor-pointer hover:text-black"
-                onClick={() => blogDelete(id)}
+                onClick={() => queryBlogDelete(id)}
               >
                 삭제
               </button>

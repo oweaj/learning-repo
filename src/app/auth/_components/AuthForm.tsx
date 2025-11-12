@@ -1,6 +1,6 @@
 "use client";
 
-import { signupAction } from "@/app/actions/auth/signup-aciton";
+import { signupAction } from "@/app/actions/auth";
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";

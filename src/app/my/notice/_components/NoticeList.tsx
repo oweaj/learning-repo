@@ -1,8 +1,8 @@
 "use client";
 
+import { useNoticeList } from "@/app/hooks/my/useMy";
 import AccordionItems from "@/components/accordion/Accordion";
 import { Accordion } from "@/components/ui/accordion";
-import { useNoticeList } from "@/lib/queries/my/useNoticeList";
 import type { INoticeDataType } from "@/types/mypage.type";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
