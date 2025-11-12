@@ -70,7 +70,7 @@ const BlogCard = ({ item }: { item: IBlogDataType }) => {
           </div>
         </div>
       </Link>
-      {user_id.id === session?.user.id && (
+      {user_id._id === session?.user.id && (
         <div className="absolute right-2 top-0">
           <Modal
             isOpen={isOpen}
