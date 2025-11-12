@@ -4,7 +4,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { Suspense } from "react";
-import { blogListAction } from "./actions/blog/list-action";
+import { blogListAction } from "./actions/blog";
 import MainContent from "./blog/_components/MainContent";
 
 const Home = async () => {
