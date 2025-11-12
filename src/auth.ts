@@ -14,7 +14,7 @@ import { Auth } from "./lib/schemas/auth-schema";
 
 declare module "next-auth" {
   interface JWT extends DefaultJWT {
-    id: string;
+    _id: string;
     profile_image: string;
     introduce: string | null;
     like_category: string[];
@@ -22,7 +22,7 @@ declare module "next-auth" {
 
   interface Session {
     user: {
-      id: string;
+      _id: string;
       email: string;
       name: string | null;
       profile_image: string;
@@ -32,7 +32,7 @@ declare module "next-auth" {
   }
 
   interface User extends DefaultUser {
-    id: string;
+    _id: string;
     email: string;
     name: string | null;
     profile_image: string;
@@ -73,6 +73,7 @@ export const authOptions: AuthOptions = {
 
         return {
           id: user._id.toString(),
+          _id: user._id.toString(),
           email: user.email,
           name: user.name,
           profile_image: user.profile_image,
@@ -86,7 +87,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user }: { token: JWT; user: User }) {
       if (user) {
-        token.id = user.id;
+        token._id = user._id;
         token.email = user.email;
         token.name = user.name;
       }
@@ -96,7 +97,7 @@ export const authOptions: AuthOptions = {
       return {
         ...session,
         user: {
-          id: token.id,
+          _id: token._id,
           name: token.name,
           email: token.email,
           profile_image: token.profile_image,
