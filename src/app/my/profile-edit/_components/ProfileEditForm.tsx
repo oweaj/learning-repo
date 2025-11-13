@@ -1,20 +1,19 @@
 "use client";
 
+import { profileUpdateAction } from "@/app/actions/auth";
 import FormFieldWrapper from "@/components/form/FormFieldWrapper";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useUserUpdate } from "@/lib/queries/auth/useUserUpdate";
 import { cn } from "@/lib/utils";
 import { userSchema } from "@/schemas/auth.schema";
 import type { IMyProfileDataType } from "@/types/mypage.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import LikeCategoryButton from "./LikeCategoryButton";
 
 const ProfileEditForm = () => {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const form = useForm<IMyProfileDataType>({
     defaultValues: {
       name: session?.user.name ?? "",
@@ -24,16 +23,12 @@ const ProfileEditForm = () => {
     resolver: zodResolver(userSchema),
   });
 
-  const { mutate: queryUserUpdate, isSuccess } = useUserUpdate(form.reset);
+  const onSubmit = async (data: IMyProfileDataType) => {
+    const res = await profileUpdateAction(data);
+    alert(res.message);
 
-  useEffect(() => {
-    if (isSuccess) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [isSuccess]);
-
-  const onSubmit = (data: IMyProfileDataType) => {
-    return queryUserUpdate(data);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    await update({ user: { ...session?.user, ...data } });
   };
 
   return (

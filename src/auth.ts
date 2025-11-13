@@ -79,18 +79,31 @@ export const authOptions: AuthOptions = {
           profile_image: user.profile_image,
           introduce: user.introduce,
           like_category: user.like_category,
-        };
+        } as User;
       },
     }),
   ],
   session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user: User }) {
+    async jwt({
+      token,
+      user,
+      trigger,
+      session,
+    }: { token: JWT; user: User; trigger?: string; session?: Session }) {
       if (user) {
         token._id = user._id;
         token.email = user.email;
         token.name = user.name;
+        token.profile_image = user.profile_image;
+        token.introduce = user.introduce;
+        token.like_category = user.like_category;
       }
+
+      if (trigger === "update" && session?.user) {
+        token = { ...token, ...session.user };
+      }
+
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
