@@ -2,36 +2,49 @@
 
 import DefaultProfile from "@/assets/images/default-profile.svg";
 import { Button } from "@/components/ui/button";
-import { useImageDelete } from "@/lib/queries/auth/useImageDelete";
-import { useImageUpload } from "@/lib/queries/auth/useImageUpload";
+import { deleteImageApi, uploadImageApi } from "@/lib/api/image";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { type ChangeEvent, useRef } from "react";
 
 const MyProfileImage = () => {
-  const { mutate: queryUploadImage } = useImageUpload();
-  const { mutate: queryDeleteImage } = useImageDelete();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
 
   const handleProfileImage = () => {
     inputRef.current?.click();
   };
 
-  const handleFileChange = (e: ChangeEvent) => {
+  const handleFileChange = async (e: ChangeEvent) => {
     const { files } = e.target as HTMLInputElement;
 
     if (files) {
-      const formData = new FormData();
-      formData.append("file", files[0]);
-
-      queryUploadImage({ prefix: "profile", formData });
+      try {
+        const imageUpload = await uploadImageApi({
+          file: files[0],
+          prefix: "profile",
+        });
+        await update({
+          user: { ...session?.user, profile_image: imageUpload },
+        });
+      } catch (error) {
+        alert(`이미지 업로드 실패 : ${error}`);
+      }
     }
   };
 
-  const handleProfileImageDelete = () => {
+  const handleProfileImageDelete = async () => {
     if (session?.user.profile_image) {
-      queryDeleteImage(session?.user.profile_image);
+      try {
+        const imageDelete = await deleteImageApi({
+          key: session?.user.profile_image,
+          prefix: "profile",
+        });
+        await update({ user: { ...session?.user, profile_image: null } });
+        alert(imageDelete.message);
+      } catch (error) {
+        alert(`이미지 삭제 실패 : ${error}`);
+      }
     }
   };
 
