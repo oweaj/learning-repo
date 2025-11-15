@@ -11,7 +11,7 @@ import type { IBlogDataType, IBlogListType } from "@/types/blog.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-// 블로그 목록
+// 블로그 리스트
 export const useBlogList = ({
   category,
   page,

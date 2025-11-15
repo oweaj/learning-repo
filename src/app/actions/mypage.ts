@@ -3,10 +3,23 @@
 import connectDB from "@/lib/database/db";
 import { Blog } from "@/lib/schemas/blog-schema";
 import { Notice } from "@/lib/schemas/notice-schema";
+import type { INoticeFormDataType } from "@/types/mypage.type";
 import { requireSession } from "./requireSession";
 
+// 공지사항 리스트
+export const noticeListAction = async () => {
+  await connectDB();
+
+  const data = await Notice.find({ deleted_at: null })
+    .sort({ createdAt: -1 })
+    .lean();
+  const noticelist = JSON.parse(JSON.stringify(data));
+
+  return noticelist;
+};
+
 // 공지사항 생성
-export const noticeCreateAction = async (data: any) => {
+export const noticeCreateAction = async (data: INoticeFormDataType) => {
   await connectDB();
 
   const user = await requireSession();
@@ -24,18 +37,6 @@ export const noticeCreateAction = async (data: any) => {
 
   await notice.save();
   return { state: true, message: "공지사항이 등록되었습니다." };
-};
-
-// 공지사항 리스트
-export const noticeListAction = async () => {
-  await connectDB();
-
-  const data = await Notice.find({ deleted_at: null })
-    .sort({ createdAt: -1 })
-    .lean();
-  const noticelist = JSON.parse(JSON.stringify(data));
-
-  return noticelist;
 };
 
 // 공지사항 수정

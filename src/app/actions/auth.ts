@@ -4,6 +4,7 @@ import connectDB from "@/lib/database/db";
 import { Auth } from "@/lib/schemas/auth-schema";
 import { Blog } from "@/lib/schemas/blog-schema";
 import type { IAuthFormType } from "@/types/auth.type";
+import type { IMyProfileDataType } from "@/types/mypage.type";
 import { hash } from "bcryptjs";
 import { requireSession } from "./requireSession";
 
@@ -42,7 +43,7 @@ export const signupAction = async (data: IAuthFormType) => {
 };
 
 // 유저 프로필 수정
-export const profileUpdateAction = async (data: any) => {
+export const profileUpdateAction = async (data: IMyProfileDataType) => {
   await connectDB();
 
   const user = await requireSession();

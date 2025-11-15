@@ -8,7 +8,7 @@ import type { Types } from "mongoose";
 import { getServerSession } from "next-auth";
 import { requireSession } from "./requireSession";
 
-// 블로그 목록
+// 블로그 리스트
 export const blogListAction = async (
   category: string | null,
   page: number,

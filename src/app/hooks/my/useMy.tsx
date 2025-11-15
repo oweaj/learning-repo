@@ -12,6 +12,14 @@ import type { INoticeDataType, INoticeFormDataType } from "@/types/mypage.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
+// 공지사항 리스트
+export const useNoticeList = () => {
+  return useQuery<INoticeDataType[]>({
+    queryKey: ["notice_list"],
+    queryFn: noticeListAction,
+  });
+};
+
 // 공지사항 생성
 export const useNoticeCreate = () => {
   const queryClient = useQueryClient();
@@ -25,14 +33,6 @@ export const useNoticeCreate = () => {
       queryClient.invalidateQueries({ queryKey: ["notice_list"] });
     },
     onError: (error) => alert(error.message),
-  });
-};
-
-// 공지사항 리스트
-export const useNoticeList = () => {
-  return useQuery<INoticeDataType[]>({
-    queryKey: ["notice_list"],
-    queryFn: noticeListAction,
   });
 };
 
